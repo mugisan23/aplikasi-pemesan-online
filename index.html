@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dapur Indraprasta — Pesan Online</title>
+<meta name="description" content="Pesan makanan rumahan segar dari Dapur Indraprasta — sayur, ayam, ikan, dan lauk pilihan, siap diantar atau diambil hari ini.">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Dapur Indraprasta — Pesan Online">
+<meta property="og:description" content="Pesan makanan rumahan segar — sayur, ayam, ikan, dan lauk pilihan, siap diantar atau diambil hari ini.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🍲%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Caveat:wght@600;700&family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -42,6 +48,15 @@ h1,h2,h3,.display{
   *{ animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
 }
 
+/* ===== Aksesibilitas: skip link ===== */
+.skip-link{
+  position:absolute; left:-9999px; top:auto;
+  background: var(--hijau-tua); color:var(--krem);
+  padding:12px 18px; border-radius:0 0 10px 0; z-index:200;
+  font-size:13px; font-weight:600; text-decoration:none;
+}
+.skip-link:focus{ left:0; top:0; }
+
 /* ===== Top bar ===== */
 .topbar{
   position: sticky; top:0; z-index: 50;
@@ -49,6 +64,10 @@ h1,h2,h3,.display{
   border-bottom: 1px solid var(--garis);
   display:flex; align-items:center; justify-content:space-between;
   padding: 14px 24px;
+}
+.notif-dot{
+  position:absolute; top:4px; right:4px; width:9px; height:9px; border-radius:50%;
+  background: var(--merah-cabai); border:1.5px solid var(--krem);
 }
 .brand{ display:flex; align-items:center; gap:10px; }
 .brand-mark{
@@ -61,6 +80,7 @@ h1,h2,h3,.display{
 .brand-text{ line-height:1.1; }
 .brand-text .nama{ font-family:'Bricolage Grotesque',sans-serif; font-weight:700; font-size: clamp(15px, 3.6vw, 19px); letter-spacing: -0.01em; }
 .brand-text .sub{ font-size:11px; color:var(--abu); letter-spacing:0.04em; text-transform:uppercase; }
+
 
 .cart-btn{
   position: relative;
@@ -368,6 +388,58 @@ h1,h2,h3,.display{
 }
 .pay-opt input{ accent-color: var(--merah-cabai); width:16px; height:16px; }
 .pay-opt.selected{ border-color: var(--merah-cabai); background:#FCEFE9; }
+
+/* ===== Kartu Profil Tersimpan ===== */
+.profil-list{
+  display:flex; gap:10px; overflow-x:auto; padding:2px 2px 10px;
+  margin-bottom:2px; scroll-snap-type:x proximity;
+}
+.profil-list::-webkit-scrollbar{ height:6px; }
+.profil-list::-webkit-scrollbar-thumb{ background:var(--garis); border-radius:6px; }
+.profil-card{
+  position:relative; flex:0 0 auto; width:118px; scroll-snap-align:start;
+  border:1.5px solid var(--garis); border-radius:14px; background:var(--krem-kartu);
+  padding:14px 10px 11px; text-align:center; cursor:pointer;
+  transition: border-color .15s ease, background .15s ease, transform .15s ease, box-shadow .15s ease;
+}
+.profil-card:hover{ transform:translateY(-2px); border-color:#C3AE7C; }
+.profil-card.active{
+  border-color: var(--merah-cabai); background:#FCEFE9;
+  box-shadow: 0 0 0 1px var(--merah-cabai);
+}
+.profil-card.active::before{
+  content:'✓'; position:absolute; top:5px; left:5px; width:16px; height:16px; border-radius:50%;
+  background:var(--merah-cabai); color:#fff; font-size:9px; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+}
+.profil-avatar{
+  width:42px; height:42px; border-radius:50%; margin:0 auto 8px;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Bricolage Grotesque', sans-serif; font-weight:700; font-size:15px; color:#fff;
+  box-shadow: inset 0 -3px 0 rgba(0,0,0,0.12);
+}
+.profil-card-nama{
+  font-size:12px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.profil-card-hp{
+  font-size:10px; color:var(--abu); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  font-family:'Space Mono', monospace;
+}
+.profil-card-del{
+  position:absolute; top:5px; right:5px; width:20px; height:20px; border-radius:50%;
+  border:none; background:rgba(43,33,23,0.08); color:var(--abu); font-size:12px; line-height:20px;
+  cursor:pointer; padding:0;
+}
+.profil-card-del:hover{ background:var(--merah-cabai); color:#fff; }
+.profil-card-add{
+  border-style:dashed; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  color:var(--hijau-daun); font-weight:700; font-size:12px; gap:4px; background:transparent;
+}
+.profil-card-add:hover{ border-color:var(--hijau-daun); background:rgba(85,105,46,0.06); }
+.profil-card-add .plus{
+  width:36px; height:36px; border-radius:50%; border:1.5px dashed var(--hijau-daun);
+  display:flex; align-items:center; justify-content:center; font-size:18px; margin-bottom:2px;
+}
 
 .modal-actions{ display:flex; gap:10px; margin-top:6px; }
 .modal-actions .btn-ghost, .modal-actions .btn-primary{ flex:1; padding:13px; font-size:14px; }
@@ -769,23 +841,28 @@ footer{
 </head>
 <body>
 
+<a href="#mainContent" class="skip-link">Langsung ke konten utama</a>
+
 <!-- ===== Top bar ===== -->
 <div class="topbar">
   <div class="brand">
     <div class="brand-mark">DI</div>
     <div class="brand-text">
       <div class="nama">Dapur Indraprasta</div>
-      <div class="sub">Pesan Online</div>
+      <div class="sub" id="brandSub">Pesan Online</div>
     </div>
   </div>
   <div style="display:flex; gap:8px; align-items:center;">
-    <button class="btn-ghost" style="padding:9px 14px; font-size:13px;" onclick="openHistory()" aria-label="Riwayat Pesanan">🧾 <span class="btn-txt">Riwayat</span></button>
+    <button class="btn-ghost" style="padding:9px 14px; font-size:13px;" onclick="openProfil()" aria-label="Profil Saya">👤 <span class="btn-txt">Profil</span></button>
+    <button class="btn-ghost" style="padding:9px 14px; font-size:13px; position:relative;" onclick="openHistory()" aria-label="Riwayat Pesanan">🧾 <span class="btn-txt">Riwayat</span><span id="historyDot" class="notif-dot" style="display:none;"></span></button>
     <button class="btn-ghost" style="padding:9px 14px; font-size:13px;" onclick="openAdmin()" aria-label="Admin Panel">⚙️ <span class="btn-txt">Admin</span></button>
     <button class="cart-btn" onclick="openCart()" aria-label="Buka keranjang">
       🧺 <span id="cartCount">0</span>
     </button>
   </div>
 </div>
+
+<main id="mainContent">
 
 <!-- ===== Hero ===== -->
 <section class="hero">
@@ -805,17 +882,15 @@ footer{
   </div>
   <div class="hero-visual" id="heroVisual">
     <div class="hero-slider" id="heroSlider">
-      <div class="hero-slide"><img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=900&q=80" alt="Hidangan nasi rumahan Indonesia lengkap dengan lauk" loading="eager"
-        onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20900%20900%27%3E%3Crect%20width%3D%27900%27%20height%3D%27900%27%20fill%3D%27%23E8A33D%27/%3E%3Ctext%20x%3D%27450%27%20y%3D%27470%27%20font-size%3D%27220%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3E%F0%9F%8D%9A%3C/text%3E%3C/svg%3E'"></div>
-      <div class="hero-slide"><img src="https://images.unsplash.com/photo-1645518864929-fe17ba938e1f?w=900&q=80" alt="Gado-gado lontong segar khas Sayuran" loading="lazy"
+      <div class="hero-slide"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Gado-gado%20in%20Jakarta.JPG?width=900" alt="Gado-gado lontong segar khas Sayuran" loading="eager"
         onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20900%20900%27%3E%3Crect%20width%3D%27900%27%20height%3D%27900%27%20fill%3D%27%234A6741%27/%3E%3Ctext%20x%3D%27450%27%20y%3D%27470%27%20font-size%3D%27220%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3E%F0%9F%A5%97%3C/text%3E%3C/svg%3E'"></div>
-      <div class="hero-slide"><img src="https://images.unsplash.com/photo-1633237308525-cd587cf71926?w=900&q=80" alt="Sate ayam Madura khas Ayam & Bebek" loading="lazy"
+      <div class="hero-slide"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Sate%20ayam%20madura.jpg?width=900" alt="Sate ayam Madura khas Ayam & Bebek" loading="lazy"
         onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20900%20900%27%3E%3Crect%20width%3D%27900%27%20height%3D%27900%27%20fill%3D%27%23D9472B%27/%3E%3Ctext%20x%3D%27450%27%20y%3D%27470%27%20font-size%3D%27220%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3E%F0%9F%8D%97%3C/text%3E%3C/svg%3E'"></div>
-      <div class="hero-slide"><img src="https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=900&q=80" alt="Ikan bakar gurame khas Ikan & Seafood" loading="lazy"
+      <div class="hero-slide"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Gurame%20bakar%20kecap%201.JPG?width=900" alt="Ikan bakar gurame khas Ikan & Seafood" loading="lazy"
         onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20900%20900%27%3E%3Crect%20width%3D%27900%27%20height%3D%27900%27%20fill%3D%27%23B83A22%27/%3E%3Ctext%20x%3D%27450%27%20y%3D%27470%27%20font-size%3D%27220%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3E%F0%9F%90%9F%3C/text%3E%3C/svg%3E'"></div>
-      <div class="hero-slide"><img src="https://images.unsplash.com/photo-1604908176997-431657e0d690?w=900&q=80" alt="Rendang daging sapi khas Daging & Telur" loading="lazy"
+      <div class="hero-slide"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Rendang_daging_sapi_asli_Padang.JPG?width=900" alt="Rendang daging sapi khas Daging & Telur" loading="lazy"
         onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20900%20900%27%3E%3Crect%20width%3D%27900%27%20height%3D%27900%27%20fill%3D%27%231F2A1A%27/%3E%3Ctext%20x%3D%27450%27%20y%3D%27470%27%20font-size%3D%27220%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3E%F0%9F%8D%9B%3C/text%3E%3C/svg%3E'"></div>
-      <div class="hero-slide"><img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=900&q=80" alt="Kopi susu gula aren khas Minuman" loading="lazy"
+      <div class="hero-slide"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Es%20Kopi%20Susu%20Gula%20Aren.jpg?width=900" alt="Kopi susu gula aren khas Minuman" loading="lazy"
         onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20900%20900%27%3E%3Crect%20width%3D%27900%27%20height%3D%27900%27%20fill%3D%27%238A8270%27/%3E%3Ctext%20x%3D%27450%27%20y%3D%27470%27%20font-size%3D%27220%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27middle%27%3E%E2%98%95%3C/text%3E%3C/svg%3E'"></div>
     </div>
     <button class="hero-nav-btn hero-nav-prev" onclick="heroSlideNav(-1)" aria-label="Menu sebelumnya">‹</button>
@@ -891,6 +966,9 @@ footer{
     <h2>Riwayat Pesanan</h2>
     <button class="drawer-close" onclick="closeAllPanels()" aria-label="Tutup riwayat">✕</button>
   </div>
+  <div style="padding:0 22px;">
+    <button class="btn-ghost" style="width:100%; padding:9px; font-size:12px; margin-bottom:4px;" onclick="mintaIzinNotifikasi()">🔔 Aktifkan Notifikasi Perubahan Status</button>
+  </div>
   <div class="drawer-body" id="historyBody"></div>
 </aside>
 
@@ -916,11 +994,25 @@ footer{
       <label for="inpAlamat">Alamat Pengiriman *</label>
       <textarea id="inpAlamat" placeholder="Tulis alamat lengkap"></textarea>
       <div class="field-error" id="errAlamat"></div>
+      <label for="selZona" style="margin-top:10px;">Zona Pengantaran (estimasi ongkir)</label>
+      <select id="selZona" onchange="pilihZona(this.value)" style="width:100%; border:1.5px solid var(--garis); background:var(--krem-kartu); border-radius:10px; padding:11px 13px; font-family:'Inter',sans-serif; font-size:14px; color:var(--hijau-tua);">
+        ${ZONA_ONGKIR.map(z=>`<option value="${z.kode}">${z.label} — ${formatRupiah(z.biaya)}</option>`).join('')}
+      </select>
+      <div style="font-size:11px; color:var(--abu); margin-top:6px;">*Estimasi berdasarkan zona, bukan hitungan jarak/peta otomatis.</div>
+    </div>
+    <div class="field">
+      <label for="inpPromo">Kode Promo (opsional)</label>
+      <div style="display:flex; gap:8px;">
+        <input type="text" id="inpPromo" placeholder="Masukkan kode promo" style="flex:1; text-transform:uppercase;">
+        <button class="btn-ghost" type="button" style="padding:0 18px; white-space:nowrap;" onclick="terapkanPromo()">Terapkan</button>
+      </div>
+      <div id="promoFeedback" style="font-size:12px; margin-top:6px; min-height:16px;"></div>
     </div>
     <div class="field">
       <label>Metode Pembayaran</label>
       <div class="pay-options" id="payOptions"></div>
     </div>
+    <div class="field" id="checkoutSummary" style="background:var(--krem-kartu); border:1px solid var(--garis); border-radius:12px; padding:14px 16px;"></div>
     <div class="modal-actions">
       <button class="btn-ghost" onclick="closeCheckoutModal()">Batal</button>
       <button class="btn-primary" onclick="konfirmasiPesanan()">Buat Pesanan</button>
@@ -936,6 +1028,35 @@ footer{
       <button class="btn-ghost" onclick="cetakStruk()">🖨️ Cetak</button>
       <button class="btn-ghost" onclick="closeReceiptModal()">Tutup</button>
       <button class="btn-primary" onclick="scrollToMenu(); closeReceiptModal();">Pesan Lagi</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Profil Saya modal ===== -->
+<div class="modal-overlay" id="profilOverlay" role="dialog" aria-modal="true" aria-labelledby="profilTitle">
+  <div class="modal">
+    <h2 id="profilTitle">👤 Profil Saya</h2>
+    <div style="font-size:12px; color:var(--abu); margin-bottom:14px; line-height:1.5;">
+      Data ini disimpan di browser ini saja untuk mengisi otomatis form checkout — bukan akun/login sungguhan dan tidak tersinkron ke perangkat lain. Kamu bisa menyimpan lebih dari satu profil (mis. untuk anggota keluarga berbeda) dan beralih di antaranya.
+    </div>
+    <div class="field">
+      <label>Profil Tersimpan</label>
+      <div class="profil-list" id="profilList"></div>
+    </div>
+    <div class="field">
+      <label for="profilNama">Nama</label>
+      <input type="text" id="profilNama" placeholder="Nama Anda">
+    </div>
+    <div class="field">
+      <label for="profilHp">Nomor HP</label>
+      <input type="tel" id="profilHp" placeholder="08xx-xxxx-xxxx" inputmode="numeric">
+    </div>
+    <div class="field">
+      <label for="profilAlamat">Alamat Default</label>
+      <textarea id="profilAlamat" placeholder="Alamat pengantaran yang sering dipakai"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-primary" onclick="simpanProfilManual()">Simpan</button>
     </div>
   </div>
 </div>
@@ -1038,6 +1159,29 @@ footer{
     <!-- ===== Tab: Keamanan ===== -->
     <div class="admin-tab-content" id="adminTab-keamanan" role="tabpanel">
       <div class="admin-section" style="margin-top:0; border-top:none; padding-top:0;">
+        <h3>Pengaturan Toko</h3>
+        <label style="font-size:12.5px; font-weight:600; color:#4B4636; display:block; margin-bottom:6px;">Kode Promo</label>
+        <div style="font-size:11.5px; color:var(--abu); margin-bottom:10px; line-height:1.5;">
+          Diskon dari kode promo dan diskon otomatis (5%/10% by nilai belanja) TIDAK ditumpuk — pelanggan otomatis mendapat yang lebih besar.
+        </div>
+        <div style="display:flex; gap:8px; margin-bottom:8px;">
+          <input type="text" id="promoKodeBaru" placeholder="Kode (mis. HEMAT10)" style="flex:1; text-transform:uppercase; border:1.5px solid var(--garis); background:var(--krem-kartu); border-radius:10px; padding:10px 12px; font-family:'Space Mono',monospace; font-size:12.5px; color:var(--hijau-tua);">
+          <input type="number" id="promoPersenBaru" placeholder="% diskon" min="1" max="90" style="width:90px; border:1.5px solid var(--garis); background:var(--krem-kartu); border-radius:10px; padding:10px 12px; font-family:'Space Mono',monospace; font-size:12.5px; color:var(--hijau-tua);">
+        </div>
+        <button class="btn-primary" style="width:100%; padding:11px; margin-bottom:8px;" onclick="tambahPromoCode()">+ Tambah Kode Promo</button>
+        <div id="adminPromoList" style="display:flex; flex-direction:column; gap:6px; margin-bottom:16px;"></div>
+
+        <label style="font-size:12.5px; font-weight:600; color:#4B4636; display:block; margin-bottom:6px;">Pajak (PPN, inklusif)</label>
+        <div style="font-size:11.5px; color:var(--abu); margin-bottom:10px; line-height:1.5;">
+          Ditampilkan sebagai rincian transparan di struk (harga tidak berubah — bukan ditambahkan ke total, hanya dijelaskan sudah termasuk pajak berapa persen).
+        </div>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <input type="number" id="pajakPersenInput" min="0" max="30" style="flex:1; border:1.5px solid var(--garis); background:var(--krem-kartu); border-radius:10px; padding:10px 12px; font-family:'Space Mono',monospace; font-size:13px; color:var(--hijau-tua);">
+          <button class="btn-ghost" style="padding:11px 16px; white-space:nowrap;" onclick="simpanPajakPersen()">Simpan</button>
+        </div>
+      </div>
+
+      <div class="admin-section">
         <h3>Keamanan &amp; Data</h3>
         <div style="font-size:11.5px; color:var(--abu); margin-bottom:12px; line-height:1.5;">
           PIN ini hanya proteksi dasar di browser (bukan login server sungguhan) — cukup mencegah akses tidak sengaja, bukan untuk keamanan tingkat produksi.
@@ -1052,7 +1196,12 @@ footer{
 
         <label style="font-size:12.5px; font-weight:600; color:#4B4636; display:block; margin-bottom:6px;">Data Tersimpan di Browser Ini</label>
         <div style="font-size:11.5px; color:var(--abu); margin-bottom:10px; line-height:1.5;">
-          Keranjang, riwayat pesanan, stok/harga/menu, dan favorit disimpan otomatis (localStorage) supaya tidak hilang saat halaman di-refresh.
+          Keranjang, riwayat pesanan, stok/harga/menu, dan favorit disimpan otomatis (localStorage) supaya tidak hilang saat halaman di-refresh — tapi tetap hanya ada di browser ini, tanpa cadangan di tempat lain.
+        </div>
+        <div style="display:flex; gap:8px; margin-bottom:8px;">
+          <button class="btn-ghost" style="flex:1; padding:12px;" onclick="exportData()">⬇️ Export Backup</button>
+          <button class="btn-ghost" style="flex:1; padding:12px;" onclick="document.getElementById('importFile').click()">⬆️ Import Backup</button>
+          <input type="file" id="importFile" accept="application/json" style="display:none;" onchange="importData(this.files[0])">
         </div>
         <button class="btn-ghost" style="width:100%; padding:12px;" onclick="resetSemuaData()">🗑️ Reset ke Data Awal</button>
       </div>
@@ -1060,7 +1209,9 @@ footer{
   </div>
 </div>
 
-<div class="toast" id="toast"></div>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <!-- ===== Mobile cart bar (checkout cepat) ===== -->
 <div class="mobile-cart-bar" id="mobileCartBar">
@@ -1078,7 +1229,7 @@ footer{
 const menuProduk = {
   // ===== SAYURAN =====
   V01:{nama:"Tumis Kangkung Terasi", harga:15000, kategori:"Sayuran", stok:20, img:"https://images.unsplash.com/photo-1604908554007-8e3b22c6f3a4?w=500&q=80"},
-  V08:{nama:"Gado-gado Lontong", harga:20000, kategori:"Sayuran", stok:30, img:"https://images.unsplash.com/photo-1645518864929-fe17ba938e1f?w=500&q=80"},
+  V08:{nama:"Gado-gado Lontong", harga:20000, kategori:"Sayuran", stok:30, img:"https://commons.wikimedia.org/wiki/Special:FilePath/Gado-gado%20in%20Jakarta.JPG?width=500"},
   V04:{nama:"Capcay Kuah Seafood", harga:25000, kategori:"Sayuran", stok:15, img:"https://images.unsplash.com/photo-1625398407796-82650a8c135f?w=500&q=80"},
   V02:{nama:"Sayur Asem Jakarta", harga:12000, kategori:"Sayuran", stok:30, img:"https://images.unsplash.com/photo-1607532941433-304659e8198a?w=500&q=80"},
   V07:{nama:"Pecel Madiun Lengkap", harga:18000, kategori:"Sayuran", stok:25, img:"https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=500&q=80"},
@@ -1094,14 +1245,14 @@ const menuProduk = {
   A03:{nama:"Ayam Penyet Sambal Ijo", harga:24000, kategori:"Ayam & Bebek", stok:25, img:"https://images.unsplash.com/photo-1626200926749-1e561ec78cb6?w=500&q=80"},
   A05:{nama:"Ayam Betutu Bali", harga:35000, kategori:"Ayam & Bebek", stok:10, img:"https://images.unsplash.com/photo-1610057099443-fde8c4d3d2f7?w=500&q=80"},
   A06:{nama:"Ayam Pop Padang", harga:25000, kategori:"Ayam & Bebek", stok:20, img:"https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=500&q=80"},
-  A25:{nama:"Sate Ayam Madura", harga:25000, kategori:"Ayam & Bebek", stok:25, img:"https://images.unsplash.com/photo-1633237308525-cd587cf71926?w=500&q=80"},
+  A25:{nama:"Sate Ayam Madura", harga:25000, kategori:"Ayam & Bebek", stok:25, img:"https://commons.wikimedia.org/wiki/Special:FilePath/Sate%20ayam%20madura.jpg?width=500"},
   A27:{nama:"Opor Ayam Kuning", harga:24000, kategori:"Ayam & Bebek", stok:20, img:"https://images.unsplash.com/photo-1585032226651-759b368d7246?w=500&q=80"},
   A33:{nama:"Bebek Goreng Surabaya", harga:35000, kategori:"Ayam & Bebek", stok:20, img:"https://images.unsplash.com/photo-1644950434791-6d4b6e9d3a6f?w=500&q=80"},
   A23:{nama:"Chicken Katsu Curry", harga:35000, kategori:"Ayam & Bebek", stok:15, img:"https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?w=500&q=80"},
   A50:{nama:"Soto Ayam Ambengan", harga:22000, kategori:"Ayam & Bebek", stok:25, img:"https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=500&q=80"},
 
   // ===== IKAN & SEAFOOD =====
-  S01:{nama:"Ikan Bakar Gurame", harga:65000, kategori:"Ikan & Seafood", stok:15, img:"https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=500&q=80"},
+  S01:{nama:"Ikan Bakar Gurame", harga:65000, kategori:"Ikan & Seafood", stok:15, img:"https://commons.wikimedia.org/wiki/Special:FilePath/Gurame%20bakar%20kecap%201.JPG?width=500"},
   S11:{nama:"Pecel Lele Lamongan", harga:22000, kategori:"Ikan & Seafood", stok:25, img:"https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=500&q=80"},
   S26:{nama:"Udang Saus Padang", harga:50000, kategori:"Ikan & Seafood", stok:20, img:"https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=500&q=80"},
   S33:{nama:"Cumi Saus Padang", harga:50000, kategori:"Ikan & Seafood", stok:20, img:"https://images.unsplash.com/photo-1580217593608-61931cefc821?w=500&q=80"},
@@ -1113,12 +1264,12 @@ const menuProduk = {
   S25:{nama:"Udang Goreng Tepung", harga:45000, kategori:"Ikan & Seafood", stok:20, img:"https://images.unsplash.com/photo-1625937329109-7c8d8d4c0eb3?w=500&q=80"},
 
   // ===== DAGING & TELUR =====
-  D01:{nama:"Rendang Daging Sapi", harga:28000, kategori:"Daging & Telur", stok:30, img:"https://images.unsplash.com/photo-1604908176997-431657e0d690?w=500&q=80"},
+  D01:{nama:"Rendang Daging Sapi", harga:28000, kategori:"Daging & Telur", stok:30, img:"https://commons.wikimedia.org/wiki/Special:FilePath/Rendang_daging_sapi_asli_Padang.JPG?width=500"},
   D11:{nama:"Sop Buntut", harga:65000, kategori:"Daging & Telur", stok:15, img:"https://images.unsplash.com/photo-1547592180-85f173990554?w=500&q=80"},
   D16:{nama:"Sate Maranggi (10 Tusuk)", harga:45000, kategori:"Daging & Telur", stok:20, img:"https://images.unsplash.com/photo-1555126634-323283e090fa?w=500&q=80"},
-  D09:{nama:"Rawon Daging Surabaya", harga:32000, kategori:"Daging & Telur", stok:20, img:"https://images.unsplash.com/photo-1533630654593-b301c9e97255?w=500&q=80"},
+  D09:{nama:"Rawon Daging Surabaya", harga:32000, kategori:"Daging & Telur", stok:20, img:"https://commons.wikimedia.org/wiki/Special:FilePath/Nasi_Rawon.jpg?width=500"},
   D20:{nama:"Tengkleng Kambing", harga:45000, kategori:"Daging & Telur", stok:15, img:"https://images.unsplash.com/photo-1574484284002-952d92456975?w=500&q=80"},
-  D07:{nama:"Empal Gentong Cirebon", harga:35000, kategori:"Daging & Telur", stok:20, img:"https://images.unsplash.com/photo-1547928576-a4a49241f2e3?w=500&q=80"},
+  D07:{nama:"Empal Gentong Cirebon", harga:35000, kategori:"Daging & Telur", stok:20, img:"https://commons.wikimedia.org/wiki/Special:FilePath/Indonesian_soup-Empal_Gentong-01.jpg?width=500"},
   D13:{nama:"Iga Bakar Madu", harga:70000, kategori:"Daging & Telur", stok:10, img:"https://images.unsplash.com/photo-1544025162-d76694265947?w=500&q=80"},
   D33:{nama:"Telur Dadar Khas Padang", harga:15000, kategori:"Daging & Telur", stok:30, img:"https://images.unsplash.com/photo-1582169296194-e4d644c48063?w=500&q=80"},
   D30:{nama:"Beef Bulgogi Korea", harga:48000, kategori:"Daging & Telur", stok:15, img:"https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?w=500&q=80"},
@@ -1130,7 +1281,7 @@ const menuProduk = {
   M12:{nama:"Es Cendol Bandung", harga:15000, kategori:"Minuman", stok:20, img:"https://images.unsplash.com/photo-1614961233913-a5113a4a34ed?w=500&q=80"},
   M15:{nama:"Es Teler Spesial", harga:22000, kategori:"Minuman", stok:25, img:"https://images.unsplash.com/photo-1626436819608-1e3a6d6e0b8c?w=500&q=80"},
   M26:{nama:"Jus Alpukat Susu Coklat", harga:20000, kategori:"Minuman", stok:30, img:"https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?w=500&q=80"},
-  M37:{nama:"Kopi Susu Gula Aren", harga:22000, kategori:"Minuman", stok:30, img:"https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=500&q=80"},
+  M37:{nama:"Kopi Susu Gula Aren", harga:22000, kategori:"Minuman", stok:30, img:"https://commons.wikimedia.org/wiki/Special:FilePath/Es%20Kopi%20Susu%20Gula%20Aren.jpg?width=500"},
   M46:{nama:"Wedang Ronde Panas", harga:18000, kategori:"Minuman", stok:15, img:"https://images.unsplash.com/photo-1597481499666-a781e6f73f51?w=500&q=80"},
   M28:{nama:"Jus Jeruk Peras", harga:18000, kategori:"Minuman", stok:30, img:"https://images.unsplash.com/photo-1613478223719-2ab802602423?w=500&q=80"},
   M40:{nama:"Cappuccino Hot/Ice", harga:25000, kategori:"Minuman", stok:30, img:"https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=500&q=80"},
@@ -1141,8 +1292,8 @@ const menuProduk = {
 const FALLBACK_IMGS = {
   "Sayuran": "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=500&q=80",
   "Ayam & Bebek": "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=500&q=80",
-  "Ikan & Seafood": "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=500&q=80",
-  "Daging & Telur": "https://images.unsplash.com/photo-1604908176997-431657e0d690?w=500&q=80",
+  "Ikan & Seafood": "https://commons.wikimedia.org/wiki/Special:FilePath/Gurame%20bakar%20kecap%201.JPG?width=500",
+  "Daging & Telur": "https://commons.wikimedia.org/wiki/Special:FilePath/Rendang_daging_sapi_asli_Padang.JPG?width=500",
   "Minuman": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&q=80",
 };
 
@@ -1158,6 +1309,21 @@ let counterPerTanggal = {}; // { "20260702": 3 } — counter direset tiap hari b
 let metodeBayarTerpilih = METODE_BAYAR[0];
 const METODE_AMBIL = ["Ambil di Tempat","Diantar ke Alamat"];
 let metodeAmbilTerpilih = METODE_AMBIL[0];
+
+/* --- Ongkos kirim per zona (estimasi jarak, bukan hitungan peta sungguhan) --- */
+const ZONA_ONGKIR = [
+  {kode:"dekat",  label:"Dekat (kurang dari 3 km)", biaya:5000},
+  {kode:"sedang", label:"Sedang (3–7 km)",           biaya:10000},
+  {kode:"jauh",   label:"Jauh (lebih dari 7 km)",    biaya:15000},
+];
+let zonaTerpilih = ZONA_ONGKIR[0].kode;
+
+/* --- Kode promo (dikelola admin, tersimpan di localStorage) --- */
+let promoCodes = { "HEMAT10": {persen:10, aktif:true} }; // contoh bawaan
+let promoAktif = null; // {kode, persen}
+
+/* --- Pajak (diatur admin, inklusif — tidak menambah total, hanya rincian) --- */
+let PAJAK_PERSEN = 0; // default 0: banyak UMKM kuliner di bawah ambang PKP belum wajib pungut PPN
 
 /* ===== Utils ===== */
 function formatRupiah(n){
@@ -1206,6 +1372,15 @@ function waktuSekarang(){
   const d = new Date();
   return d.toLocaleString("id-ID", {day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'});
 }
+/* Sanitasi teks bebas dari pengguna sebelum dimasukkan ke innerHTML,
+   supaya input seperti nama menu/nama pelanggan tidak bisa menyisipkan
+   tag HTML/script (proteksi XSS dasar). */
+function escapeHtml(str){
+  const div = document.createElement('div');
+  div.textContent = String(str ?? '');
+  return div.innerHTML;
+}
+
 function showToast(msg){
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -1221,11 +1396,32 @@ function renderCatNav(){
     `<button class="cat-pill ${i===0?'active':''}" data-cat="${k}" onclick="scrollToCat('${k}', this)">${k}</button>`
   ).join('');
 }
+/* Saat kategori diklik, scroll ke section dipicu secara terprogram
+   (smooth scroll). Selama animasi itu berjalan, event scroll juga ikut
+   terpicu berkali-kali dan bisa "berebut" dengan updateActiveCatOnScroll,
+   sehingga pill yang baru diklik malah balik ke kategori yang salah.
+   Flag ini mengunci sementara agar highlight benar-benar mengikuti
+   kategori yang diklik sampai scroll selesai. */
+let catClickLock = false;
+let catClickLockTimer = null;
+
 function scrollToCat(kat, btn){
   document.querySelectorAll('.cat-pill').forEach(p=>p.classList.remove('active'));
-  if(btn) btn.classList.add('active');
+  if(btn){
+    btn.classList.add('active');
+    // Pastikan pill yang baru diklik ikut bergeser ke area yang terlihat
+    // di dalam strip navigasi kategori yang bisa di-scroll horizontal.
+    btn.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' });
+  }
   const el = document.getElementById('sec-' + KATEGORI_SLUG[kat]);
-  if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+  if(el){
+    catClickLock = true;
+    clearTimeout(catClickLockTimer);
+    el.scrollIntoView({behavior:'smooth', block:'start'});
+    // Lepas kunci setelah animasi smooth-scroll diperkirakan selesai,
+    // supaya scroll-spy kembali aktif normal untuk scroll manual berikutnya.
+    catClickLockTimer = setTimeout(() => { catClickLock = false; }, 700);
+  }
 }
 function scrollToMenu(){
   document.getElementById('menuWrap').scrollIntoView({behavior:'smooth', block:'start'});
@@ -1372,6 +1568,17 @@ function openHistory(){
   renderHistory();
   document.getElementById('overlay').classList.add('open');
   document.getElementById('historyDrawer').classList.add('open');
+  // Tandai semua pesanan sebagai sudah dilihat, sembunyikan titik notifikasi
+  let ada = false;
+  daftarPesanan.forEach(p => { if(p.dilihatPelanggan === false){ p.dilihatPelanggan = true; ada = true; } });
+  if(ada) saveState();
+  updateHistoryDot();
+}
+function updateHistoryDot(){
+  const dot = document.getElementById('historyDot');
+  if(!dot) return;
+  const adaBelumDilihat = daftarPesanan.some(p => p.dilihatPelanggan === false);
+  dot.style.display = adaBelumDilihat ? 'block' : 'none';
 }
 function closeAllPanels(){
   document.getElementById('overlay').classList.remove('open');
@@ -1383,9 +1590,26 @@ function closeAllPanels(){
 function openCheckoutModal(){
   if(Object.keys(keranjang).length === 0) return;
   closeAllPanels();
+
+  // Auto-isi dari profil pelanggan tersimpan (jika ada)
+  const profil = loadProfil();
+  if(profil){
+    document.getElementById('inpNama').value = profil.nama || '';
+    document.getElementById('inpHp').value = profil.hp || '';
+    document.getElementById('inpAlamat').value = profil.alamat || '';
+  }
+
+  promoAktif = null;
+  document.getElementById('inpPromo').value = '';
+  document.getElementById('promoFeedback').textContent = '';
+  zonaTerpilih = ZONA_ONGKIR[0].kode;
+  const zSel = document.getElementById('selZona');
+  if(zSel) zSel.value = zonaTerpilih;
+
   renderPayOptions();
   renderDeliveryOptions();
   updateAlamatVisibility();
+  renderCheckoutSummary();
   document.getElementById('checkoutOverlay').classList.add('open');
 }
 function renderDeliveryOptions(){
@@ -1401,6 +1625,75 @@ function pilihMetodeAmbil(m){
   metodeAmbilTerpilih = m;
   renderDeliveryOptions();
   updateAlamatVisibility();
+  renderCheckoutSummary();
+}
+function pilihZona(kode){
+  zonaTerpilih = kode;
+  renderCheckoutSummary();
+}
+function terapkanPromo(){
+  const kode = document.getElementById('inpPromo').value.trim().toUpperCase();
+  const fb = document.getElementById('promoFeedback');
+  if(!kode){
+    promoAktif = null;
+    fb.textContent = '';
+    renderCheckoutSummary();
+    return;
+  }
+  const promo = promoCodes[kode];
+  if(!promo || !promo.aktif){
+    promoAktif = null;
+    fb.style.color = 'var(--merah-cabai)';
+    fb.textContent = '⚠️ Kode promo tidak ditemukan atau sudah tidak aktif.';
+    renderCheckoutSummary();
+    return;
+  }
+  promoAktif = { kode, persen: promo.persen };
+  fb.style.color = 'var(--hijau-daun)';
+  fb.textContent = `✓ Kode ${kode} diterapkan — diskon ${promo.persen}%.`;
+  renderCheckoutSummary();
+}
+
+/* Perhitungan total terpusat: subtotal, ongkir, diskon (otomatis vs promo,
+   dipakai yang LEBIH BESAR — tidak ditumpuk), dan rincian pajak inklusif. */
+function hitungTotalPesanan(){
+  const subtotal = getCartTotal();
+  const isAntar = metodeAmbilTerpilih === "Diantar ke Alamat";
+  const zona = ZONA_ONGKIR.find(z => z.kode === zonaTerpilih) || ZONA_ONGKIR[0];
+  const ongkir = isAntar ? zona.biaya : 0;
+
+  const otomatis = hitungDiskon(subtotal);
+  const diskonOtomatisRp = subtotal * otomatis.pct;
+
+  let diskonPromoRp = 0;
+  if(promoAktif) diskonPromoRp = subtotal * (promoAktif.persen / 100);
+
+  let diskonRp, diskonLabel;
+  if(diskonPromoRp > diskonOtomatisRp && promoAktif){
+    diskonRp = diskonPromoRp;
+    diskonLabel = `Promo ${promoAktif.kode} (${promoAktif.persen}%)`;
+  } else {
+    diskonRp = diskonOtomatisRp;
+    diskonLabel = otomatis.pct > 0 ? `Otomatis (${otomatis.label})` : '';
+  }
+
+  const totalBayar = Math.max(0, subtotal - diskonRp + ongkir);
+  const pajakInklusif = PAJAK_PERSEN > 0 ? subtotal - (subtotal / (1 + PAJAK_PERSEN/100)) : 0;
+
+  return { subtotal, isAntar, zona, ongkir, diskonRp, diskonLabel, totalBayar, pajakInklusif };
+}
+
+function renderCheckoutSummary(){
+  const wrap = document.getElementById('checkoutSummary');
+  if(!wrap) return;
+  const t = hitungTotalPesanan();
+  wrap.innerHTML = `
+    <div class="summary-row"><span>Subtotal</span><span>${formatRupiah(t.subtotal)}</span></div>
+    ${t.isAntar ? `<div class="summary-row"><span>Ongkir (${t.zona.label})</span><span>${formatRupiah(t.ongkir)}</span></div>` : ''}
+    ${t.diskonRp > 0 ? `<div class="summary-row"><span>Diskon${t.diskonLabel ? ' — ' + t.diskonLabel : ''}</span><span>-${formatRupiah(t.diskonRp)}</span></div>` : ''}
+    <div class="summary-row total"><span>Total Bayar</span><span>${formatRupiah(t.totalBayar)}</span></div>
+    ${t.pajakInklusif > 0 ? `<div style="font-size:11px; color:var(--abu); margin-top:6px;">*Sudah termasuk pajak ${formatRupiah(t.pajakInklusif)} (${PAJAK_PERSEN}%)</div>` : ''}
+  `;
 }
 function updateAlamatVisibility(){
   const wrap = document.getElementById('alamatWrap');
@@ -1427,9 +1720,9 @@ function konfirmasiPesanan(){
   const inpNama = document.getElementById('inpNama');
   const inpHp = document.getElementById('inpHp');
   const inpAlamat = document.getElementById('inpAlamat');
-  const nama = inpNama.value.trim();
+  const nama = escapeHtml(inpNama.value.trim());
   const hp = inpHp.value.trim();
-  const alamatInput = inpAlamat.value.trim();
+  const alamatInput = escapeHtml(inpAlamat.value.trim());
   const isAntar = metodeAmbilTerpilih === "Diantar ke Alamat";
   const alamat = isAntar ? alamatInput : "Ambil di tempat (takeaway)";
 
@@ -1460,11 +1753,24 @@ function konfirmasiPesanan(){
   const items = getCartItems();
   if(items.length === 0) return;
 
-  const total = getCartTotal();
-  const {pct,label} = hitungDiskon(total);
-  const diskon = total * pct;
-  const bayar = total - diskon;
+  // --- Mitigasi race condition: sinkronkan ulang stok dari localStorage
+  //     (kalau ada tab lain di browser yang sama baru saja checkout duluan)
+  //     sebelum benar-benar mengurangi stok. Ini HANYA melindungi antar-tab
+  //     di browser yang sama, bukan pengganti validasi stok di server. ---
+  loadState();
+  renderMenuFiltered();
 
+  const stokKurang = items.filter(i => !menuProduk[i.kode] || menuProduk[i.kode].stok < i.jumlah);
+  if(stokKurang.length > 0){
+    const daftar = stokKurang.map(i => menuProduk[i.kode] ? `${menuProduk[i.kode].nama} (sisa ${menuProduk[i.kode].stok})` : `${i.nama} (sudah tidak tersedia)`).join(', ');
+    showToast(`⚠️ Stok berubah: ${daftar}. Silakan sesuaikan keranjang.`);
+    stokKurang.forEach(i => refreshCardDisplay(i.kode));
+    updateCartUI();
+    closeCheckoutModal();
+    return;
+  }
+
+  const t = hitungTotalPesanan();
   const noPesanan = buatNomorPesanan();
   const waktu = waktuSekarang();
 
@@ -1473,15 +1779,21 @@ function konfirmasiPesanan(){
 
   const pesanan = {
     noPesanan, pelanggan:nama, hp, alamat,
-    items, totalBelanja: total, diskon, totalBayar: bayar,
+    items, totalBelanja: t.subtotal, diskon: t.diskonRp, ongkir: t.ongkir,
+    zonaLabel: t.isAntar ? t.zona.label : null, pajakInklusif: t.pajakInklusif, pajakPersen: PAJAK_PERSEN,
+    totalBayar: t.totalBayar,
     metodeBayar: metodeBayarTerpilih,
     metodeAmbil: metodeAmbilTerpilih,
     status: STATUS_PESANAN[0],
-    waktu, diskonLabel: label,
+    waktu, diskonLabel: t.diskonLabel,
     tanggalObj: new Date(),
-    stokDikembalikan: false
+    stokDikembalikan: false,
+    dilihatPelanggan: true // baru dibuat, belum ada perubahan status yang perlu ditandai "baru"
   };
   daftarPesanan.unshift(pesanan);
+
+  // Simpan/perbarui profil pelanggan otomatis supaya form checkout berikutnya terisi sendiri
+  simpanProfilOtomatis(nama, hp, isAntar ? alamatInput : '');
 
   // Reset cart & re-render affected cards
   const kodeList = Object.keys(keranjang);
@@ -1495,6 +1807,7 @@ function konfirmasiPesanan(){
   document.getElementById('errNama').textContent = '';
   document.getElementById('errHp').textContent = '';
   document.getElementById('errAlamat').textContent = '';
+  promoAktif = null;
 
   closeCheckoutModal();
   showReceipt(pesanan);
@@ -1525,8 +1838,10 @@ function showReceipt(p){
     `).join('')}
     <div class="receipt-dash"></div>
     <div class="receipt-row"><span>Total Belanja</span><span>${formatRupiah(p.totalBelanja)}</span></div>
-    ${p.diskon>0 ? `<div class="receipt-row"><span>Diskon (${p.diskonLabel})</span><span>-${formatRupiah(p.diskon)}</span></div>` : ''}
+    ${p.ongkir>0 ? `<div class="receipt-row"><span>Ongkir${p.zonaLabel ? ' ('+p.zonaLabel+')' : ''}</span><span>${formatRupiah(p.ongkir)}</span></div>` : ''}
+    ${p.diskon>0 ? `<div class="receipt-row"><span>Diskon${p.diskonLabel ? ' — '+p.diskonLabel : ''}</span><span>-${formatRupiah(p.diskon)}</span></div>` : ''}
     <div class="receipt-row receipt-total"><span>TOTAL BAYAR</span><span>${formatRupiah(p.totalBayar)}</span></div>
+    ${p.pajakInklusif>0 ? `<div class="line2" style="text-align:right; margin-top:2px;">*sudah termasuk pajak ${formatRupiah(p.pajakInklusif)} (${p.pajakPersen}%)</div>` : ''}
     <div class="receipt-row" style="margin-top:8px;"><span>Metode</span><span>${p.metodeBayar}</span></div>
     <div class="receipt-status">${p.status.toUpperCase()}</div>
     <div class="receipt-footer">Terima kasih telah memesan!<br>Simpan struk ini sebagai bukti pesanan.</div>
@@ -1698,8 +2013,8 @@ function renderCard(kode, p){
   return `
     <div class="card" id="card-${kode}">
       <div class="card-img">
-        <img src="${p.img}" alt="${p.nama}" loading="lazy"
-          onerror="this.onerror=null;this.src='${fallback}'">
+        <img src="${p.img}" srcset="${p.img.replace('w=500','w=300')} 300w, ${p.img} 500w" sizes="(max-width:600px) 45vw, 260px" alt="${p.nama}" loading="lazy"
+          onerror="this.onerror=null;this.srcset='';this.src='${fallback}'">
         ${ info.populer ? `<span class="card-badge-ribbon">🏆 Best Seller</span>` :
            info.baru ? `<span class="card-badge-ribbon baru">✨ Baru</span>` : '' }
         <span class="stock-badge ${habis?'habis':rendahStok?'sedikit':''}">${habis ? 'Habis' : rendahStok ? `Sisa ${p.stok}` : 'Stok ' + p.stok}</span>
@@ -1813,6 +2128,8 @@ function openAdmin(){
   renderAdminStats();
   renderAdminPesananSelect();
   renderAdminMenuList();
+  renderAdminPromoList();
+  document.getElementById('pajakPersenInput').value = PAJAK_PERSEN;
   switchAdminTab('ringkasan');
   document.getElementById('adminOverlay').classList.add('open');
 }
@@ -2025,6 +2342,10 @@ function simpanStatusAdmin(){
   const statusLama = p.status;
   p.status = adminSelectedStatus;
   terapkanStokUntukStatus(p, adminSelectedStatus);
+  if(statusLama !== adminSelectedStatus){
+    p.dilihatPelanggan = false;
+    notifikasiStatusPesanan(p);
+  }
   if(adminSelectedStatus === "Dibatalkan" && statusLama !== "Dibatalkan"){
     showToast(`✓ Pesanan dibatalkan, stok dikembalikan`);
   } else {
@@ -2035,7 +2356,32 @@ function simpanStatusAdmin(){
   document.getElementById('adminPesananInfo').style.display='none';
   adminSelectedPesanan = null;
   adminSelectedStatus = null;
+  updateHistoryDot();
   saveState();
+}
+
+/* Notifikasi browser saat status pesanan berubah.
+   CATATAN JUJUR: ini Web Notification API biasa — hanya berfungsi
+   selagi tab/browser ini terbuka & izin notifikasi diberikan.
+   Bukan pengganti WhatsApp/SMS/email sungguhan dari server. */
+function notifikasiStatusPesanan(p){
+  if(!('Notification' in window) || Notification.permission !== 'granted') return;
+  try{
+    new Notification('Update Pesanan ' + p.noPesanan, {
+      body: `Status terbaru: ${p.status}`,
+      icon: undefined
+    });
+  } catch(err){ /* diamkan jika browser menolak */ }
+}
+function mintaIzinNotifikasi(){
+  if(!('Notification' in window)){
+    showToast('⚠️ Browser ini tidak mendukung notifikasi');
+    return;
+  }
+  Notification.requestPermission().then(izin => {
+    if(izin === 'granted') showToast('🔔 Notifikasi status pesanan diaktifkan');
+    else showToast('Notifikasi tidak diaktifkan');
+  });
 }
 
 /* Pelanggan membatalkan pesanan sendiri (hanya boleh selagi masih
@@ -2075,7 +2421,7 @@ function renderAdminMenuList(){
 
 function tambahMenuBaru(){
   const kode = document.getElementById('menuBaruKode').value.trim().toUpperCase();
-  const nama = document.getElementById('menuBaruNama').value.trim();
+  const nama = escapeHtml(document.getElementById('menuBaruNama').value.trim());
   const kategori = document.getElementById('menuBaruKategori').value;
   const harga = parseInt(document.getElementById('menuBaruHarga').value);
   const stok = parseInt(document.getElementById('menuBaruStok').value);
@@ -2084,6 +2430,11 @@ function tambahMenuBaru(){
   if(!kode || !nama){
     fb.style.color = 'var(--merah-cabai)';
     fb.textContent = '⚠️ Kode dan nama menu wajib diisi!';
+    return;
+  }
+  if(!/^[A-Z0-9]{2,10}$/.test(kode)){
+    fb.style.color = 'var(--merah-cabai)';
+    fb.textContent = '⚠️ Kode hanya boleh huruf/angka, 2–10 karakter (mis. V99)!';
     return;
   }
   if(menuProduk[kode]){
@@ -2173,6 +2524,320 @@ function prosesRestok(){
   saveState();
 }
 
+/* ===== Pengaturan Toko: Kode Promo & Pajak ===== */
+function renderAdminPromoList(){
+  const wrap = document.getElementById('adminPromoList');
+  if(!wrap) return;
+  const kodeList = Object.keys(promoCodes);
+  if(kodeList.length === 0){
+    wrap.innerHTML = `<div class="admin-empty-mini">Belum ada kode promo.</div>`;
+    return;
+  }
+  wrap.innerHTML = kodeList.map(kode => {
+    const p = promoCodes[kode];
+    return `
+      <div style="display:flex; align-items:center; gap:8px; border:1px solid var(--garis); border-radius:8px; padding:8px 10px; background:var(--krem-kartu);">
+        <span class="mono" style="font-weight:700;">${kode}</span>
+        <span style="flex:1; font-size:12.5px; color:var(--abu);">diskon ${p.persen}%</span>
+        <button class="btn-ghost" style="padding:5px 10px; font-size:11px;" onclick="hapusPromoCode('${kode}')">Hapus</button>
+      </div>`;
+  }).join('');
+}
+function tambahPromoCode(){
+  const kode = document.getElementById('promoKodeBaru').value.trim().toUpperCase();
+  const persen = parseInt(document.getElementById('promoPersenBaru').value);
+  if(!/^[A-Z0-9]{3,15}$/.test(kode)){
+    showToast('⚠️ Kode promo 3–15 huruf/angka');
+    return;
+  }
+  if(!persen || persen <= 0 || persen > 90){
+    showToast('⚠️ Persen diskon harus 1–90');
+    return;
+  }
+  promoCodes[kode] = { persen, aktif:true };
+  document.getElementById('promoKodeBaru').value = '';
+  document.getElementById('promoPersenBaru').value = '';
+  renderAdminPromoList();
+  showToast(`✓ Kode promo ${kode} ditambahkan`);
+  saveState();
+}
+function hapusPromoCode(kode){
+  if(!confirm(`Hapus kode promo ${kode}?`)) return;
+  delete promoCodes[kode];
+  renderAdminPromoList();
+  showToast(`✓ Kode promo ${kode} dihapus`);
+  saveState();
+}
+function simpanPajakPersen(){
+  const val = parseFloat(document.getElementById('pajakPersenInput').value);
+  if(isNaN(val) || val < 0 || val > 30){
+    showToast('⚠️ Pajak harus antara 0–30%');
+    return;
+  }
+  PAJAK_PERSEN = val;
+  showToast(`✓ Pajak diatur ke ${val}%`);
+  saveState();
+}
+
+/* ===== Backup manual: export/import (mengatasi keterbatasan localStorage
+   yang tidak punya cadangan otomatis di luar browser ini) ===== */
+function exportData(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    const payload = raw ? JSON.parse(raw) : {};
+    const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const tgl = new Date().toISOString().slice(0,10);
+    a.href = url;
+    a.download = `backup-dapur-indraprasta-${tgl}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    showToast('✓ Backup berhasil diunduh');
+  } catch(err){
+    showToast('⚠️ Gagal membuat file backup');
+  }
+}
+function importData(file){
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try{
+      const data = JSON.parse(e.target.result);
+      if(!data || typeof data !== 'object') throw new Error('format tidak valid');
+      if(!confirm('Timpa semua data saat ini dengan isi file backup ini?')) return;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      showToast('✓ Backup dipulihkan, memuat ulang...');
+      setTimeout(() => location.reload(), 800);
+    } catch(err){
+      showToast('⚠️ File backup tidak valid/rusak');
+    }
+  };
+  reader.readAsText(file);
+  document.getElementById('importFile').value = '';
+}
+
+/* ============================================================
+   PROFIL PELANGGAN (simulasi "akun" tanpa backend)
+   Menyimpan nama/HP/alamat di browser ini supaya form checkout
+   terisi otomatis dan ada sapaan personal di top bar.
+   CATATAN JUJUR: ini BUKAN login/akun sungguhan — tidak ada
+   password, tidak ada sesi server, dan tidak tersinkron ke
+   perangkat lain. Untuk akun pelanggan yang sesungguhnya (bisa
+   dipakai lintas perangkat), tetap perlu backend + otentikasi.
+   ============================================================ */
+/* Kunci lama (satu profil saja) dipertahankan hanya untuk migrasi data
+   pengguna lama ke format daftar multi-profil di bawah. */
+const PROFIL_KEY = 'dapurIndraprasta_profil';
+const PROFIL_LIST_KEY = 'dapurIndraprasta_profil_list';
+const PROFIL_ACTIVE_KEY = 'dapurIndraprasta_profil_active';
+
+function buatIdProfil(){
+  return 'p' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+}
+
+/* Mengambil daftar semua profil tersimpan. Jika belum ada daftar tapi ada
+   data profil format lama (single-profile), otomatis dimigrasikan supaya
+   pengguna lama tidak kehilangan data. */
+function loadProfilList(){
+  try{
+    const raw = localStorage.getItem(PROFIL_LIST_KEY);
+    if(raw){
+      const list = JSON.parse(raw);
+      if(Array.isArray(list) && list.length) return list;
+    }
+  } catch(err){}
+
+  // Migrasi dari data lama (satu profil)
+  try{
+    const oldRaw = localStorage.getItem(PROFIL_KEY);
+    if(oldRaw){
+      const old = JSON.parse(oldRaw);
+      if(old && (old.nama || old.hp || old.alamat)){
+        const migrated = [{ id: buatIdProfil(), nama: old.nama || '', hp: old.hp || '', alamat: old.alamat || '' }];
+        saveProfilList(migrated);
+        localStorage.setItem(PROFIL_ACTIVE_KEY, migrated[0].id);
+        return migrated;
+      }
+    }
+  } catch(err){}
+
+  return [];
+}
+function saveProfilList(list){
+  try{
+    localStorage.setItem(PROFIL_LIST_KEY, JSON.stringify(list));
+  } catch(err){
+    console.warn('Gagal menyimpan daftar profil:', err);
+  }
+}
+function getActiveProfilId(){
+  const list = loadProfilList();
+  if(!list.length) return null;
+  let id = null;
+  try{ id = localStorage.getItem(PROFIL_ACTIVE_KEY); } catch(err){}
+  if(id && list.some(p => p.id === id)) return id;
+  return list[0].id; // fallback ke profil pertama
+}
+function setActiveProfilId(id){
+  try{ localStorage.setItem(PROFIL_ACTIVE_KEY, id); } catch(err){}
+}
+
+/* Alias supaya kode checkout & sapaan brand yang sudah ada tetap jalan
+   tanpa perubahan — keduanya sekarang bekerja pada PROFIL AKTIF. */
+function loadProfil(){
+  const list = loadProfilList();
+  const id = getActiveProfilId();
+  if(!id) return null;
+  return list.find(p => p.id === id) || null;
+}
+function saveProfil(obj){
+  const list = loadProfilList();
+  let id = getActiveProfilId();
+  if(!id){
+    id = buatIdProfil();
+    list.push({ id, nama:'', hp:'', alamat:'' });
+    setActiveProfilId(id);
+  }
+  const idx = list.findIndex(p => p.id === id);
+  const updated = { id, nama: obj.nama || '', hp: obj.hp || '', alamat: obj.alamat || '' };
+  if(idx >= 0) list[idx] = updated; else list.push(updated);
+  saveProfilList(list);
+  updateBrandGreeting();
+}
+function simpanProfilOtomatis(nama, hp, alamat){
+  if(!nama && !hp) return;
+  const existing = loadProfil() || {};
+  saveProfil({
+    nama: nama || existing.nama || '',
+    hp: hp || existing.hp || '',
+    alamat: alamat || existing.alamat || ''
+  });
+}
+function updateBrandGreeting(){
+  const profil = loadProfil();
+  const sub = document.getElementById('brandSub');
+  if(!sub) return;
+  sub.textContent = (profil && profil.nama) ? `Halo, ${profil.nama.split(' ')[0]} 👋` : 'Pesan Online';
+}
+
+/* Mengisi dropdown pemilih profil di modal berdasarkan daftar tersimpan */
+/* Palet warna avatar — dipilih berputar berdasarkan urutan profil supaya
+   tiap profil punya warna berbeda dan mudah dibedakan sekilas. */
+const PROFIL_WARNA = ['#B23A1D', '#55692E', '#C98A1A', '#2B2117', '#7A6B52', '#8C2C16'];
+function inisialProfil(nama){
+  if(!nama || !nama.trim()) return '?';
+  const kata = nama.trim().split(/\s+/);
+  const huruf = kata.length > 1 ? (kata[0][0] + kata[1][0]) : kata[0].slice(0, 2);
+  return huruf.toUpperCase();
+}
+/* Merender daftar profil sebagai kartu-kartu yang bisa diklik/dipilih,
+   ditutup dengan satu kartu putus-putus untuk menambah profil baru. */
+function renderPilihanProfil(activeId){
+  const wrap = document.getElementById('profilList');
+  if(!wrap) return;
+  const list = loadProfilList();
+  wrap.innerHTML = '';
+  list.forEach((p, i) => {
+    const card = document.createElement('div');
+    card.className = 'profil-card' + (p.id === activeId ? ' active' : '');
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+    card.onclick = () => gantiProfilAktif(p.id);
+    card.onkeydown = (e) => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); gantiProfilAktif(p.id); } };
+    const warna = PROFIL_WARNA[i % PROFIL_WARNA.length];
+    card.innerHTML = `
+      <button type="button" class="profil-card-del" title="Hapus profil ini" aria-label="Hapus profil ${escapeHtml(p.nama || 'ini')}">✕</button>
+      <div class="profil-avatar" style="background:${warna};">${escapeHtml(inisialProfil(p.nama))}</div>
+      <div class="profil-card-nama">${escapeHtml(p.nama) || `Profil ${i + 1}`}</div>
+      <div class="profil-card-hp">${escapeHtml(p.hp) || 'Belum ada HP'}</div>
+    `;
+    card.querySelector('.profil-card-del').onclick = (e) => { e.stopPropagation(); hapusProfilTertentu(p.id); };
+    wrap.appendChild(card);
+  });
+  const addCard = document.createElement('div');
+  addCard.className = 'profil-card profil-card-add';
+  addCard.setAttribute('role', 'button');
+  addCard.setAttribute('tabindex', '0');
+  addCard.onclick = () => tambahProfilBaru();
+  addCard.onkeydown = (e) => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); tambahProfilBaru(); } };
+  addCard.innerHTML = `<div class="plus">+</div>Profil Baru`;
+  wrap.appendChild(addCard);
+}
+function isiFormDariProfil(profil){
+  document.getElementById('profilNama').value = profil ? (profil.nama || '') : '';
+  document.getElementById('profilHp').value = profil ? (profil.hp || '') : '';
+  document.getElementById('profilAlamat').value = profil ? (profil.alamat || '') : '';
+}
+function openProfil(){
+  const list = loadProfilList();
+  const activeId = getActiveProfilId();
+  const profil = list.find(p => p.id === activeId) || null;
+  renderPilihanProfil(activeId);
+  isiFormDariProfil(profil);
+  closeAllPanels();
+  document.getElementById('profilOverlay').classList.add('open');
+}
+function closeProfil(){
+  const el = document.getElementById('profilOverlay');
+  if(el) el.classList.remove('open');
+}
+/* Beralih ke profil lain yang sudah tersimpan (klik kartu) */
+function gantiProfilAktif(id){
+  if(!id) return;
+  setActiveProfilId(id);
+  const profil = loadProfilList().find(p => p.id === id) || null;
+  renderPilihanProfil(id);
+  isiFormDariProfil(profil);
+  updateBrandGreeting();
+}
+/* Menambah slot profil baru yang kosong lalu menjadikannya aktif */
+function tambahProfilBaru(){
+  const list = loadProfilList();
+  const baru = { id: buatIdProfil(), nama:'', hp:'', alamat:'' };
+  list.push(baru);
+  saveProfilList(list);
+  setActiveProfilId(baru.id);
+  renderPilihanProfil(baru.id);
+  isiFormDariProfil(baru);
+  document.getElementById('profilNama').focus();
+  showToast('✓ Profil baru ditambahkan, isi datanya lalu simpan');
+}
+function simpanProfilManual(){
+  const nama = escapeHtml(document.getElementById('profilNama').value.trim());
+  const hp = document.getElementById('profilHp').value.trim();
+  const alamat = escapeHtml(document.getElementById('profilAlamat').value.trim());
+  saveProfil({ nama, hp, alamat });
+  renderPilihanProfil(getActiveProfilId());
+  showToast('✓ Profil disimpan di perangkat ini');
+  closeProfil();
+}
+/* Menghapus satu profil tertentu (lewat tombol ✕ di kartunya), tidak
+   harus profil yang sedang aktif. */
+function hapusProfilTertentu(id){
+  const list = loadProfilList();
+  const target = list.find(p => p.id === id);
+  if(!target) return;
+  if(!confirm(`Hapus profil "${target.nama || 'tanpa nama'}" dari perangkat ini?`)) return;
+  const activeId = getActiveProfilId();
+  const sisa = list.filter(p => p.id !== id);
+  saveProfilList(sisa);
+  if(id === activeId){
+    if(sisa.length){
+      setActiveProfilId(sisa[0].id);
+      isiFormDariProfil(sisa[0]);
+    } else {
+      try{ localStorage.removeItem(PROFIL_ACTIVE_KEY); } catch(err){}
+      isiFormDariProfil(null);
+    }
+  }
+  renderPilihanProfil(getActiveProfilId());
+  updateBrandGreeting();
+  showToast('✓ Profil dihapus');
+}
+
 /* ============================================================
    PERSISTENSI LOKAL (localStorage)
    Menyimpan keranjang, riwayat pesanan, stok/harga/menu hasil
@@ -2197,12 +2862,15 @@ function saveState(){
       counterPerTanggal,
       favorit: Array.from(favoritSet),
       menuProduk, // termasuk stok/harga/menu baru hasil ubahan admin
+      promoCodes, // kode promo yang dikelola admin
+      pajakPersen: PAJAK_PERSEN,
       savedAt: new Date().toISOString()
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   } catch(err){
-    // Kuota penuh, mode private/incognito yang membatasi storage, dll.
+    // Kuota localStorage penuh, mode private/incognito yang membatasi storage, dll.
     console.warn('Gagal menyimpan data ke localStorage:', err);
+    showToast('⚠️ Penyimpanan browser gagal/hampir penuh — perubahan terbaru mungkin tidak tersimpan');
   }
 }
 
@@ -2235,6 +2903,12 @@ function loadState(){
     if(Array.isArray(data.favorit)){
       favoritSet = new Set(data.favorit.filter(k => menuProduk[k]));
     }
+    if(data.promoCodes && typeof data.promoCodes === 'object'){
+      promoCodes = data.promoCodes;
+    }
+    if(typeof data.pajakPersen === 'number' && data.pajakPersen >= 0){
+      PAJAK_PERSEN = data.pajakPersen;
+    }
   } catch(err){
     console.warn('Gagal memuat data tersimpan, memakai data awal:', err);
   }
@@ -2248,6 +2922,7 @@ function resetSemuaData(){
 
 /* ===== Smooth scroll active category highlight on scroll ===== */
 function updateActiveCatOnScroll(){
+  if(catClickLock) return; // sedang scroll karena klik pill — jangan diganggu
   const sections = KATEGORI.map(k => document.getElementById('sec-'+KATEGORI_SLUG[k]));
   const scrollY = window.scrollY + 160;
   let active = 0;
@@ -2316,12 +2991,39 @@ function setupHeroSlider(){
   }, {passive:true});
 }
 
-/* ===== Init ===== */
-loadState(); // muat data tersimpan (jika ada) sebelum render pertama
-renderCatNav();
-renderMenu();
-updateCartUI();
-setupHeroSlider();
+/* ===== Init =====
+   Tiap langkah dibungkus try/catch sendiri-sendiri. Tujuannya: kalau ada
+   satu fungsi init yang gagal karena sebab tak terduga, langkah lain
+   (termasuk starter auto-slide foto hero) tetap jalan — tidak ikut mati
+   semua hanya gara-gara satu bagian bermasalah. */
+function initAman(nama, fn){
+  try{ fn(); } catch(err){ console.warn(`Init "${nama}" gagal:`, err); }
+}
+initAman('loadState', loadState); // muat data tersimpan (jika ada) sebelum render pertama
+initAman('renderCatNav', renderCatNav);
+initAman('renderMenu', renderMenu);
+initAman('updateCartUI', updateCartUI);
+initAman('setupHeroSlider', setupHeroSlider);
+initAman('updateBrandGreeting', updateBrandGreeting);
+initAman('updateHistoryDot', updateHistoryDot);
+
+/* Sinkronisasi ringan antar-tab di browser yang sama: kalau tab lain
+   mengubah data (checkout/stok/menu/status), tab ini ikut memuat ulang
+   supaya tidak menampilkan info basi. Ini HANYA berlaku antar-tab di
+   browser yang sama — bukan sinkronisasi lintas perangkat/pengguna. */
+window.addEventListener('storage', (e) => {
+  if(e.key !== STORAGE_KEY) return;
+  loadState();
+  renderMenuFiltered();
+  updateCartUI();
+  updateHistoryDot();
+  if(document.getElementById('historyDrawer').classList.contains('open')) renderHistory();
+  if(document.getElementById('adminOverlay').classList.contains('open')){
+    renderAdminStats();
+    renderAdminPesananSelect();
+    renderAdminMenuList();
+  }
+});
 
 // Insert no-result placeholder after menu wrap
 document.getElementById('menuWrap').insertAdjacentHTML('afterend',
@@ -2339,13 +3041,14 @@ document.addEventListener('keydown', (e) => {
     closeCheckoutModal();
     closeReceiptModal();
     closeAdmin();
+    closeProfil();
   }
 });
 
 /* ===== Perangkap fokus sederhana untuk dialog/drawer yang terbuka =====
    Mencegah Tab berpindah ke konten di belakang overlay saat modal aktif. */
 function getOpenDialogEl(){
-  const ids = ['cartDrawer','historyDrawer','checkoutOverlay','receiptOverlay','adminOverlay'];
+  const ids = ['cartDrawer','historyDrawer','checkoutOverlay','receiptOverlay','adminOverlay','profilOverlay'];
   for(const id of ids){
     const el = document.getElementById(id);
     if(el && el.classList.contains('open')) return el;
@@ -2384,6 +3087,9 @@ document.getElementById('checkoutOverlay').addEventListener('click', function(e)
 });
 document.getElementById('receiptOverlay').addEventListener('click', function(e){
   if(e.target === this) closeReceiptModal();
+});
+document.getElementById('profilOverlay').addEventListener('click', function(e){
+  if(e.target === this) closeProfil();
 });
 
 /* ============================================================
