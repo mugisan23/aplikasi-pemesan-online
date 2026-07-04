@@ -427,6 +427,128 @@ h1,h2,h3,.display{
 }
 .pay-opt input{ accent-color: var(--merah-cabai); width:16px; height:16px; }
 .pay-opt.selected{ border-color: var(--merah-cabai); background:#FCEFE9; }
+.pay-opt span{ flex:1; }
+.pay-opt-qris.selected{ border-color: var(--hijau-daun); background:#EEF3E3; }
+.badge-rekomendasi{
+  flex:0 0 auto !important; background: var(--hijau-daun); color:white;
+  font-size:9.5px; font-weight:800; padding:3px 8px; border-radius:999px; letter-spacing:0.02em;
+}
+
+/* ===== Panel QRIS (dummy) ===== */
+#qrisPanel{ margin-bottom:18px; }
+.qris-card{
+  border:1.5px dashed var(--hijau-daun); border-radius:16px; padding:18px 16px 16px;
+  background: linear-gradient(180deg, #FBFAF3, var(--krem-kartu));
+  text-align:center;
+  animation: qrisCardIn .35s var(--ease-bounce, ease) backwards;
+}
+@keyframes qrisCardIn{
+  0%{ opacity:0; transform: translateY(-8px) scale(0.97); }
+  100%{ opacity:1; transform: translateY(0) scale(1); }
+}
+.qris-head{ display:flex; flex-direction:column; align-items:center; gap:2px; margin-bottom:12px; }
+.qris-logo{
+  font-family:'Bricolage Grotesque',sans-serif; font-weight:800; font-size:20px; letter-spacing:0.06em;
+  color:var(--merah-cabai);
+  background: linear-gradient(100deg, var(--merah-cabai) 30%, var(--kuning-kunyit) 50%, var(--merah-cabai) 70%);
+  background-size:240% 100%; -webkit-background-clip:text; background-clip:text; color:transparent;
+  animation: brandShine 4s ease-in-out infinite;
+}
+.qris-tag{ font-size:10px; color:var(--abu); letter-spacing:0.01em; }
+.qris-scan-wrap{
+  position:relative; width:190px; height:190px; margin:0 auto 14px;
+  border-radius:12px; overflow:hidden; box-shadow: 0 8px 22px rgba(31,42,26,0.14);
+  background:white; padding:0;
+  animation: qrisPop .4s var(--ease-bounce, ease) .1s backwards;
+}
+@keyframes qrisPop{
+  0%{ opacity:0; transform: scale(0.85) rotate(-2deg); }
+  100%{ opacity:1; transform: scale(1) rotate(0); }
+}
+.qris-scanline{
+  position:absolute; left:4%; width:92%; height:3px; z-index:2;
+  background: linear-gradient(90deg, transparent, var(--hijau-daun), transparent);
+  box-shadow: 0 0 8px 1px rgba(85,105,46,0.6);
+  animation: qrisScan 2.2s ease-in-out infinite;
+}
+@keyframes qrisScan{
+  0%{ top:6%; opacity:0; }
+  10%{ opacity:1; }
+  50%{ top:92%; opacity:1; }
+  60%{ opacity:0; }
+  100%{ top:6%; opacity:0; }
+}
+.qris-merchant-nama{ font-family:'Bricolage Grotesque',sans-serif; font-weight:700; font-size:13.5px; }
+.qris-merchant-nmid{ font-size:10.5px; color:var(--abu); margin-top:2px; }
+.qris-nominal{
+  display:flex; align-items:center; justify-content:space-between;
+  margin-top:14px; padding:12px 14px; border-radius:12px;
+  background: var(--hijau-tua); color:var(--krem);
+  font-size:12.5px; font-weight:600;
+}
+.qris-nominal-angka{ font-family:'Space Mono',monospace; font-weight:700; font-size:15px; }
+.qris-note{ font-size:10.5px; color:var(--abu); margin-top:10px; line-height:1.5; text-align:left; }
+
+/* ===== Modal detail menu / komposisi ===== */
+.modal-detail{ padding:0; overflow:hidden; max-width:440px; }
+.detail-close{
+  position:absolute; top:14px; right:14px; z-index:6;
+  background: rgba(255,255,255,0.92); border-radius:50%; width:34px; height:34px;
+  display:flex; align-items:center; justify-content:center; border:none; box-shadow:0 4px 12px rgba(0,0,0,0.18);
+}
+.detail-img-wrap{ position:relative; width:100%; aspect-ratio:16/10; overflow:hidden; background:#EFE8D3; }
+.detail-img-wrap img{
+  width:100%; height:100%; object-fit:cover; display:block;
+  animation: detailImgIn .5s cubic-bezier(.22,.9,.3,1.2) backwards;
+}
+@keyframes detailImgIn{
+  0%{ opacity:0; transform: scale(1.12); }
+  100%{ opacity:1; transform: scale(1); }
+}
+.detail-kategori-badge{
+  position:absolute; bottom:12px; left:14px;
+  background: rgba(31,42,26,0.82); color:white; font-size:11px; font-weight:700;
+  padding:5px 12px; border-radius:999px; letter-spacing:0.02em;
+  animation: brandPop .5s var(--ease-bounce, ease) .15s backwards;
+}
+.detail-body{ padding:22px 24px 24px; max-height:60vh; overflow-y:auto; }
+.detail-kode{ font-size:11px; color:var(--abu); letter-spacing:0.05em; margin-bottom:4px; }
+.detail-nama{
+  font-size: clamp(19px, 5vw, 23px); margin-bottom:8px !important;
+  animation: detailRise .4s ease .05s backwards;
+}
+.detail-harga{
+  font-family:'Space Mono',monospace; font-weight:700; color:var(--merah-cabai); font-size:17px;
+  margin-bottom:12px; animation: detailRise .4s ease .1s backwards;
+}
+@keyframes detailRise{
+  0%{ opacity:0; transform: translateY(8px); }
+  100%{ opacity:1; transform: translateY(0); }
+}
+.detail-desk{ font-size:13.5px; line-height:1.6; color:#4B4636; margin-bottom:18px; animation: detailRise .4s ease .15s backwards; }
+.detail-komposisi-head{
+  display:flex; align-items:center; gap:8px; font-weight:700; font-size:14px; margin-bottom:10px;
+  color:var(--hijau-tua);
+}
+.ikon-spin{ display:inline-block; animation: ikonSpin 3.5s ease-in-out infinite; }
+@keyframes ikonSpin{
+  0%,80%,100%{ transform: rotate(0deg); }
+  85%{ transform: rotate(-12deg); }
+  92%{ transform: rotate(10deg); }
+  97%{ transform: rotate(0deg); }
+}
+.komposisi-list{ list-style:none; display:flex; flex-direction:column; gap:8px; }
+.komposisi-item{
+  display:flex; align-items:center; gap:10px;
+  background: var(--krem-kartu); border:1px solid var(--garis); border-radius:10px;
+  padding:10px 12px; font-size:13px; font-weight:600; color:var(--hijau-tua);
+  opacity:0; animation: komposisiIn .4s ease calc(var(--i) * 0.09s + 0.2s) forwards;
+}
+@keyframes komposisiIn{
+  0%{ opacity:0; transform: translateX(-14px); }
+  100%{ opacity:1; transform: translateX(0); }
+}
+.komposisi-emoji{ font-size:18px; flex-shrink:0; }
 
 /* ===== Kartu Profil Tersimpan ===== */
 .profil-list{
@@ -1257,11 +1379,37 @@ main, footer{ position:relative; z-index:1; }
     <div class="field">
       <label>Metode Pembayaran</label>
       <div class="pay-options" id="payOptions"></div>
+      <div id="qrisPanel"></div>
     </div>
     <div class="field" id="checkoutSummary" style="background:var(--krem-kartu); border:1px solid var(--garis); border-radius:12px; padding:14px 16px;"></div>
     <div class="modal-actions">
       <button class="btn-ghost" onclick="closeCheckoutModal()">Batal</button>
       <button class="btn-primary" onclick="konfirmasiPesanan()">Buat Pesanan</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Menu detail / komposisi modal ===== -->
+<div class="modal-overlay" id="menuDetailOverlay" role="dialog" aria-modal="true" aria-labelledby="menuDetailTitle" onclick="if(event.target===this) tutupDetailMenu()">
+  <div class="modal modal-detail">
+    <button class="drawer-close detail-close" onclick="tutupDetailMenu()" aria-label="Tutup detail menu">✕</button>
+    <div class="detail-img-wrap">
+      <img id="detailImg" src="" alt="" loading="lazy">
+      <span class="detail-kategori-badge" id="detailKategoriBadge"></span>
+    </div>
+    <div class="detail-body">
+      <div class="detail-kode mono" id="detailKode"></div>
+      <h2 id="menuDetailTitle" class="detail-nama"></h2>
+      <div class="detail-harga" id="detailHarga"></div>
+      <p class="detail-desk" id="detailDesk"></p>
+      <div class="detail-komposisi-head">
+        <span class="ikon-spin">🧾</span> Komposisi Bahan
+      </div>
+      <ul class="komposisi-list" id="komposisiList"></ul>
+      <div class="modal-actions" style="margin-top:20px;">
+        <button class="btn-ghost" onclick="tutupDetailMenu()">Tutup</button>
+        <button class="btn-primary" id="detailAddBtn" onclick="tambahDariDetail()">+ Tambah ke Keranjang</button>
+      </div>
     </div>
   </div>
 </div>
@@ -1572,7 +1720,7 @@ const FALLBACK_IMGS = {
 
 const KATEGORI = ["Sayuran","Ayam & Bebek","Ikan & Seafood","Daging & Telur","Minuman"];
 const KATEGORI_SLUG = { "Sayuran":"sayuran", "Ayam & Bebek":"ayam-bebek", "Ikan & Seafood":"ikan-seafood", "Daging & Telur":"daging-telur", "Minuman":"minuman" };
-const METODE_BAYAR = ["Transfer Bank","Dompet Digital (GoPay/OVO)","COD (Bayar di Tempat)"];
+const METODE_BAYAR = ["QRIS","Transfer Bank","Dompet Digital (GoPay/OVO)","COD (Bayar di Tempat)"];
 const STATUS_PESANAN = ["Menunggu Konfirmasi","Sedang Diproses","Sedang Dikirim","Selesai","Dibatalkan"];
 
 /* ===== State (in-memory, no localStorage) ===== */
@@ -2023,6 +2171,7 @@ function renderCheckoutSummary(){
     <div class="summary-row total"><span>Total Bayar</span><span>${formatRupiah(t.totalBayar)}</span></div>
     ${t.pajakInklusif > 0 ? `<div style="font-size:11px; color:var(--abu); margin-top:6px;">*Sudah termasuk pajak ${formatRupiah(t.pajakInklusif)} (${PAJAK_PERSEN}%)</div>` : ''}
   `;
+  renderQrisPanel();
 }
 function updateAlamatVisibility(){
   const wrap = document.getElementById('alamatWrap');
@@ -2032,18 +2181,82 @@ function closeCheckoutModal(){
   document.getElementById('checkoutOverlay').classList.remove('open');
   updateMobileCartBarVisibility();
 }
+const IKON_METODE = {
+  "QRIS": "🇶", "Transfer Bank": "🏦", "Dompet Digital (GoPay/OVO)": "📱", "COD (Bayar di Tempat)": "💵"
+};
 function renderPayOptions(){
   const wrap = document.getElementById('payOptions');
   wrap.innerHTML = METODE_BAYAR.map((m,i) => `
-    <label class="pay-opt ${m===metodeBayarTerpilih?'selected':''}">
+    <label class="pay-opt ${m===metodeBayarTerpilih?'selected':''} ${m==='QRIS'?'pay-opt-qris':''}">
       <input type="radio" name="metode" value="${m}" ${m===metodeBayarTerpilih?'checked':''} onchange="pilihMetode('${m}')">
-      ${m}
+      <span>${IKON_METODE[m]||''} ${m}</span>
+      ${m==='QRIS' ? '<span class="badge-rekomendasi">Rekomendasi</span>' : ''}
     </label>
   `).join('');
+  renderQrisPanel();
 }
 function pilihMetode(m){
   metodeBayarTerpilih = m;
   renderPayOptions();
+}
+
+/* ===== Panel QRIS (dummy, hanya untuk simulasi tampilan) ===== */
+function buatDummyQR(seedText, size){
+  // Menghasilkan pola kotak menyerupai QR code (VISUAL DUMMY, tidak bisa
+  // benar-benar dipindai) berdasarkan seed teks supaya polanya konsisten
+  // setiap kali dirender ulang, bukan acak setiap render.
+  let h = 0;
+  for(let i=0;i<seedText.length;i++){ h = (h*31 + seedText.charCodeAt(i)) >>> 0; }
+  const grid = 21;
+  const cell = size / grid;
+  let rects = '';
+  const isFinder = (r,c) => (r<7 && c<7) || (r<7 && c>=grid-7) || (r>=grid-7 && c<7);
+  const drawFinder = (r0,c0) => {
+    rects += `<rect x="${c0*cell}" y="${r0*cell}" width="${cell*7}" height="${cell*7}" fill="var(--hijau-tua)"/>`;
+    rects += `<rect x="${(c0+1)*cell}" y="${(r0+1)*cell}" width="${cell*5}" height="${cell*5}" fill="white"/>`;
+    rects += `<rect x="${(c0+2)*cell}" y="${(r0+2)*cell}" width="${cell*3}" height="${cell*3}" fill="var(--hijau-tua)"/>`;
+  };
+  drawFinder(0,0); drawFinder(0,grid-7); drawFinder(grid-7,0);
+  for(let r=0;r<grid;r++){
+    for(let c=0;c<grid;c++){
+      if(isFinder(r,c)) continue;
+      h = (h*1103515245 + 12345) >>> 0;
+      if((h >> 5) % 2 === 0){
+        rects += `<rect x="${c*cell}" y="${r*cell}" width="${cell}" height="${cell}" fill="var(--hijau-tua)"/>`;
+      }
+    }
+  }
+  return `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg">
+    <rect width="${size}" height="${size}" fill="white"/>${rects}
+  </svg>`;
+}
+function renderQrisPanel(){
+  const wrap = document.getElementById('qrisPanel');
+  if(!wrap) return;
+  if(metodeBayarTerpilih !== 'QRIS'){ wrap.innerHTML = ''; return; }
+  const t = hitungTotalPesanan();
+  const noPesananSementara = 'QR' + Date.now().toString().slice(-8);
+  wrap.innerHTML = `
+    <div class="qris-card">
+      <div class="qris-head">
+        <span class="qris-logo">QRIS</span>
+        <span class="qris-tag">Quick Response Code Indonesian Standard</span>
+      </div>
+      <div class="qris-scan-wrap">
+        <div class="qris-scanline"></div>
+        ${buatDummyQR(noPesananSementara, 190)}
+      </div>
+      <div class="qris-merchant">
+        <div class="qris-merchant-nama">WARUNG KU DIGITAL — KEL. 2</div>
+        <div class="qris-merchant-nmid mono">NMID: ID1026304${noPesananSementara.slice(-4)} · NASIONAL</div>
+      </div>
+      <div class="qris-nominal">
+        <span>Nominal Dibayar</span>
+        <span class="qris-nominal-angka">${formatRupiah(t.totalBayar)}</span>
+      </div>
+      <div class="qris-note">🔒 Ini tampilan <b>simulasi/dummy</b> untuk kebutuhan demo — kode QR ini tidak dapat benar-benar dipindai oleh aplikasi pembayaran.</div>
+    </div>
+  `;
 }
 
 function konfirmasiPesanan(){
@@ -2385,7 +2598,7 @@ function renderCard(kode, p){
   const info = getMenuInfo(kode, p);
   const rendahStok = !habis && p.stok <= 5;
   return `
-    <div class="card" id="card-${kode}">
+    <div class="card" id="card-${kode}" onclick="if(!event.target.closest('button')) bukaDetailMenu('${kode}')" style="cursor:pointer;">
       <div class="card-img">
         <img src="${p.img}" srcset="${p.img.replace('w=500','w=300')} 300w, ${p.img} 500w" sizes="(max-width:600px) 45vw, 260px" alt="${p.nama}" loading="lazy"
           onload="this.classList.add('img-loaded')"
@@ -2420,6 +2633,117 @@ function renderCard(kode, p){
       </div>
     </div>
   `;
+}
+
+/* ===== Deskripsi & komposisi bahan menu (dicocokkan otomatis dari nama menu) ===== */
+const KAMUS_BAHAN = [
+  {kata:['ayam'], emoji:'🍗', label:'Ayam pilihan segar'},
+  {kata:['bebek'], emoji:'🦆', label:'Daging bebek segar'},
+  {kata:['sapi','daging sapi','iga','buntut','rendang','empal','bulgogi','beef'], emoji:'🥩', label:'Daging sapi pilihan'},
+  {kata:['kambing','tengkleng'], emoji:'🐐', label:'Daging kambing empuk'},
+  {kata:['gurame','kakap','ikan'], emoji:'🐟', label:'Ikan segar pilihan'},
+  {kata:['udang'], emoji:'🦐', label:'Udang segar'},
+  {kata:['cumi'], emoji:'🦑', label:'Cumi-cumi segar'},
+  {kata:['kepiting'], emoji:'🦀', label:'Kepiting segar'},
+  {kata:['kerang'], emoji:'🦪', label:'Kerang dara segar'},
+  {kata:['telur'], emoji:'🥚', label:'Telur ayam pilihan'},
+  {kata:['tahu'], emoji:'🧊', label:'Tahu segar'},
+  {kata:['tempe'], emoji:'🟫', label:'Tempe pilihan'},
+  {kata:['lontong'], emoji:'🍙', label:'Lontong'},
+  {kata:['kangkung'], emoji:'🥬', label:'Kangkung segar'},
+  {kata:['buncis'], emoji:'🫛', label:'Buncis segar'},
+  {kata:['pecel','sambal kacang','gado','ketoprak','karedok'], emoji:'🥜', label:'Bumbu kacang tanah'},
+  {kata:['sayur asem','asem'], emoji:'🍈', label:'Labu siam & melinjo'},
+  {kata:['lodeh','tewel'], emoji:'🥥', label:'Nangka muda & santan'},
+  {kata:['kelapa','santan'], emoji:'🥥', label:'Santan / kelapa segar'},
+  {kata:['jeruk'], emoji:'🍊', label:'Jeruk peras segar'},
+  {kata:['alpukat'], emoji:'🥑', label:'Alpukat matang pilihan'},
+  {kata:['kopi','cappuccino'], emoji:'☕', label:'Biji kopi pilihan'},
+  {kata:['teh'], emoji:'🍵', label:'Daun teh berkualitas'},
+  {kata:['cendol'], emoji:'🍡', label:'Cendol tepung hijau'},
+  {kata:['ronde','wedang','bandrek'], emoji:'🫚', label:'Jahe & rempah hangat'},
+  {kata:['gula aren'], emoji:'🍯', label:'Gula aren asli'},
+  {kata:['curry','katsu'], emoji:'🍛', label:'Saus kari lembut'},
+  {kata:['gorengan','tepung'], emoji:'🌾', label:'Tepung crispy'},
+];
+const BUMBU_DASAR = {
+  "Sayuran": [{emoji:'🧅',label:'Bawang merah & bawang putih'},{emoji:'🌿',label:'Daun bawang & seledri'},{emoji:'🧂',label:'Garam, gula & penyedap secukupnya'}],
+  "Ayam & Bebek": [{emoji:'🧄',label:'Bumbu rempah khas nusantara'},{emoji:'🌶️',label:'Cabai & sambal pilihan'},{emoji:'🧅',label:'Bawang merah & bawang putih'}],
+  "Ikan & Seafood": [{emoji:'🍋',label:'Perasan jeruk nipis'},{emoji:'🧄',label:'Bumbu rempah segar'},{emoji:'🌶️',label:'Sambal / saus pelengkap'}],
+  "Daging & Telur": [{emoji:'🧄',label:'Bumbu rempah tradisional'},{emoji:'🌿',label:'Daun jeruk & serai'},{emoji:'🧅',label:'Bawang merah & bawang putih'}],
+  "Minuman": [{emoji:'🧊',label:'Es batu'},{emoji:'🍯',label:'Gula / sirup alami'}],
+};
+function bangunKomposisi(nama, kategori){
+  const n = nama.toLowerCase();
+  const hasil = [];
+  const seen = new Set();
+  const tambah = (b) => { if(!seen.has(b.label)){ seen.add(b.label); hasil.push(b); } };
+  KAMUS_BAHAN.forEach(k => { if(k.kata.some(kt => n.includes(kt))) tambah(k); });
+  (BUMBU_DASAR[kategori]||[]).forEach(tambah);
+  return hasil.slice(0,6);
+}
+function bangunDeskripsi(nama, kategori){
+  const template = {
+    "Sayuran": `${nama} dimasak segar setiap hari dari sayuran pilihan pasar pagi, diolah dengan bumbu rumahan tanpa pengawet.`,
+    "Ayam & Bebek": `${nama} diolah dari ayam/bebek segar pilihan, dimasak dengan bumbu rempah khas nusantara hingga meresap sempurna.`,
+    "Ikan & Seafood": `${nama} menggunakan hasil laut segar hari ini, diracik dengan bumbu pilihan untuk cita rasa yang gurih dan nikmat.`,
+    "Daging & Telur": `${nama} dimasak dari daging & telur pilihan dengan bumbu rempah tradisional yang diolah hingga empuk dan kaya rasa.`,
+    "Minuman": `${nama} dibuat segar saat dipesan menggunakan bahan alami pilihan, cocok menemani santap siang Anda.`,
+  };
+  return template[kategori] || `${nama} disiapkan segar dengan bahan pilihan terbaik.`;
+}
+
+let kodeDetailAktif = null;
+function bukaDetailMenu(kode){
+  const p = menuProduk[kode];
+  if(!p) return;
+  kodeDetailAktif = kode;
+  closeAllPanels();
+  const fallback = FALLBACK_IMGS[p.kategori] || '';
+  const img = document.getElementById('detailImg');
+  img.src = p.img; img.alt = p.nama;
+  img.onerror = () => { img.onerror = null; img.src = fallback; };
+  document.getElementById('detailKategoriBadge').textContent = p.kategori;
+  document.getElementById('detailKode').textContent = kode + ' · ' + (PORSI_KATEGORI[p.kategori] || '1 porsi');
+  document.getElementById('menuDetailTitle').textContent = p.nama;
+  document.getElementById('detailHarga').textContent = formatRupiah(p.harga);
+  document.getElementById('detailDesk').textContent = bangunDeskripsi(p.nama, p.kategori);
+
+  const komposisi = bangunKomposisi(p.nama, p.kategori);
+  const list = document.getElementById('komposisiList');
+  list.innerHTML = komposisi.map((b,i) => `
+    <li class="komposisi-item" style="--i:${i}">
+      <span class="komposisi-emoji">${b.emoji}</span>
+      <span>${b.label}</span>
+    </li>
+  `).join('');
+
+  const addBtn = document.getElementById('detailAddBtn');
+  if(p.stok <= 0){
+    addBtn.disabled = true; addBtn.textContent = 'Stok Habis';
+  } else {
+    addBtn.disabled = false; addBtn.textContent = '+ Tambah ke Keranjang';
+  }
+
+  const overlay = document.getElementById('menuDetailOverlay');
+  overlay.classList.add('open');
+  fokuskanKeDalamDialog('menuDetailOverlay', '.detail-close');
+  updateMobileCartBarVisibility();
+}
+function tutupDetailMenu(){
+  document.getElementById('menuDetailOverlay').classList.remove('open');
+  kodeDetailAktif = null;
+  updateMobileCartBarVisibility();
+}
+function tambahDariDetail(evt){
+  if(!kodeDetailAktif) return;
+  ubahJumlah(kodeDetailAktif, 1);
+  const p = menuProduk[kodeDetailAktif];
+  const btn = document.getElementById('detailAddBtn');
+  if(btn && p && p.stok >= 0){
+    btn.textContent = '✓ Ditambahkan!';
+    setTimeout(() => { if(document.getElementById('menuDetailOverlay').classList.contains('open')) btn.textContent = '+ Tambah ke Keranjang'; }, 900);
+  }
 }
 
 /* ===== Cart count animation ===== */
@@ -3581,6 +3905,7 @@ document.addEventListener('keydown', (e) => {
     closeReceiptModal();
     closeAdmin();
     closeAkun();
+    tutupDetailMenu();
   }
 });
 
@@ -3602,7 +3927,7 @@ function fokuskanKeDalamDialog(dialogId, opsiSelector){
 }
 
 function getOpenDialogEl(){
-  const ids = ['cartDrawer','checkoutOverlay','receiptOverlay','adminOverlay','akunOverlay'];
+  const ids = ['cartDrawer','checkoutOverlay','receiptOverlay','adminOverlay','akunOverlay','menuDetailOverlay'];
   for(const id of ids){
     const el = document.getElementById(id);
     if(el && el.classList.contains('open')) return el;
