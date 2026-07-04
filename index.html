@@ -831,6 +831,135 @@ footer{
 .modal-admin{ max-width:640px; }
 @media (max-width:680px){ .modal-admin{ max-width:100%; } }
 
+/* Selama panel admin terbuka (baik layar PIN maupun dasbor), latar
+   belakangnya dibuat GELAP & PEKAT (bukan transparan) supaya halaman
+   toko di belakangnya benar-benar tidak terlihat/mengganggu. */
+#adminOverlay{
+  background:
+    radial-gradient(circle at 18% 14%, rgba(201,138,26,0.16), transparent 42%),
+    radial-gradient(circle at 84% 82%, rgba(178,58,29,0.20), transparent 46%),
+    linear-gradient(165deg, #241b13 0%, #2B2117 48%, #1e1710 100%);
+  padding-top: max(20px, calc(env(safe-area-inset-top, 0px) + 12px));
+  padding-bottom: max(20px, calc(env(safe-area-inset-bottom, 0px) + 12px));
+}
+#adminOverlay .modal-admin{ display:none; }
+#adminOverlay.admin-unlocked .modal-admin{ display:block; }
+#adminOverlay.admin-unlocked #adminPinGate{ display:none; }
+
+/* ===== Gerbang PIN Admin — layar mandiri, tidak menampilkan isi toko ===== */
+#adminPinGate{
+  width:100%; max-width:360px;
+  position:relative;
+  text-align:center;
+  color: var(--krem);
+  padding: 38px 30px 30px;
+  border-radius: 26px;
+  background: linear-gradient(155deg, #3a2c1c 0%, #2B2117 75%);
+  border: 1px solid rgba(201,138,26,0.35);
+  box-shadow: 0 24px 70px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.05);
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  max-height: 92vh;
+  animation: pinGateIn .5s var(--ease-bounce) backwards;
+}
+@supports (max-height: 92dvh){
+  #adminPinGate{ max-height: 92dvh; }
+}
+@keyframes pinGateIn{
+  0%{ opacity:0; transform: translateY(18px) scale(.96); }
+  100%{ opacity:1; transform: translateY(0) scale(1); }
+}
+#adminPinGate::before{
+  content:""; position:absolute; top:-60px; right:-60px; width:160px; height:160px;
+  background: radial-gradient(circle, rgba(201,138,26,0.35), transparent 70%);
+  pointer-events:none;
+}
+#adminPinGate::after{
+  content:""; position:absolute; bottom:-70px; left:-50px; width:180px; height:180px;
+  background: radial-gradient(circle, rgba(178,58,29,0.28), transparent 70%);
+  pointer-events:none;
+}
+.admin-pin-close{
+  position:absolute; top:14px; right:14px; z-index:2;
+  width:32px; height:32px; border-radius:50%; border:1px solid rgba(241,228,198,0.25);
+  background: rgba(255,255,255,0.05); color: var(--krem);
+  font-size:14px; cursor:pointer; transition: background .15s ease, transform .15s ease;
+  display:flex; align-items:center; justify-content:center;
+}
+.admin-pin-close:hover{ background: rgba(255,255,255,0.14); transform: rotate(90deg); }
+.admin-pin-close:focus-visible{ outline:2px solid var(--kuning-kunyit); outline-offset:2px; }
+.admin-pin-badge{
+  position:relative; z-index:1;
+  width:64px; height:64px; margin:0 auto 16px;
+  border-radius: 18px;
+  background: linear-gradient(145deg, var(--kuning-kunyit), var(--merah-cabai));
+  display:flex; align-items:center; justify-content:center;
+  font-size:28px;
+  box-shadow: 0 10px 24px rgba(178,58,29,0.4);
+  animation: pinBadgePulse 2.6s ease-in-out infinite;
+}
+@keyframes pinBadgePulse{
+  0%,100%{ box-shadow: 0 10px 24px rgba(178,58,29,0.4); }
+  50%{ box-shadow: 0 10px 30px rgba(201,138,26,0.55); }
+}
+#adminPinGate h2{ position:relative; z-index:1; font-size:21px; margin-bottom:6px; color:var(--krem); }
+.admin-pin-sub{ position:relative; z-index:1; font-size:12.5px; color:#C9BFA6; margin-bottom:22px; line-height:1.5; }
+
+.admin-pin-dots{ position:relative; z-index:1; display:flex; justify-content:center; gap:12px; margin-bottom:22px; }
+.admin-pin-dot{
+  width:15px; height:15px; border-radius:50%;
+  border:1.5px solid rgba(241,228,198,0.4); background:transparent;
+  transition: all .15s var(--ease-bounce);
+}
+.admin-pin-dot.filled{ background: var(--kuning-kunyit); border-color: var(--kuning-kunyit); transform:scale(1.1); }
+.admin-pin-dot.wrong{ background: var(--merah-cabai); border-color: var(--merah-cabai); }
+#adminPinGate.shake .admin-pin-dots{ animation: pinShake .4s ease; }
+@keyframes pinShake{
+  0%,100%{ transform: translateX(0); }
+  20%{ transform: translateX(-9px); }
+  40%{ transform: translateX(8px); }
+  60%{ transform: translateX(-6px); }
+  80%{ transform: translateX(4px); }
+}
+
+.admin-pin-input{
+  position:absolute; opacity:0; pointer-events:none; height:1px; width:1px;
+}
+.admin-pin-keypad{
+  position:relative; z-index:1;
+  display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; margin-bottom:8px;
+}
+.admin-pin-key{
+  padding:14px 0; border-radius: 14px; border:1px solid rgba(241,228,198,0.18);
+  background: rgba(255,255,255,0.05); color: var(--krem);
+  font-family:'Space Mono',monospace; font-size:18px; font-weight:700; cursor:pointer;
+  transition: background .12s ease, transform .1s ease;
+}
+.admin-pin-key:hover{ background: rgba(255,255,255,0.12); }
+.admin-pin-key:active{ transform: scale(0.94); background: var(--kuning-kunyit); color:var(--hijau-tua); }
+.admin-pin-key:focus-visible{ outline:2px solid var(--kuning-kunyit); outline-offset:2px; }
+.admin-pin-key.admin-pin-key-ghost{ background:transparent; border-color:transparent; color:#8a7a5f; font-size:13px; }
+.admin-pin-key.admin-pin-key-ghost:hover{ background: rgba(255,255,255,0.06); color:var(--krem); }
+
+.admin-pin-msg{
+  position:relative; z-index:1; min-height:18px; font-size:12.5px; font-weight:600;
+  color: var(--merah-cabai); margin: 10px 0 4px;
+}
+.admin-pin-submit{
+  position:relative; z-index:1; width:100%; margin-top:6px;
+  border:none; border-radius: 4px 14px 4px 14px; padding:14px;
+  font-family:'Inter',sans-serif; font-weight:700; font-size:14.5px; cursor:pointer;
+  color: var(--hijau-tua);
+  background: linear-gradient(100deg, var(--kuning-kunyit), #e0a83a 50%, var(--kuning-kunyit));
+  transition: transform .15s ease, box-shadow .15s ease;
+  box-shadow: 0 8px 20px rgba(201,138,26,0.3);
+}
+.admin-pin-submit:hover{ transform: translateY(-2px); box-shadow: 0 12px 26px rgba(201,138,26,0.4); }
+.admin-pin-submit:active{ transform: translateY(0); }
+.admin-pin-submit:focus-visible{ outline:2px solid var(--krem); outline-offset:2px; }
+.admin-pin-hint{ position:relative; z-index:1; font-size:11px; color:#8a7a5f; margin-top:10px; }
+
 .admin-head{
   display:flex; justify-content:space-between; align-items:flex-start; gap:12px;
   position: sticky; top: -26px; z-index: 5;
@@ -1041,11 +1170,50 @@ footer{
   .receipt{ padding:22px 16px; font-size:11.5px; }
   .status-grid{ grid-template-columns:1fr; }
   footer{ padding:24px 16px 100px; font-size:11.5px; }
+
+  /* ===== Gerbang PIN Admin — versi HP ===== */
+  #adminOverlay{ padding-left:12px; padding-right:12px; }
+  #adminPinGate{
+    max-width:100%;
+    padding: 30px 20px 22px;
+    border-radius: 22px;
+  }
+  .admin-pin-close{ top:10px; right:10px; width:30px; height:30px; font-size:13px; }
+  .admin-pin-badge{ width:54px; height:54px; font-size:24px; margin-bottom:12px; border-radius:15px; }
+  #adminPinGate h2{ font-size:19px; }
+  .admin-pin-sub{ font-size:12px; margin-bottom:18px; padding:0 4px; }
+  .admin-pin-dots{ gap:9px; margin-bottom:16px; }
+  .admin-pin-dot{ width:13px; height:13px; }
+  .admin-pin-keypad{ gap:8px; }
+  .admin-pin-key{ padding:14px 0; font-size:17px; border-radius:12px; }
+  .admin-pin-msg{ font-size:12px; }
+  .admin-pin-submit{ padding:13px; font-size:14px; }
+  .admin-pin-hint{ font-size:10.5px; }
+}
+
+/* Layar pendek (mis. HP dalam orientasi landscape / browser chrome
+   yang memakan banyak ruang) — rapatkan jarak vertikal supaya keypad
+   & tombol Masuk tidak perlu discroll untuk terlihat. */
+@media (max-height: 700px) and (max-width: 480px){
+  #adminPinGate{ padding: 20px 18px 16px; }
+  .admin-pin-badge{ width:44px; height:44px; font-size:19px; margin-bottom:8px; }
+  #adminPinGate h2{ font-size:17px; margin-bottom:4px; }
+  .admin-pin-sub{ font-size:11.5px; margin-bottom:12px; }
+  .admin-pin-dots{ margin-bottom:12px; gap:7px; }
+  .admin-pin-dot{ width:11px; height:11px; }
+  .admin-pin-keypad{ gap:6px; margin-bottom:4px; }
+  .admin-pin-key{ padding:10px 0; font-size:15px; border-radius:10px; }
+  .admin-pin-msg{ min-height:14px; margin:6px 0 2px; }
+  .admin-pin-submit{ padding:11px; margin-top:2px; }
+  .admin-pin-hint{ margin-top:6px; }
 }
 
 @media (max-width: 360px){
   .grid{ grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap:10px; }
   .brand-text .sub{ display:none; }
+  #adminPinGate{ padding: 24px 14px 18px; }
+  .admin-pin-keypad{ gap:6px; }
+  .admin-pin-key{ font-size:16px; padding:12px 0; }
 }
 
 /* ============================================================
@@ -1481,6 +1649,48 @@ main, footer{ position:relative; z-index:1; }
 
 <!-- ===== Admin modal ===== -->
 <div class="modal-overlay" id="adminOverlay" role="dialog" aria-modal="true" aria-labelledby="adminTitle">
+
+  <!-- ===== Gerbang PIN — tampil sendirian, TANPA halaman toko di belakangnya ===== -->
+  <div class="admin-pin-gate" id="adminPinGate" role="dialog" aria-modal="true" aria-labelledby="adminPinTitle">
+    <button class="admin-pin-close" onclick="closeAdmin()" aria-label="Batal, tutup panel admin">✕</button>
+    <div class="admin-pin-badge" aria-hidden="true">🔐</div>
+    <h2 id="adminPinTitle">Admin Panel</h2>
+    <p class="admin-pin-sub">Masukkan PIN untuk masuk ke dasbor dapur &amp; kasir</p>
+
+    <div class="admin-pin-dots" id="adminPinDots" aria-hidden="true"></div>
+
+    <input
+      type="tel"
+      id="adminPinInput"
+      class="admin-pin-input"
+      inputmode="numeric"
+      autocomplete="off"
+      maxlength="8"
+      aria-label="PIN Admin"
+      oninput="onAdminPinInput(this.value)"
+      onkeydown="if(event.key==='Enter'){ event.preventDefault(); cobaSubmitPinAdmin(); }"
+    >
+
+    <div class="admin-pin-msg" id="adminPinMsg" role="status" aria-live="polite"></div>
+
+    <div class="admin-pin-keypad" id="adminPinKeypad" role="group" aria-label="Papan angka PIN">
+      <button type="button" class="admin-pin-key" onclick="adminPinPress('1')">1</button>
+      <button type="button" class="admin-pin-key" onclick="adminPinPress('2')">2</button>
+      <button type="button" class="admin-pin-key" onclick="adminPinPress('3')">3</button>
+      <button type="button" class="admin-pin-key" onclick="adminPinPress('4')">4</button>
+      <button type="button" class="admin-pin-key" onclick="adminPinPress('5')">5</button>
+      <button type="button" class="admin-pin-key" onclick="adminPinPress('6')">6</button>
+      <button type="button" class="admin-pin-key" onclick="adminPinPress('7')">7</button>
+      <button type="button" class="admin-pin-key" onclick="adminPinPress('8')">8</button>
+      <button type="button" class="admin-pin-key" onclick="adminPinPress('9')">9</button>
+      <button type="button" class="admin-pin-key admin-pin-key-ghost" onclick="adminPinClear()">Hapus</button>
+      <button type="button" class="admin-pin-key" onclick="adminPinPress('0')">0</button>
+      <button type="button" class="admin-pin-key admin-pin-key-ghost" onclick="adminPinBackspace()" aria-label="Hapus satu digit">⌫</button>
+    </div>
+    <button type="button" class="admin-pin-submit" onclick="cobaSubmitPinAdmin()">Masuk →</button>
+    <div class="admin-pin-hint">PIN hanya proteksi dasar di browser ini.</div>
+  </div>
+
   <div class="modal modal-admin">
     <div class="admin-head">
       <div>
@@ -2892,6 +3102,8 @@ let adminSelectedStatus = null;
 let adminUnlocked = false; // sengaja TIDAK disimpan ke localStorage — harus buka kunci ulang tiap sesi/refresh
 let adminGagalCount = 0;
 let adminLockUntil = 0;
+let adminPinBuffer = '';       // digit PIN yang sedang diketik di gerbang PIN
+let adminPinLockInterval = null; // interval hitung mundur saat gerbang terkunci sementara
 const ADMIN_PIN_KEY = 'dapurIndraprasta_adminPin';
 const ADMIN_PIN_DEFAULT = "1234"; // PIN bawaan — segera ganti lewat "Keamanan & Data" di Admin Panel
 const ADMIN_MAX_PERCOBAAN = 3;
@@ -2911,36 +3123,158 @@ function getAdminPin(){
   }
 }
 
+/* Membuka panel admin. Kalau belum pernah buka kunci di sesi ini, yang
+   ditampilkan HANYA gerbang PIN bergaya sendiri (bukan prompt() bawaan
+   browser, dan bukan halaman toko) — dasbor admin baru dirender setelah
+   PIN benar, lewat lanjutkanBukaDashboardAdmin(). */
 function openAdmin(){
-  if(!adminUnlocked){
-    if(Date.now() < adminLockUntil){
-      const sisaDetik = Math.ceil((adminLockUntil - Date.now())/1000);
-      showToast(`⛔ Terlalu banyak percobaan salah. Coba lagi ${sisaDetik} detik lagi.`);
-      return;
-    }
-    const pin = prompt("Masukkan PIN Admin:");
-    if(pin === null) return; // dibatalkan
-    if(pin !== getAdminPin()){
-      adminGagalCount++;
-      if(adminGagalCount >= ADMIN_MAX_PERCOBAAN){
-        adminLockUntil = Date.now() + ADMIN_LOCK_MS;
-        adminGagalCount = 0;
-        showToast(`⛔ ${ADMIN_MAX_PERCOBAAN}x PIN salah — panel admin dikunci sementara (30 detik)`);
-      } else {
-        showToast(`⚠️ PIN salah (percobaan ${adminGagalCount}/${ADMIN_MAX_PERCOBAAN})`);
-      }
-      return;
-    }
-    adminGagalCount = 0;
-    adminUnlocked = true;
+  const overlay = document.getElementById('adminOverlay');
+  overlay.classList.add('open');
+
+  if(adminUnlocked){
+    overlay.classList.add('admin-unlocked');
+    lanjutkanBukaDashboardAdmin();
+    return;
   }
+
+  overlay.classList.remove('admin-unlocked');
+  adminPinBuffer = '';
+  syncAdminPinInput();
+  tampilkanPesanPinGate('', false);
+
+  if(Date.now() < adminLockUntil){
+    mulaiKunciAdminCountdown();
+  } else if(adminPinLockInterval){
+    clearInterval(adminPinLockInterval);
+    adminPinLockInterval = null;
+  }
+
+  fokuskanKeDalamDialog('adminOverlay', '#adminPinInput');
+  updateMobileCartBarVisibility();
+}
+
+/* Merender titik-titik indikator PIN. Minimal 4 slot ditampilkan
+   (selayaknya PIN pada umumnya), tapi ikut memanjang kalau PIN yang
+   diketik lebih dari 4 digit. */
+function renderAdminPinDots(){
+  const wrap = document.getElementById('adminPinDots');
+  if(!wrap) return;
+  const total = Math.max(4, adminPinBuffer.length);
+  wrap.innerHTML = Array.from({length: total}).map((_, i) =>
+    `<span class="admin-pin-dot ${i < adminPinBuffer.length ? 'filled' : ''}"></span>`
+  ).join('');
+}
+
+function syncAdminPinInput(){
+  const inp = document.getElementById('adminPinInput');
+  if(inp) inp.value = adminPinBuffer;
+  renderAdminPinDots();
+}
+
+/* Dipanggil saat pengguna mengetik langsung lewat keyboard fisik
+   (input tersembunyi tetap ada supaya tetap bisa diketik, bukan hanya
+   lewat keypad sentuh). */
+function onAdminPinInput(val){
+  adminPinBuffer = String(val || '').replace(/[^0-9]/g, '').slice(0, 8);
+  syncAdminPinInput();
+  tampilkanPesanPinGate('', false);
+}
+
+function adminPinPress(digit){
+  if(Date.now() < adminLockUntil) return;
+  if(adminPinBuffer.length >= 8) return;
+  adminPinBuffer += digit;
+  syncAdminPinInput();
+  tampilkanPesanPinGate('', false);
+}
+function adminPinBackspace(){
+  adminPinBuffer = adminPinBuffer.slice(0, -1);
+  syncAdminPinInput();
+}
+function adminPinClear(){
+  adminPinBuffer = '';
+  syncAdminPinInput();
+}
+
+function tampilkanPesanPinGate(teks, sukses){
+  const el = document.getElementById('adminPinMsg');
+  if(!el) return;
+  el.textContent = teks;
+  el.style.color = sukses ? 'var(--kuning-kunyit)' : 'var(--merah-cabai)';
+}
+
+function adminPinTandaiSalah(){
+  const gate = document.getElementById('adminPinGate');
+  if(!gate) return;
+  gate.classList.remove('shake');
+  void gate.offsetWidth; // paksa reflow supaya animasi bisa diputar ulang
+  gate.classList.add('shake');
+  document.querySelectorAll('#adminPinDots .admin-pin-dot.filled').forEach(d => d.classList.add('wrong'));
+  setTimeout(() => gate.classList.remove('shake'), 420);
+}
+
+function tampilkanSisaKunciAdmin(){
+  const sisaDetik = Math.max(0, Math.ceil((adminLockUntil - Date.now()) / 1000));
+  tampilkanPesanPinGate(`⛔ Terlalu banyak percobaan salah. Coba lagi ${sisaDetik} detik lagi.`, false);
+}
+function mulaiKunciAdminCountdown(){
+  tampilkanSisaKunciAdmin();
+  if(adminPinLockInterval) clearInterval(adminPinLockInterval);
+  adminPinLockInterval = setInterval(() => {
+    if(Date.now() >= adminLockUntil){
+      clearInterval(adminPinLockInterval);
+      adminPinLockInterval = null;
+      tampilkanPesanPinGate('', false);
+      return;
+    }
+    tampilkanSisaKunciAdmin();
+  }, 500);
+}
+
+/* Dipanggil saat tombol "Masuk" ditekan atau Enter ditekan di kolom PIN. */
+function cobaSubmitPinAdmin(){
+  if(Date.now() < adminLockUntil){
+    tampilkanSisaKunciAdmin();
+    return;
+  }
+  if(adminPinBuffer.length < 4){
+    tampilkanPesanPinGate('Masukkan minimal 4 digit PIN.', false);
+    return;
+  }
+  if(adminPinBuffer !== getAdminPin()){
+    adminGagalCount++;
+    adminPinTandaiSalah();
+    if(adminGagalCount >= ADMIN_MAX_PERCOBAAN){
+      adminLockUntil = Date.now() + ADMIN_LOCK_MS;
+      adminGagalCount = 0;
+      mulaiKunciAdminCountdown();
+    } else {
+      tampilkanPesanPinGate(`⚠️ PIN salah (percobaan ${adminGagalCount}/${ADMIN_MAX_PERCOBAAN})`, false);
+    }
+    setTimeout(() => { adminPinBuffer = ''; syncAdminPinInput(); }, 260);
+    return;
+  }
+  adminGagalCount = 0;
+  adminUnlocked = true;
+  adminPinBuffer = '';
+  tampilkanPesanPinGate('✓ PIN benar — membuka dasbor...', true);
+  setTimeout(masukKeAdminSetelahPin, 220);
+}
+
+function masukKeAdminSetelahPin(){
+  document.getElementById('adminOverlay').classList.add('admin-unlocked');
+  lanjutkanBukaDashboardAdmin();
+}
+
+/* Merender isi dasbor admin sesungguhnya — HANYA dipanggil setelah PIN
+   terverifikasi benar (atau kalau sesi ini sudah pernah buka kunci). */
+function lanjutkanBukaDashboardAdmin(){
   renderAdminStats();
   renderAdminPesananSelect();
   renderAdminMenuList();
   renderAdminPromoList();
   document.getElementById('pajakPersenInput').value = PAJAK_PERSEN;
   switchAdminTab('ringkasan');
-  document.getElementById('adminOverlay').classList.add('open');
   fokuskanKeDalamDialog('adminOverlay', '.drawer-close');
   updateMobileCartBarVisibility();
 }
@@ -2985,6 +3319,11 @@ function ubahPinAdmin(){
 }
 function closeAdmin(){
   document.getElementById('adminOverlay').classList.remove('open');
+  document.getElementById('adminOverlay').classList.remove('admin-unlocked');
+  if(adminPinLockInterval){ clearInterval(adminPinLockInterval); adminPinLockInterval = null; }
+  adminPinBuffer = '';
+  syncAdminPinInput();
+  tampilkanPesanPinGate('', false);
   adminSelectedPesanan = null;
   adminSelectedStatus = null;
   updateMobileCartBarVisibility();
