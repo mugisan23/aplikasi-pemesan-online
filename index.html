@@ -78,8 +78,25 @@ h1,h2,h3,.display{
   flex-shrink:0;
 }
 .brand-text{ line-height:1.1; }
-.brand-text .nama{ font-family:'Bricolage Grotesque',sans-serif; font-weight:700; font-size: clamp(15px, 3.6vw, 19px); letter-spacing: -0.01em; }
+.brand-text .nama{
+  font-family:'Bricolage Grotesque',sans-serif; font-weight:700; font-size: clamp(15px, 3.6vw, 19px); letter-spacing: -0.01em;
+  display:inline-block;
+  background: linear-gradient(100deg, var(--hijau-tua) 42%, var(--kuning-kunyit) 50%, var(--hijau-tua) 58%);
+  background-size: 260% 100%;
+  background-position: 200% 0;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: brandShine 5.5s ease-in-out infinite, brandPop .6s var(--ease-bounce) backwards .2s;
+}
 .brand-text .sub{ font-size:11px; color:var(--abu); letter-spacing:0.04em; text-transform:uppercase; }
+@keyframes brandShine{
+  0%, 12%{ background-position: 200% 0; }
+  55%, 100%{ background-position: -60% 0; }
+}
+@keyframes brandPop{
+  0%{ transform: scale(.85); opacity:0; }
+  60%{ transform: scale(1.04); opacity:1; }
+  100%{ transform: scale(1); }
+}
 
 
 .cart-btn{
@@ -1056,6 +1073,7 @@ main, footer{ position:relative; z-index:1; }
 
 @media (prefers-reduced-motion: reduce){
   .bg-particles, .hero-visual::before, .scroll-top.visible{ animation:none !important; }
+  .brand-text .nama{ animation:none !important; background-position:0 0 !important; }
 }
 
 </style>
