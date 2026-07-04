@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dapur Indraprasta — Pesan Online</title>
-<meta name="description" content="Pesan makanan rumahan segar dari Dapur Indraprasta — sayur, ayam, ikan, dan lauk pilihan, siap diantar atau diambil hari ini.">
+<title>Warung Ku Digital by Kelompok 8 — Pesan Online</title>
+<meta name="description" content="Pesan makanan rumahan segar dari Warung Ku Digital by Kelompok 8 — sayur, ayam, ikan, dan lauk pilihan, siap diantar atau diambil hari ini.">
 <meta name="robots" content="index, follow">
-<meta property="og:title" content="Dapur Indraprasta — Pesan Online">
+<meta property="og:title" content="Warung Ku Digital by Kelompok 8 — Pesan Online">
 <meta property="og:description" content="Pesan makanan rumahan segar — sayur, ayam, ikan, dan lauk pilihan, siap diantar atau diambil hari ini.">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🍲%3C/text%3E%3C/svg%3E">
@@ -499,6 +499,32 @@ h1,h2,h3,.display{
 .history-card .status.batal{ background:#FBE4E0; color:var(--merah-cabai-gelap); }
 .history-card .meta{ font-size:12px; color:var(--abu); display:flex; justify-content:space-between; }
 
+/* ===== Progress tracker pesanan (stepper visual) ===== */
+.order-stepper{ display:flex; align-items:flex-start; margin:14px 0; padding:2px; }
+.order-stepper .step{ display:flex; flex-direction:column; align-items:center; gap:6px; flex:0 0 auto; width:58px; }
+.order-stepper .step-dot{
+  width:24px; height:24px; border-radius:50%; background:var(--krem-kartu); border:2px solid var(--garis);
+  display:flex; align-items:center; justify-content:center; font-size:10.5px; font-weight:700; color:var(--abu);
+  transition: all .3s ease; flex-shrink:0;
+}
+.order-stepper .step.done .step-dot{ background:var(--hijau-daun); border-color:var(--hijau-daun); color:#fff; }
+.order-stepper .step.active .step-dot{ background:var(--kuning-kunyit); border-color:var(--kuning-kunyit); color:#fff; box-shadow:0 0 0 4px rgba(201,138,26,0.18); }
+.order-stepper .step-lbl{ font-size:9.5px; text-align:center; color:var(--abu); font-weight:600; line-height:1.2; }
+.order-stepper .step.done .step-lbl, .order-stepper .step.active .step-lbl{ color:var(--hijau-tua); }
+.order-stepper .step-connector{ flex:1 1 auto; height:2px; background:var(--garis); margin-top:11px; }
+.order-stepper .step-connector.done{ background:var(--hijau-daun); }
+.order-stepper.cancelled{ display:flex; align-items:center; gap:10px; justify-content:center; padding:9px 10px; background:#FBE4E0; border-radius:8px; margin:14px 0; }
+.order-stepper.cancelled .stepper-cancel-icon{ width:22px; height:22px; border-radius:50%; background:var(--merah-cabai); color:#fff; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0; }
+.order-stepper.cancelled .stepper-cancel-text{ font-size:12px; font-weight:700; color:var(--merah-cabai-gelap); }
+.history-card .order-stepper{ margin:10px 0 4px; cursor:default; }
+
+/* ===== Grafik tren penjualan (Admin) ===== */
+.trend-chart-wrap svg{ overflow:visible; }
+.trend-bar-group rect{ transition: opacity .15s ease; }
+.trend-bar-group:hover rect{ opacity:1 !important; }
+.trend-chart-legend{ display:flex; justify-content:space-between; margin-top:8px; font-size:11px; color:var(--abu); }
+.trend-chart-legend strong{ font-family:'Space Mono',monospace; }
+
 /* ===== Toast ===== */
 .toast{
   position:fixed; bottom:24px; left:50%; transform: translateX(-50%) translateY(20px);
@@ -952,13 +978,12 @@ main, footer{ position:relative; z-index:1; }
   <div class="brand">
     <div class="brand-mark">DI</div>
     <div class="brand-text">
-      <div class="nama">Dapur Indraprasta</div>
+      <div class="nama">Warung Ku Digital by Kelompok 8</div>
       <div class="sub" id="brandSub">Pesan Online</div>
     </div>
   </div>
   <div style="display:flex; gap:8px; align-items:center;">
-    <button class="btn-ghost" style="padding:9px 14px; font-size:13px;" onclick="openProfil()" aria-label="Profil Saya">👤 <span class="btn-txt">Profil</span></button>
-    <button class="btn-ghost" style="padding:9px 14px; font-size:13px; position:relative;" onclick="openHistory()" aria-label="Riwayat Pesanan">🧾 <span class="btn-txt">Riwayat</span><span id="historyDot" class="notif-dot" style="display:none;"></span></button>
+    <button class="btn-ghost" style="padding:9px 14px; font-size:13px; position:relative;" onclick="openAkun('profil')" aria-label="Akun Saya">👤 <span class="btn-txt">Akun</span><span id="historyDot" class="notif-dot" style="display:none;"></span></button>
     <button class="btn-ghost" style="padding:9px 14px; font-size:13px;" onclick="openAdmin()" aria-label="Admin Panel">⚙️ <span class="btn-txt">Admin</span></button>
     <button class="cart-btn" onclick="openCart()" aria-label="Buka keranjang">
       🧺 <span id="cartCount">0</span>
@@ -976,7 +1001,7 @@ main, footer{ position:relative; z-index:1; }
     <p>Lima puluh menu dari dapur Nusantara — sayur, ayam, ikan, daging, sampai minuman segar. Pilih, masukkan keranjang, dan bayar saat checkout.</p>
     <div class="hero-actions">
       <button class="btn-primary" onclick="scrollToMenu()">Lihat Menu</button>
-      <button class="btn-ghost" onclick="openHistory()">Cek Riwayat Pesanan</button>
+      <button class="btn-ghost" onclick="openAkun('riwayat')">Cek Riwayat Pesanan</button>
     </div>
     <div class="hero-stats">
       <div><div class="num">50</div><div class="lbl">Menu pilihan</div></div>
@@ -1047,7 +1072,7 @@ main, footer{ position:relative; z-index:1; }
 <div class="menu-wrap" id="menuWrap"></div>
 
 <footer>
-  Dapur Indraprasta — Program Studi Bisnis Digital · Universitas Indraprasta PGRI<br>
+  Warung Ku Digital by Kelompok 8 — Program Studi Bisnis Digital · Universitas Indraprasta PGRI<br>
   Harga sudah termasuk pajak. Diskon 5% untuk belanja ≥ Rp 50.000, 10% untuk ≥ Rp 100.000.
 </footer>
 
@@ -1063,18 +1088,6 @@ main, footer{ position:relative; z-index:1; }
   </div>
   <div class="drawer-body" id="cartBody"></div>
   <div class="drawer-foot" id="cartFoot"></div>
-</aside>
-
-<!-- ===== History drawer (reuse modal style as side panel) ===== -->
-<aside class="drawer" id="historyDrawer" role="dialog" aria-modal="true" aria-label="Riwayat pesanan">
-  <div class="drawer-head">
-    <h2>Riwayat Pesanan</h2>
-    <button class="drawer-close" onclick="closeAllPanels()" aria-label="Tutup riwayat">✕</button>
-  </div>
-  <div style="padding:0 22px;">
-    <button class="btn-ghost" style="width:100%; padding:9px; font-size:12px; margin-bottom:4px;" onclick="mintaIzinNotifikasi()">🔔 Aktifkan Notifikasi Perubahan Status</button>
-  </div>
-  <div class="drawer-body" id="historyBody"></div>
 </aside>
 
 <!-- ===== Checkout modal ===== -->
@@ -1137,31 +1150,52 @@ main, footer{ position:relative; z-index:1; }
   </div>
 </div>
 
-<!-- ===== Profil Saya modal ===== -->
-<div class="modal-overlay" id="profilOverlay" role="dialog" aria-modal="true" aria-labelledby="profilTitle">
-  <div class="modal">
-    <h2 id="profilTitle">👤 Profil Saya</h2>
-    <div style="font-size:12px; color:var(--abu); margin-bottom:14px; line-height:1.5;">
-      Data ini disimpan di browser ini saja untuk mengisi otomatis form checkout — bukan akun/login sungguhan dan tidak tersinkron ke perangkat lain. Kamu bisa menyimpan lebih dari satu profil (mis. untuk anggota keluarga berbeda) dan beralih di antaranya.
+<!-- ===== Akun Saya modal (gabungan Profil + Riwayat) ===== -->
+<div class="modal-overlay" id="akunOverlay" role="dialog" aria-modal="true" aria-labelledby="akunTitle">
+  <div class="modal modal-admin">
+    <div class="admin-head">
+      <div>
+        <h2 id="akunTitle">👤 Akun Saya</h2>
+        <div class="admin-head-sub">Profil &amp; riwayat pesanan kamu</div>
+      </div>
+      <button class="drawer-close" onclick="closeAkun()" aria-label="Tutup akun saya">✕</button>
     </div>
-    <div class="field">
-      <label>Profil Tersimpan</label>
-      <div class="profil-list" id="profilList"></div>
+
+    <div class="admin-tabs" role="tablist">
+      <button class="admin-tab active" data-akun-tab="profil" onclick="switchAkunTab('profil')" role="tab" aria-selected="true">👤 Profil</button>
+      <button class="admin-tab" data-akun-tab="riwayat" onclick="switchAkunTab('riwayat')" role="tab" aria-selected="false">🧾 Riwayat</button>
     </div>
-    <div class="field">
-      <label for="profilNama">Nama</label>
-      <input type="text" id="profilNama" placeholder="Nama Anda">
+
+    <!-- ===== Tab: Profil ===== -->
+    <div class="admin-tab-content active" id="akunTab-profil" role="tabpanel">
+      <div style="font-size:12px; color:var(--abu); margin-bottom:14px; line-height:1.5;">
+        Data ini disimpan di browser ini saja untuk mengisi otomatis form checkout — bukan akun/login sungguhan dan tidak tersinkron ke perangkat lain. Kamu bisa menyimpan lebih dari satu profil (mis. untuk anggota keluarga berbeda) dan beralih di antaranya.
+      </div>
+      <div class="field">
+        <label>Profil Tersimpan</label>
+        <div class="profil-list" id="profilList"></div>
+      </div>
+      <div class="field">
+        <label for="profilNama">Nama</label>
+        <input type="text" id="profilNama" placeholder="Nama Anda">
+      </div>
+      <div class="field">
+        <label for="profilHp">Nomor HP</label>
+        <input type="tel" id="profilHp" placeholder="08xx-xxxx-xxxx" inputmode="numeric">
+      </div>
+      <div class="field">
+        <label for="profilAlamat">Alamat Default</label>
+        <textarea id="profilAlamat" placeholder="Alamat pengantaran yang sering dipakai"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-primary" onclick="simpanProfilManual()">Simpan</button>
+      </div>
     </div>
-    <div class="field">
-      <label for="profilHp">Nomor HP</label>
-      <input type="tel" id="profilHp" placeholder="08xx-xxxx-xxxx" inputmode="numeric">
-    </div>
-    <div class="field">
-      <label for="profilAlamat">Alamat Default</label>
-      <textarea id="profilAlamat" placeholder="Alamat pengantaran yang sering dipakai"></textarea>
-    </div>
-    <div class="modal-actions">
-      <button class="btn-primary" onclick="simpanProfilManual()">Simpan</button>
+
+    <!-- ===== Tab: Riwayat ===== -->
+    <div class="admin-tab-content" id="akunTab-riwayat" role="tabpanel">
+      <button class="btn-ghost" style="width:100%; padding:9px; font-size:12px; margin-bottom:14px;" onclick="mintaIzinNotifikasi()">🔔 Aktifkan Notifikasi Perubahan Status</button>
+      <div id="historyBody"></div>
     </div>
   </div>
 </div>
@@ -1172,7 +1206,7 @@ main, footer{ position:relative; z-index:1; }
     <div class="admin-head">
       <div>
         <h2 id="adminTitle">⚙️ Admin Panel</h2>
-        <div class="admin-head-sub">Dapur Indraprasta — kasir &amp; dapur</div>
+        <div class="admin-head-sub">Warung Ku Digital by Kelompok 8 — kasir &amp; dapur</div>
       </div>
       <button class="drawer-close" onclick="closeAdmin()" aria-label="Tutup admin panel">✕</button>
     </div>
@@ -1187,6 +1221,11 @@ main, footer{ position:relative; z-index:1; }
     <!-- ===== Tab: Ringkasan ===== -->
     <div class="admin-tab-content active" id="adminTab-ringkasan" role="tabpanel">
       <div id="adminStats" class="admin-stat-grid"></div>
+
+      <div class="admin-panel-box">
+        <div class="admin-panel-box-title">📊 Tren Penjualan 7 Hari Terakhir</div>
+        <div id="adminTrendChart" class="trend-chart-wrap"></div>
+      </div>
 
       <div class="admin-panel-box">
         <div class="admin-panel-box-title">🔥 Menu Terlaris Hari Ini</div>
@@ -1597,6 +1636,18 @@ function getCartItems(){
 function getCartTotal(){
   return getCartItems().reduce((s,i)=>s+i.subtotal,0);
 }
+/* Bar "Lihat Keranjang" di bawah layar hanya boleh tampil kalau keranjang
+   berisi DAN tidak ada drawer/modal lain yang sedang terbuka — supaya
+   bar ini tidak menghalangi/menumpuk dengan drawer keranjang, modal
+   checkout, struk, admin, atau profil yang sedang aktif. */
+function updateMobileCartBarVisibility(){
+  const mobileBar = document.getElementById('mobileCartBar');
+  if(!mobileBar) return;
+  const adaItem = Object.keys(keranjang).length > 0;
+  const adaDialogTerbuka = !!getOpenDialogEl();
+  mobileBar.classList.toggle('visible', adaItem && !adaDialogTerbuka);
+}
+
 function updateCartUI(){
   const items = getCartItems();
   const totalQty = items.reduce((s,i)=>s+i.jumlah,0);
@@ -1610,7 +1661,7 @@ function updateCartUI(){
   if(items.length === 0){
     body.innerHTML = `<div class="drawer-empty"><div class="icon">🧺</div>Keranjang Anda masih kosong.<br>Yuk pilih menu favorit!</div>`;
     foot.innerHTML = `<button class="checkout-btn" disabled>Keranjang Kosong</button>`;
-    if(mobileBar) mobileBar.classList.remove('visible');
+    updateMobileCartBarVisibility();
     return;
   }
 
@@ -1657,8 +1708,8 @@ function updateCartUI(){
   if(mobileBar){
     document.getElementById('mcbQty').textContent = totalQty;
     document.getElementById('mcbTotal').textContent = formatRupiah(bayar);
-    mobileBar.classList.add('visible');
   }
+  updateMobileCartBarVisibility();
 }
 function hapusItem(kode){
   delete keranjang[kode];
@@ -1682,17 +1733,44 @@ function openCart(){
   closeAllPanels();
   document.getElementById('overlay').classList.add('open');
   document.getElementById('cartDrawer').classList.add('open');
+  fokuskanKeDalamDialog('cartDrawer');
+  updateMobileCartBarVisibility();
 }
-function openHistory(){
+/* Buka modal "Akun Saya" (gabungan Profil + Riwayat) langsung ke tab tertentu */
+function openAkun(tab){
+  const list = loadProfilList();
+  const activeId = getActiveProfilId();
+  const profil = list.find(p => p.id === activeId) || null;
+  renderPilihanProfil(activeId);
+  isiFormDariProfil(profil);
   closeAllPanels();
-  renderHistory();
-  document.getElementById('overlay').classList.add('open');
-  document.getElementById('historyDrawer').classList.add('open');
-  // Tandai semua pesanan sebagai sudah dilihat, sembunyikan titik notifikasi
-  let ada = false;
-  daftarPesanan.forEach(p => { if(p.dilihatPelanggan === false){ p.dilihatPelanggan = true; ada = true; } });
-  if(ada) saveState();
-  updateHistoryDot();
+  document.getElementById('akunOverlay').classList.add('open');
+  switchAkunTab(tab || 'profil');
+  fokuskanKeDalamDialog('akunOverlay');
+  updateMobileCartBarVisibility();
+}
+function switchAkunTab(tab){
+  document.querySelectorAll('#akunOverlay .admin-tab').forEach(b => {
+    const aktif = b.dataset.akunTab === tab;
+    b.classList.toggle('active', aktif);
+    b.setAttribute('aria-selected', String(aktif));
+  });
+  document.querySelectorAll('#akunOverlay .admin-tab-content').forEach(c => {
+    c.classList.toggle('active', c.id === 'akunTab-' + tab);
+  });
+  if(tab === 'riwayat'){
+    renderHistory();
+    // Tandai semua pesanan sebagai sudah dilihat, sembunyikan titik notifikasi
+    let ada = false;
+    daftarPesanan.forEach(p => { if(p.dilihatPelanggan === false){ p.dilihatPelanggan = true; ada = true; } });
+    if(ada) saveState();
+    updateHistoryDot();
+  }
+}
+function closeAkun(){
+  const el = document.getElementById('akunOverlay');
+  if(el) el.classList.remove('open');
+  updateMobileCartBarVisibility();
 }
 function updateHistoryDot(){
   const dot = document.getElementById('historyDot');
@@ -1703,7 +1781,7 @@ function updateHistoryDot(){
 function closeAllPanels(){
   document.getElementById('overlay').classList.remove('open');
   document.getElementById('cartDrawer').classList.remove('open');
-  document.getElementById('historyDrawer').classList.remove('open');
+  updateMobileCartBarVisibility();
 }
 
 /* ===== Checkout modal ===== */
@@ -1731,6 +1809,8 @@ function openCheckoutModal(){
   updateAlamatVisibility();
   renderCheckoutSummary();
   document.getElementById('checkoutOverlay').classList.add('open');
+  fokuskanKeDalamDialog('checkoutOverlay', '#inpNama');
+  updateMobileCartBarVisibility();
 }
 function renderDeliveryOptions(){
   const wrap = document.getElementById('deliveryOptions');
@@ -1821,6 +1901,7 @@ function updateAlamatVisibility(){
 }
 function closeCheckoutModal(){
   document.getElementById('checkoutOverlay').classList.remove('open');
+  updateMobileCartBarVisibility();
 }
 function renderPayOptions(){
   const wrap = document.getElementById('payOptions');
@@ -1935,14 +2016,38 @@ function konfirmasiPesanan(){
 }
 
 /* ===== Receipt ===== */
+/* Label tiap tahap progress pesanan, urut sesuai STATUS_PESANAN (kecuali Dibatalkan) */
+const STEPPER_LABELS = ["Dipesan","Diproses","Dikirim","Selesai"];
+function renderStepperHTML(status){
+  if(status === "Dibatalkan"){
+    return `<div class="order-stepper cancelled">
+      <div class="stepper-cancel-icon">✕</div>
+      <div class="stepper-cancel-text">Pesanan Dibatalkan</div>
+    </div>`;
+  }
+  const idx = STATUS_PESANAN.indexOf(status); // 0=Dipesan .. 3=Selesai
+  return `<div class="order-stepper">
+    ${STEPPER_LABELS.map((lbl,i)=>{
+      const stateClass = i < idx ? 'done' : (i === idx ? 'active' : '');
+      const connector = i > 0 ? `<div class="step-connector ${i-1 < idx ? 'done' : ''}"></div>` : '';
+      return `${connector}<div class="step ${stateClass}">
+        <div class="step-dot">${i < idx ? '✓' : i+1}</div>
+        <div class="step-lbl">${lbl}</div>
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
 function showReceipt(p){
   tembakConfetti();
   const content = document.getElementById('receiptContent');
   content.innerHTML = `
     <div class="receipt-center">
-      <div class="biz">DAPUR INDRAPRASTA</div>
+      <div class="biz">WARUNG KU DIGITAL BY KELOMPOK 8</div>
       <div class="addr">Universitas Indraprasta PGRI<br>Program Studi Bisnis Digital</div>
     </div>
+    <div class="receipt-dash"></div>
+    ${renderStepperHTML(p.status)}
     <div class="receipt-dash"></div>
     <div class="receipt-row"><span>No. Pesanan</span><span>${p.noPesanan}</span></div>
     <div class="receipt-row"><span>Waktu</span><span>${p.waktu}</span></div>
@@ -1968,9 +2073,12 @@ function showReceipt(p){
     <div class="receipt-footer">Terima kasih telah memesan!<br>Simpan struk ini sebagai bukti pesanan.</div>
   `;
   document.getElementById('receiptOverlay').classList.add('open');
+  fokuskanKeDalamDialog('receiptOverlay');
+  updateMobileCartBarVisibility();
 }
 function closeReceiptModal(){
   document.getElementById('receiptOverlay').classList.remove('open');
+  updateMobileCartBarVisibility();
 }
 function cetakStruk(){
   const printWin = window.open('', '_blank', 'width=380,height=640');
@@ -1987,6 +2095,7 @@ function cetakStruk(){
       .receipt-total{ font-weight:700; font-size:13px; }
       .receipt-status{ text-align:center; margin-top:12px; padding:6px; background:#eee; font-weight:700; }
       .receipt-footer{ text-align:center; margin-top:12px; font-size:10.5px; color:#666; }
+      .order-stepper{ display:none; }
     </style></head><body>${content}<script>window.onload=()=>{window.print();}<\/script></body></html>`);
   printWin.document.close();
 }
@@ -2014,6 +2123,7 @@ function renderHistory(){
         <span>${p.pelanggan}</span>
         <span>${formatRupiah(p.totalBayar)}</span>
       </div>
+      ${renderStepperHTML(p.status)}
       ${p.status === "Menunggu Konfirmasi" ? `
         <button class="remove-btn" style="margin-top:8px;" onclick="event.stopPropagation(); batalkanPesananSendiri('${p.noPesanan}')">Batalkan Pesanan</button>
       ` : ''}
@@ -2364,6 +2474,8 @@ function openAdmin(){
   document.getElementById('pajakPersenInput').value = PAJAK_PERSEN;
   switchAdminTab('ringkasan');
   document.getElementById('adminOverlay').classList.add('open');
+  fokuskanKeDalamDialog('adminOverlay', '.drawer-close');
+  updateMobileCartBarVisibility();
 }
 
 function switchAdminTab(tab){
@@ -2408,6 +2520,64 @@ function closeAdmin(){
   document.getElementById('adminOverlay').classList.remove('open');
   adminSelectedPesanan = null;
   adminSelectedStatus = null;
+  updateMobileCartBarVisibility();
+}
+
+/* Grafik batang tren omzet 7 hari terakhir (termasuk hari ini), digambar
+   sebagai SVG inline dari data pesanan sungguhan — tanpa library eksternal. */
+function renderAdminTrendChart(){
+  const wrap = document.getElementById('adminTrendChart');
+  if(!wrap) return;
+
+  const HARI_LABEL = ['Min','Sen','Sel','Rab','Kam','Jum','Sab'];
+  const hariList = [];
+  for(let i = 6; i >= 0; i--){
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    hariList.push(d);
+  }
+  const omzetHarian = hariList.map(d => {
+    const tgl = d.toDateString();
+    return daftarPesanan
+      .filter(p => p.status !== "Dibatalkan" && (p.tanggalObj instanceof Date ? p.tanggalObj : new Date()).toDateString() === tgl)
+      .reduce((s,p) => s + p.totalBayar, 0);
+  });
+  const totalTujuhHari = omzetHarian.reduce((a,b) => a+b, 0);
+
+  if(totalTujuhHari === 0){
+    wrap.innerHTML = `<div class="admin-empty-mini">Belum ada data penjualan dalam 7 hari terakhir.</div>`;
+    return;
+  }
+
+  const maxOmzet = Math.max(...omzetHarian, 1);
+  const W = 320, H = 128, padBottom = 22, padTop = 8, gap = 8;
+  const barW = (W - gap * (omzetHarian.length - 1)) / omzetHarian.length;
+
+  const bars = omzetHarian.map((v, i) => {
+    const h = v === 0 ? 2 : Math.max(6, Math.round((v / maxOmzet) * (H - padBottom - padTop)));
+    const x = i * (barW + gap);
+    const y = H - padBottom - h;
+    const isHariIni = i === omzetHarian.length - 1;
+    const label = HARI_LABEL[hariList[i].getDay()];
+    return `
+      <g class="trend-bar-group">
+        <rect x="${x.toFixed(1)}" y="${y}" width="${barW.toFixed(1)}" height="${h}" rx="4"
+          fill="${isHariIni ? 'var(--merah-cabai)' : 'var(--hijau-tua)'}" opacity="${isHariIni ? '1' : '0.7'}">
+          <title>${label}: ${formatRupiah(v)}</title>
+        </rect>
+        <text x="${(x + barW/2).toFixed(1)}" y="${H - 7}" text-anchor="middle" font-size="9.5" fill="var(--abu)" font-family="Inter, sans-serif">${label}</text>
+      </g>`;
+  }).join('');
+
+  wrap.innerHTML = `
+    <svg viewBox="0 0 ${W} ${H}" style="width:100%; height:auto; display:block;" role="img" aria-label="Grafik tren penjualan 7 hari terakhir">
+      ${bars}
+    </svg>
+    <div class="trend-chart-legend">
+      <span>Total 7 hari: <strong style="color:var(--hijau-tua);">${formatRupiah(totalTujuhHari)}</strong></span>
+      <span>Hari ini: <strong style="color:var(--merah-cabai);">${formatRupiah(omzetHarian[omzetHarian.length - 1])}</strong></span>
+    </div>
+  `;
 }
 
 function renderAdminStats(){
@@ -2433,6 +2603,9 @@ function renderAdminStats(){
       <div class="admin-stat-lbl">${s.label}</div>
     </div>
   `).join('');
+
+  /* --- Grafik tren penjualan 7 hari terakhir --- */
+  renderAdminTrendChart();
 
   /* --- Menu terlaris hari ini (dihitung dari pesanan sungguhan, bukan angka acak) --- */
   const terlarisWrap = document.getElementById('adminTerlaris');
@@ -3003,19 +3176,6 @@ function isiFormDariProfil(profil){
   document.getElementById('profilHp').value = profil ? (profil.hp || '') : '';
   document.getElementById('profilAlamat').value = profil ? (profil.alamat || '') : '';
 }
-function openProfil(){
-  const list = loadProfilList();
-  const activeId = getActiveProfilId();
-  const profil = list.find(p => p.id === activeId) || null;
-  renderPilihanProfil(activeId);
-  isiFormDariProfil(profil);
-  closeAllPanels();
-  document.getElementById('profilOverlay').classList.add('open');
-}
-function closeProfil(){
-  const el = document.getElementById('profilOverlay');
-  if(el) el.classList.remove('open');
-}
 /* Beralih ke profil lain yang sudah tersimpan (klik kartu) */
 function gantiProfilAktif(id){
   if(!id) return;
@@ -3044,7 +3204,7 @@ function simpanProfilManual(){
   saveProfil({ nama, hp, alamat });
   renderPilihanProfil(getActiveProfilId());
   showToast('✓ Profil disimpan di perangkat ini');
-  closeProfil();
+  closeAkun();
 }
 /* Menghapus satu profil tertentu (lewat tombol ✕ di kartunya), tidak
    harus profil yang sedang aktif. */
@@ -3253,7 +3413,7 @@ window.addEventListener('storage', (e) => {
   renderMenuFiltered();
   updateCartUI();
   updateHistoryDot();
-  if(document.getElementById('historyDrawer').classList.contains('open')) renderHistory();
+  if(document.getElementById('akunOverlay').classList.contains('open') && document.getElementById('akunTab-riwayat').classList.contains('active')) renderHistory();
   if(document.getElementById('adminOverlay').classList.contains('open')){
     renderAdminStats();
     renderAdminPesananSelect();
@@ -3277,14 +3437,29 @@ document.addEventListener('keydown', (e) => {
     closeCheckoutModal();
     closeReceiptModal();
     closeAdmin();
-    closeProfil();
+    closeAkun();
   }
 });
 
 /* ===== Perangkap fokus sederhana untuk dialog/drawer yang terbuka =====
    Mencegah Tab berpindah ke konten di belakang overlay saat modal aktif. */
+/* Pindahkan fokus keyboard ke dalam dialog/drawer begitu ia terbuka,
+   supaya pengguna keyboard & screen reader langsung berada di dalam
+   modal (bukan tertinggal di tombol pemicu di belakang overlay).
+   Diberi jeda 1 frame (setTimeout 0) supaya elemen sudah ter-render
+   (mis. konten yang baru diisi lewat innerHTML) sebelum di-fokus. */
+function fokuskanKeDalamDialog(dialogId, opsiSelector){
+  setTimeout(() => {
+    const dialog = document.getElementById(dialogId);
+    if(!dialog || !dialog.classList.contains('open')) return;
+    const target = (opsiSelector && dialog.querySelector(opsiSelector))
+      || dialog.querySelector('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])');
+    if(target) target.focus();
+  }, 0);
+}
+
 function getOpenDialogEl(){
-  const ids = ['cartDrawer','historyDrawer','checkoutOverlay','receiptOverlay','adminOverlay','profilOverlay'];
+  const ids = ['cartDrawer','checkoutOverlay','receiptOverlay','adminOverlay','akunOverlay'];
   for(const id of ids){
     const el = document.getElementById(id);
     if(el && el.classList.contains('open')) return el;
@@ -3324,8 +3499,8 @@ document.getElementById('checkoutOverlay').addEventListener('click', function(e)
 document.getElementById('receiptOverlay').addEventListener('click', function(e){
   if(e.target === this) closeReceiptModal();
 });
-document.getElementById('profilOverlay').addEventListener('click', function(e){
-  if(e.target === this) closeProfil();
+document.getElementById('akunOverlay').addEventListener('click', function(e){
+  if(e.target === this) closeAkun();
 });
 
 /* ============================================================
