@@ -673,6 +673,17 @@ footer{
   font-size:12.5px; font-weight:700; white-space:nowrap;
 }
 .promo-badge span{ color:var(--kuning-kunyit); }
+.promo-badge-special{
+  background: linear-gradient(110deg, var(--merah-cabai) 0%, var(--kuning-kunyit) 100%);
+  border: 1px solid rgba(255,255,255,0.35);
+  color: var(--krem);
+  animation: promoPulse 1.8s ease-in-out infinite;
+}
+.promo-badge-special span{ color:#FFF; text-decoration: underline; text-underline-offset: 2px; }
+@keyframes promoPulse{
+  0%,100%{ transform: scale(1); box-shadow: 0 0 0 rgba(178,58,29,0); }
+  50%{ transform: scale(1.045); box-shadow: 0 4px 14px rgba(178,58,29,.35); }
+}
 
 /* ===== Image loading shimmer ===== */
 .card-img img{
@@ -837,9 +848,102 @@ footer{
 .mobile-cart-bar{ animation: barSlide .45s var(--ease-bounce); }
 @keyframes barSlide{ 0%{ transform: translateY(110%); } 60%{ transform: translateY(-6%); } 100%{ transform: translateY(0); } }
 
+/* ============================================================
+   OPSI 2 — LAPISAN ANIMASI TAMBAHAN (full & keren)
+   ============================================================ */
+
+/* --- Partikel latar melayang (dekoratif, tidak mengganggu klik) --- */
+.bg-particles{ position:fixed; inset:0; overflow:hidden; pointer-events:none; z-index:0; }
+.bg-particles span{
+  position:absolute; bottom:-60px; font-size:26px; opacity:.16; filter:saturate(.8);
+  animation: floatUp linear infinite;
+  will-change: transform;
+}
+@keyframes floatUp{
+  0%{ transform: translateY(0) translateX(0) rotate(0deg); opacity:0; }
+  8%{ opacity:.18; }
+  92%{ opacity:.14; }
+  100%{ transform: translateY(-110vh) translateX(var(--drift,40px)) rotate(360deg); opacity:0; }
+}
+main, footer{ position:relative; z-index:1; }
+
+/* --- Ripple efek tekan pada tombol --- */
+.ripple-el{
+  position:absolute; border-radius:50%; background:rgba(255,255,255,.55);
+  transform:scale(0); animation: rippleAnim .55s ease-out forwards; pointer-events:none;
+}
+@keyframes rippleAnim{ to{ transform:scale(2.6); opacity:0; } }
+.btn-primary, .btn-ghost, .add-btn, .checkout-btn, .mcb-btn, .cart-btn, .cat-pill{ position:relative; overflow:hidden; }
+
+/* --- Gambar kartu: fade-in halus + zoom saat hover --- */
+.card-img{ overflow:hidden; }
+.card-img img{ transition: transform .5s var(--ease-bounce), opacity .4s ease, filter .4s ease; opacity:0; filter: blur(6px); }
+.card-img img.img-loaded{ opacity:1; filter:blur(0); }
+.card:hover .card-img img{ transform: scale(1.1) rotate(0.5deg); }
+
+/* --- Kartu: kilau lembut saat hover --- */
+.card{ position:relative; }
+.card:hover{ box-shadow: 0 14px 28px rgba(43,33,23,.16); }
+
+/* --- Hero visual: cincin cahaya berdenyut --- */
+.hero-visual{ position:relative; }
+.hero-visual::before{
+  content:''; position:absolute; inset:-10px; border-radius:inherit;
+  background: conic-gradient(from 0deg, var(--kuning-kunyit), var(--merah-cabai), var(--hijau-daun), var(--kuning-kunyit));
+  opacity:.28; z-index:-1; filter: blur(14px);
+  animation: spinGlow 6s linear infinite;
+}
+@keyframes spinGlow{ to{ transform: rotate(360deg); } }
+
+/* --- Hero stats: angka melompat saat muncul --- */
+.hero-stats .num{ display:inline-block; animation: numberPop .5s var(--ease-bounce) backwards; }
+
+/* --- Cat-nav: indikator aktif meluncur --- */
+.cat-nav-inner{ position:relative; }
+.cat-nav-indicator{
+  position:absolute; bottom:0; left:0; height:3px; border-radius:3px;
+  background: var(--merah-cabai); transition: transform .35s var(--ease-bounce), width .35s var(--ease-bounce);
+  transform: translateX(0); pointer-events:none;
+}
+
+/* --- Tombol scroll-top: denyut halus --- */
+.scroll-top.visible{ animation: floatBob 2.6s ease-in-out infinite; }
+@keyframes floatBob{ 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(-6px); } }
+.scroll-top:active{ animation:none; transform: scale(.85); }
+
+/* --- Fly-to-cart --- */
+.fly-emoji{
+  position:fixed; z-index:999; font-size:22px; pointer-events:none;
+  animation: flyToCart .65s cubic-bezier(.3,.6,.4,1) forwards;
+}
+@keyframes flyToCart{
+  0%{ transform: translate(0,0) scale(1); opacity:1; }
+  70%{ opacity:1; }
+  100%{ transform: translate(var(--fx,0), var(--fy,-200px)) scale(.3); opacity:0; }
+}
+
+/* --- Confetti saat pesanan sukses --- */
+.confetti-piece{
+  position:fixed; top:-20px; z-index:9999; pointer-events:none; border-radius:2px;
+  animation: confettiFall linear forwards;
+}
+@keyframes confettiFall{
+  0%{ transform: translateY(0) rotate(0deg); opacity:1; }
+  100%{ transform: translateY(105vh) rotate(600deg); opacity:0; }
+}
+
+/* --- Fade-scale generik untuk elemen yang baru dimasukkan (opsional util) --- */
+.pop-in{ animation: popIn .45s var(--ease-bounce) backwards; }
+
+@media (prefers-reduced-motion: reduce){
+  .bg-particles, .hero-visual::before, .scroll-top.visible{ animation:none !important; }
+}
+
 </style>
 </head>
 <body>
+
+<div class="bg-particles" id="bgParticles" aria-hidden="true"></div>
 
 <a href="#mainContent" class="skip-link">Langsung ke konten utama</a>
 
@@ -907,6 +1011,7 @@ footer{
       <div class="desc">Hemat lebih banyak, makan lebih puas!</div>
     </div>
     <div class="promo-badges">
+      <div class="promo-badge promo-badge-special">🎉 Khusus anggota <span>Kelompok 8</span> — kode <span>KELOMPOK8</span> diskon <span>90%</span>, tanpa minimum belanja!</div>
       <div class="promo-badge">Belanja ≥ Rp50.000 → diskon <span>5%</span></div>
       <div class="promo-badge">Belanja ≥ Rp100.000 → diskon <span>10%</span></div>
     </div>
@@ -1319,7 +1424,7 @@ const ZONA_ONGKIR = [
 let zonaTerpilih = ZONA_ONGKIR[0].kode;
 
 /* --- Kode promo (dikelola admin, tersimpan di localStorage) --- */
-let promoCodes = { "HEMAT10": {persen:10, aktif:true} }; // contoh bawaan
+let promoCodes = { "HEMAT10": {persen:10, aktif:true}, "KELOMPOK8": {persen:90, aktif:true} }; // KELOMPOK8: promo khusus, tanpa syarat minimum belanja
 let promoAktif = null; // {kode, persen}
 
 /* --- Pajak (diatur admin, inklusif — tidak menambah total, hanya rincian) --- */
@@ -1395,20 +1500,33 @@ function renderCatNav(){
   nav.innerHTML = KATEGORI.map((k,i) =>
     `<button class="cat-pill ${i===0?'active':''}" data-cat="${k}" onclick="scrollToCat('${k}', this)">${k}</button>`
   ).join('');
+  requestAnimationFrame(()=> updateCatIndicator(nav.querySelector('.cat-pill.active')));
 }
 /* Saat kategori diklik, scroll ke section dipicu secara terprogram
    (smooth scroll). Selama animasi itu berjalan, event scroll juga ikut
    terpicu berkali-kali dan bisa "berebut" dengan updateActiveCatOnScroll,
    sehingga pill yang baru diklik malah balik ke kategori yang salah.
    Flag ini mengunci sementara agar highlight benar-benar mengikuti
-   kategori yang diklik sampai scroll selesai. */
+   kategori yang diklik sampai scroll selesai.
+
+   Catatan: kuncinya dilepas berdasarkan KAPAN SCROLL BERHENTI (idle),
+   bukan waktu tetap — supaya tetap benar walau jaraknya jauh (scroll
+   lama) atau dekat (scroll sebentar). */
 let catClickLock = false;
 let catClickLockTimer = null;
+function catScrollIdleHandler(){
+  clearTimeout(catClickLockTimer);
+  catClickLockTimer = setTimeout(() => {
+    catClickLock = false;
+    window.removeEventListener('scroll', catScrollIdleHandler);
+  }, 120);
+}
 
 function scrollToCat(kat, btn){
   document.querySelectorAll('.cat-pill').forEach(p=>p.classList.remove('active'));
   if(btn){
     btn.classList.add('active');
+    updateCatIndicator(btn);
     // Pastikan pill yang baru diklik ikut bergeser ke area yang terlihat
     // di dalam strip navigasi kategori yang bisa di-scroll horizontal.
     btn.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' });
@@ -1417,10 +1535,12 @@ function scrollToCat(kat, btn){
   if(el){
     catClickLock = true;
     clearTimeout(catClickLockTimer);
+    window.removeEventListener('scroll', catScrollIdleHandler);
+    window.addEventListener('scroll', catScrollIdleHandler, {passive:true});
     el.scrollIntoView({behavior:'smooth', block:'start'});
-    // Lepas kunci setelah animasi smooth-scroll diperkirakan selesai,
-    // supaya scroll-spy kembali aktif normal untuk scroll manual berikutnya.
-    catClickLockTimer = setTimeout(() => { catClickLock = false; }, 700);
+    // Jaga-jaga kalau elemen sudah pas di posisi (scroll jaraknya nol,
+    // jadi event scroll tidak akan terpicu sama sekali) — tetap lepas kunci.
+    catScrollIdleHandler();
   }
 }
 function scrollToMenu(){
@@ -1816,6 +1936,7 @@ function konfirmasiPesanan(){
 
 /* ===== Receipt ===== */
 function showReceipt(p){
+  tembakConfetti();
   const content = document.getElementById('receiptContent');
   content.innerHTML = `
     <div class="receipt-center">
@@ -2014,7 +2135,8 @@ function renderCard(kode, p){
     <div class="card" id="card-${kode}">
       <div class="card-img">
         <img src="${p.img}" srcset="${p.img.replace('w=500','w=300')} 300w, ${p.img} 500w" sizes="(max-width:600px) 45vw, 260px" alt="${p.nama}" loading="lazy"
-          onerror="this.onerror=null;this.srcset='';this.src='${fallback}'">
+          onload="this.classList.add('img-loaded')"
+          onerror="this.onerror=null;this.srcset='';this.src='${fallback}';this.classList.add('img-loaded')">
         ${ info.populer ? `<span class="card-badge-ribbon">🏆 Best Seller</span>` :
            info.baru ? `<span class="card-badge-ribbon baru">✨ Baru</span>` : '' }
         <span class="stock-badge ${habis?'habis':rendahStok?'sedikit':''}">${habis ? 'Habis' : rendahStok ? `Sisa ${p.stok}` : 'Stok ' + p.stok}</span>
@@ -2037,9 +2159,9 @@ function renderCard(kode, p){
               `<div class="qty-control">
                  <button onclick="ubahJumlah('${kode}', -1)" aria-label="Kurangi">−</button>
                  <span>${inCart}</span>
-                 <button onclick="ubahJumlah('${kode}', 1)" aria-label="Tambah">+</button>
+                 <button onclick="ubahJumlah('${kode}', 1, event)" aria-label="Tambah">+</button>
                </div>` :
-              `<button class="add-btn" onclick="ubahJumlah('${kode}', 1)" aria-label="Tambah ke keranjang">+</button>`
+              `<button class="add-btn" onclick="ubahJumlah('${kode}', 1, event)" aria-label="Tambah ke keranjang">+</button>`
           }
         </div>
       </div>
@@ -2056,7 +2178,7 @@ function animateCartIcon(){
   setTimeout(()=> btn.classList.remove('cart-bounce'), 400);
 }
 
-function ubahJumlah(kode, delta){
+function ubahJumlah(kode, delta, evt){
   const p = menuProduk[kode];
   const current = keranjang[kode] || 0;
   const next = current + delta;
@@ -2068,13 +2190,123 @@ function ubahJumlah(kode, delta){
   } else {
     keranjang[kode] = next;
   }
-  if(delta > 0 && current === 0){
-    showToast(`✓ ${p.nama} ditambahkan!`);
+  if(delta > 0){
+    if(evt && evt.currentTarget) flyToCart(evt.currentTarget, '🍽️');
+    if(current === 0){
+      showToast(`✓ ${p.nama} ditambahkan!`);
+    }
     animateCartIcon();
   }
   refreshCardDisplay(kode);
   updateCartUI();
   saveState();
+}
+
+/* ===== Animasi terbang ke keranjang ===== */
+function flyToCart(originEl, emoji){
+  const cartBtn = document.querySelector('.cart-btn');
+  if(!originEl || !cartBtn) return;
+  const start = originEl.getBoundingClientRect();
+  const end = cartBtn.getBoundingClientRect();
+  const el = document.createElement('div');
+  el.className = 'fly-emoji';
+  el.textContent = emoji || '🍽️';
+  el.style.left = (start.left + start.width/2 - 11) + 'px';
+  el.style.top = (start.top + start.height/2 - 11) + 'px';
+  el.style.setProperty('--fx', (end.left + end.width/2 - start.left - start.width/2) + 'px');
+  el.style.setProperty('--fy', (end.top + end.height/2 - start.top - start.height/2) + 'px');
+  document.body.appendChild(el);
+  setTimeout(()=> el.remove(), 700);
+}
+
+/* ===== Ripple efek pada tombol (delegasi event, ringan) ===== */
+document.addEventListener('click', function(e){
+  const btn = e.target.closest('.btn-primary, .btn-ghost, .add-btn, .checkout-btn, .mcb-btn, .cart-btn, .cat-pill');
+  if(!btn || btn.disabled) return;
+  const rect = btn.getBoundingClientRect();
+  const ripple = document.createElement('span');
+  const size = Math.max(rect.width, rect.height);
+  ripple.className = 'ripple-el';
+  ripple.style.width = ripple.style.height = size + 'px';
+  ripple.style.left = (e.clientX - rect.left - size/2) + 'px';
+  ripple.style.top = (e.clientY - rect.top - size/2) + 'px';
+  btn.appendChild(ripple);
+  setTimeout(()=> ripple.remove(), 600);
+});
+
+/* ===== Confetti kecil saat pesanan berhasil ===== */
+function tembakConfetti(){
+  const warna = ['#B23A1D','#C98A1A','#55692E','#F1E4C6','#8C2C16'];
+  const jumlah = 60;
+  for(let i=0;i<jumlah;i++){
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    const w = 6 + Math.random()*6;
+    piece.style.width = w + 'px';
+    piece.style.height = (w*0.4 + 4) + 'px';
+    piece.style.left = Math.random()*100 + 'vw';
+    piece.style.background = warna[i % warna.length];
+    const durasi = 2.2 + Math.random()*1.6;
+    piece.style.animationDuration = durasi + 's';
+    piece.style.animationDelay = (Math.random()*0.3) + 's';
+    document.body.appendChild(piece);
+    setTimeout(()=> piece.remove(), (durasi+0.5)*1000);
+  }
+}
+
+/* ===== Partikel makanan melayang di latar (dekoratif) ===== */
+function setupBgParticles(){
+  const wrap = document.getElementById('bgParticles');
+  if(!wrap) return;
+  const emojis = ['🌿','🍚','🌶️','🍋','🥕'];
+  const total = window.innerWidth < 700 ? 6 : 10;
+  for(let i=0;i<total;i++){
+    const s = document.createElement('span');
+    s.textContent = emojis[i % emojis.length];
+    s.style.left = Math.random()*100 + 'vw';
+    s.style.setProperty('--drift', (Math.random()*80-40) + 'px');
+    const durasi = 16 + Math.random()*14;
+    s.style.animationDuration = durasi + 's';
+    s.style.animationDelay = (Math.random()*durasi) + 's';
+    s.style.fontSize = (18 + Math.random()*14) + 'px';
+    wrap.appendChild(s);
+  }
+}
+
+/* ===== Angka statistik hero: hitung naik saat pertama terlihat ===== */
+function setupHeroCounters(){
+  const nums = document.querySelectorAll('.hero-stats .num');
+  if(!nums.length) return;
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(en => {
+      if(!en.isIntersecting) return;
+      const el = en.target;
+      const target = parseInt(el.textContent, 10) || 0;
+      let cur = 0;
+      const step = Math.max(1, Math.ceil(target/24));
+      const timer = setInterval(()=>{
+        cur += step;
+        if(cur >= target){ cur = target; clearInterval(timer); }
+        el.textContent = cur;
+      }, 28);
+      io.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  nums.forEach(el => io.observe(el));
+}
+
+/* ===== Indikator kategori aktif yang meluncur mengikuti pill ===== */
+function updateCatIndicator(btn){
+  const nav = document.getElementById('catNav');
+  if(!nav || !btn) return;
+  let indicator = nav.querySelector('.cat-nav-indicator');
+  if(!indicator){
+    indicator = document.createElement('div');
+    indicator.className = 'cat-nav-indicator';
+    nav.appendChild(indicator);
+  }
+  indicator.style.width = btn.offsetWidth + 'px';
+  indicator.style.transform = `translateX(${btn.offsetLeft}px)`;
 }
 
 /* ===== Admin Panel ===== */
@@ -2931,10 +3163,12 @@ function updateActiveCatOnScroll(){
   });
   document.querySelectorAll('.cat-pill').forEach((p, i) => {
     p.classList.toggle('active', i === active);
+    if(i === active) updateCatIndicator(p);
   });
 }
 
 window.addEventListener('scroll', updateActiveCatOnScroll, {passive:true});
+window.addEventListener('resize', ()=> updateCatIndicator(document.querySelector('.cat-pill.active')));
 
 /* ===== Hero image slider ===== */
 let heroSlideIndex = 0;
@@ -3006,6 +3240,8 @@ initAman('updateCartUI', updateCartUI);
 initAman('setupHeroSlider', setupHeroSlider);
 initAman('updateBrandGreeting', updateBrandGreeting);
 initAman('updateHistoryDot', updateHistoryDot);
+initAman('setupBgParticles', setupBgParticles);
+initAman('setupHeroCounters', setupHeroCounters);
 
 /* Sinkronisasi ringan antar-tab di browser yang sama: kalau tab lain
    mengubah data (checkout/stok/menu/status), tab ini ikut memuat ulang
