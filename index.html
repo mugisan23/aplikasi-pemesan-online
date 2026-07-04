@@ -367,6 +367,14 @@ h1,h2,h3,.display{
   transition: transform .22s cubic-bezier(.32,.72,0,1);
   padding: 26px 26px 28px;
 }
+/* Di browser HP, 100vh menghitung tinggi termasuk area yang ditutupi
+   address bar, jadi modal bisa lebih tinggi dari layar yang benar-benar
+   terlihat dan tombol di bagian bawah (mis. Tutup di struk) jadi
+   terpotong/tertutup. dvh mengikuti tinggi viewport yang benar-benar
+   terlihat, jadi dipakai kalau browser mendukungnya. */
+@supports (max-height: 88dvh){
+  .modal{ max-height: 88dvh; }
+}
 .modal-overlay.open .modal{ transform: translateY(0) scale(1); }
 .modal h2{ font-size: clamp(18px, 4.5vw, 21px); margin-bottom:18px; }
 
@@ -463,16 +471,48 @@ h1,h2,h3,.display{
    itu berarti tombol di bawahnya duduk langsung di atas overlay gelap.
    Beri gaya sendiri (bukan warisan .modal-actions) supaya tombol
    sekunder (Cetak/Tutup) tetap kontras & mudah dibaca di atas overlay,
-   dan aksi utama (Pesan Lagi) tegas terpisah di barisnya sendiri. */
-.receipt-actions{ display:flex; flex-direction:column; gap:10px; margin-top:18px; }
+   dan aksi utama (Pesan Lagi) tegas terpisah di barisnya sendiri.
+
+   Baris ini juga dibuat "sticky" ke bagian bawah modal (.modal yang
+   scroll, bukan halaman). Di HP, kalau struknya panjang (banyak item)
+   tombol Cetak/Tutup bisa ikut tergulung ke bawah sampai keluar layar
+   atau ketutup address bar browser — jadi kelihatan hilang/rusak.
+   Dengan position:sticky, baris ini selalu menempel di tepi bawah area
+   yang kelihatan, dengan latar gradasi supaya transisi dari kertas
+   struk ke tombol tetap rapi (tidak "nabrak" langsung ke overlay gelap). */
+.receipt-actions{
+  display:flex; flex-direction:column; gap:10px;
+  position: sticky; bottom: 0; z-index: 6;
+  margin-top: 18px;
+  padding: 22px 0 calc(16px + env(safe-area-inset-bottom, 0px));
+  background: linear-gradient(to bottom, rgba(31,42,26,0) 0%, rgba(31,42,26,0.75) 26%, rgba(31,42,26,0.88) 100%);
+}
 .receipt-actions .receipt-actions-row{ display:flex; gap:10px; }
 .receipt-actions .btn-ghost{
-  flex:1; padding:13px; font-size:14px;
+  flex:1; padding:13px; font-size:14px; min-width:0;
   background: var(--krem-kartu); border-color: var(--krem-kartu); color: var(--hijau-tua);
-  box-shadow: 0 6px 16px rgba(31,42,26,0.18);
+  box-shadow: 0 6px 16px rgba(31,42,26,0.28);
 }
 .receipt-actions .btn-ghost:hover{ background:#fff; border-color:#fff; }
-.receipt-actions .btn-primary{ width:100%; padding:14px; }
+.receipt-actions .btn-primary{ width:100%; padding:14px; box-shadow: 0 6px 16px rgba(31,42,26,0.28); }
+
+/* Tombol ✕ tetap (fixed) di pojok kanan-atas layar selama struk terbuka.
+   Sebelumnya satu-satunya cara menutup struk adalah tombol teks "✕ Tutup"
+   di baris aksi bawah — kalau baris itu belum kelihatan (perlu discroll),
+   pengguna merasa tidak ada cara untuk menutup struknya. Tombol ini
+   konsisten dengan gaya "drawer-close" bulat yang dipakai di modal lain
+   (keranjang, checkout, akun, admin), jadi selalu terlihat & terasa
+   seperti tombol tutup yang sama di seluruh aplikasi. */
+.receipt-close-fixed{
+  position:absolute; top: calc(14px + env(safe-area-inset-top, 0px)); right:14px;
+  width:38px; height:38px; border-radius:50%; z-index:7;
+  display:flex; align-items:center; justify-content:center;
+  background: var(--krem-kartu); color:var(--hijau-tua); border:none;
+  font-size:16px; font-weight:700; cursor:pointer;
+  box-shadow: 0 6px 16px rgba(31,42,26,0.3);
+}
+.receipt-close-fixed:hover{ background:#fff; }
+.receipt-close-fixed:focus-visible{ outline:3px solid var(--kuning-kunyit); outline-offset:2px; }
 
 /* ===== Receipt (signature element) ===== */
 .receipt{
@@ -1210,6 +1250,7 @@ main, footer{ position:relative; z-index:1; }
 
 <!-- ===== Receipt modal ===== -->
 <div class="modal-overlay" id="receiptOverlay" role="dialog" aria-modal="true" aria-label="Struk pesanan">
+  <button class="receipt-close-fixed" onclick="closeReceiptModal()" aria-label="Tutup struk">✕</button>
   <div class="modal" style="background:transparent; box-shadow:none; padding:0;">
     <div class="receipt" id="receiptContent"></div>
     <div class="receipt-actions">
