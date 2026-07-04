@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Warung Ku Digital by Kelompok 8 — Pesan Online</title>
 <meta name="description" content="Pesan makanan rumahan segar dari Warung Ku Digital by Kelompok 8 — sayur, ayam, ikan, dan lauk pilihan, siap diantar atau diambil hari ini.">
 <meta name="robots" content="index, follow">
@@ -63,7 +63,7 @@ h1,h2,h3,.display{
   background: var(--krem);
   border-bottom: 1px solid var(--garis);
   display:flex; align-items:center; justify-content:space-between;
-  padding: 14px 24px;
+  padding: calc(14px + env(safe-area-inset-top, 0px)) 24px 14px;
 }
 .notif-dot{
   position:absolute; top:4px; right:4px; width:9px; height:9px; border-radius:50%;
@@ -318,7 +318,7 @@ h1,h2,h3,.display{
 }
 .drawer.open{ transform: translateX(0); }
 .drawer-head{
-  padding: 20px 22px; border-bottom:1px solid var(--garis);
+  padding: calc(20px + env(safe-area-inset-top, 0px)) 22px 20px; border-bottom:1px solid var(--garis);
   display:flex; align-items:center; justify-content:space-between;
 }
 .drawer-head h2{ font-size: clamp(17px, 4vw, 20px); }
@@ -1109,7 +1109,10 @@ main, footer{ position:relative; z-index:1; }
 <!-- ===== Checkout modal ===== -->
 <div class="modal-overlay" id="checkoutOverlay" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
   <div class="modal">
-    <h2 id="checkoutTitle">Data Pengiriman</h2>
+    <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:18px;">
+      <h2 id="checkoutTitle" style="margin-bottom:0;">Data Pengiriman</h2>
+      <button class="drawer-close" onclick="closeCheckoutModal()" aria-label="Kembali / batalkan checkout" style="flex-shrink:0;">✕</button>
+    </div>
     <div class="field">
       <label for="inpNama">Nama Penerima *</label>
       <input type="text" id="inpNama" placeholder="Nama Anda">
@@ -1161,7 +1164,7 @@ main, footer{ position:relative; z-index:1; }
     <div class="modal-actions" style="margin-top:18px;">
       <button class="btn-ghost" onclick="cetakStruk()">🖨️ Cetak</button>
       <button class="btn-ghost" onclick="closeReceiptModal()">Tutup</button>
-      <button class="btn-primary" onclick="scrollToMenu(); closeReceiptModal();">Pesan Lagi</button>
+      <button class="btn-primary" onclick="pesanLagiDariStruk()">Pesan Lagi</button>
     </div>
   </div>
 </div>
@@ -2095,6 +2098,16 @@ function showReceipt(p){
 function closeReceiptModal(){
   document.getElementById('receiptOverlay').classList.remove('open');
   updateMobileCartBarVisibility();
+  // Kalau struk dibuka dari Riwayat, kembali ke panel Akun Saya (tab Riwayat)
+  if(strukDibukaDariAkun){
+    strukDibukaDariAkun = false;
+    openAkun('riwayat');
+  }
+}
+function pesanLagiDariStruk(){
+  strukDibukaDariAkun = false; // jangan kembali ke Akun Saya, langsung ke menu
+  scrollToMenu();
+  closeReceiptModal();
 }
 function cetakStruk(){
   const printWin = window.open('', '_blank', 'width=380,height=640');
@@ -2146,9 +2159,13 @@ function renderHistory(){
     </div>
   `).join('') + `</div>`;
 }
+let strukDibukaDariAkun = false;
 function showReceiptByIndex(idx){
   const p = daftarPesanan[idx];
   if(!p) return;
+  // Tutup panel Akun Saya dulu supaya tidak menumpuk di layer yang sama dengan struk
+  strukDibukaDariAkun = document.getElementById('akunOverlay').classList.contains('open');
+  if(strukDibukaDariAkun) closeAkun();
   showReceipt(p);
 }
 
