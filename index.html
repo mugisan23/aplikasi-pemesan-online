@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Warung Ku Digital by Kelompok 8 — Pesan Online</title>
-<meta name="description" content="Pesan makanan rumahan segar dari Warung Ku Digital by Kelompok 8 — sayur, ayam, ikan, dan lauk pilihan, siap diantar atau diambil hari ini.">
+<title>Warung Ku Digital by Kelompok 2 — Pesan Online</title>
+<meta name="description" content="Pesan makanan rumahan segar dari Warung Ku Digital by Kelompok 2 — sayur, ayam, ikan, dan lauk pilihan, siap diantar atau diambil hari ini.">
 <meta name="robots" content="index, follow">
-<meta property="og:title" content="Warung Ku Digital by Kelompok 8 — Pesan Online">
+<meta property="og:title" content="Warung Ku Digital by Kelompok 2 — Pesan Online">
 <meta property="og:description" content="Pesan makanan rumahan segar — sayur, ayam, ikan, dan lauk pilihan, siap diantar atau diambil hari ini.">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🍲%3C/text%3E%3C/svg%3E">
@@ -369,6 +369,20 @@ h1,h2,h3,.display{
 }
 .modal-overlay.open .modal{ transform: translateY(0) scale(1); }
 .modal h2{ font-size: clamp(18px, 4.5vw, 21px); margin-bottom:18px; }
+
+/* Header (judul + tombol ✕) yang "menempel" di atas saat isi modal
+   di-scroll. Tanpa ini, tombol ✕ ikut tergulung ke atas dan hilang dari
+   layar saat form checkout/akun/admin yang panjang di-scroll ke bawah —
+   pengguna jadi tidak punya cara terlihat untuk menutup modal. */
+.modal-head-sticky{
+  position: sticky; top: -26px; z-index: 5;
+  background: var(--krem);
+  margin: -26px -26px 18px -26px;
+  padding: 26px 26px 14px;
+  border-radius: 22px 22px 0 0;
+  display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
+}
+.modal-head-sticky h2{ margin-bottom:0; }
 .field{ margin-bottom:14px; }
 .field label{ display:block; font-size:12.5px; font-weight:600; margin-bottom:6px; color:#4B4636; }
 .field input, .field textarea{
@@ -443,6 +457,22 @@ h1,h2,h3,.display{
 
 .modal-actions{ display:flex; gap:10px; margin-top:6px; }
 .modal-actions .btn-ghost, .modal-actions .btn-primary{ flex:1; padding:13px; font-size:14px; }
+
+/* Tombol aksi di bawah struk. Struk sengaja tampil tanpa bingkai modal
+   (transparan) supaya terlihat seperti kertas struk yang melayang — tapi
+   itu berarti tombol di bawahnya duduk langsung di atas overlay gelap.
+   Beri gaya sendiri (bukan warisan .modal-actions) supaya tombol
+   sekunder (Cetak/Tutup) tetap kontras & mudah dibaca di atas overlay,
+   dan aksi utama (Pesan Lagi) tegas terpisah di barisnya sendiri. */
+.receipt-actions{ display:flex; flex-direction:column; gap:10px; margin-top:18px; }
+.receipt-actions .receipt-actions-row{ display:flex; gap:10px; }
+.receipt-actions .btn-ghost{
+  flex:1; padding:13px; font-size:14px;
+  background: var(--krem-kartu); border-color: var(--krem-kartu); color: var(--hijau-tua);
+  box-shadow: 0 6px 16px rgba(31,42,26,0.18);
+}
+.receipt-actions .btn-ghost:hover{ background:#fff; border-color:#fff; }
+.receipt-actions .btn-primary{ width:100%; padding:14px; }
 
 /* ===== Receipt (signature element) ===== */
 .receipt{
@@ -622,7 +652,14 @@ footer{
 .modal-admin{ max-width:640px; }
 @media (max-width:680px){ .modal-admin{ max-width:100%; } }
 
-.admin-head{ display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; gap:12px; }
+.admin-head{
+  display:flex; justify-content:space-between; align-items:flex-start; gap:12px;
+  position: sticky; top: -26px; z-index: 5;
+  background: var(--krem);
+  margin: -26px -26px 16px -26px;
+  padding: 26px 26px 14px;
+  border-radius: 22px 22px 0 0;
+}
 .admin-head-sub{ font-size:12px; color:var(--abu); margin-top:3px; }
 
 .admin-tabs{
@@ -994,7 +1031,7 @@ main, footer{ position:relative; z-index:1; }
   <div class="brand">
     <div class="brand-mark">DI</div>
     <div class="brand-text">
-      <div class="nama">Warung Ku Digital by Kelompok 8</div>
+      <div class="nama">Warung Ku Digital by Kelompok 2</div>
       <div class="sub" id="brandSub">Pesan Online</div>
     </div>
   </div>
@@ -1052,7 +1089,7 @@ main, footer{ position:relative; z-index:1; }
       <div class="desc">Hemat lebih banyak, makan lebih puas!</div>
     </div>
     <div class="promo-badges">
-      <div class="promo-badge promo-badge-special">🎉 Khusus anggota <span>Kelompok 8</span> — kode <span>KELOMPOK8</span> diskon <span>90%</span>, tanpa minimum belanja!</div>
+      <div class="promo-badge promo-badge-special">🎉 Khusus anggota <span>Kelompok 2</span> — kode <span>KELOMPOK2</span> diskon <span>90%</span>, tanpa minimum belanja!</div>
       <div class="promo-badge">Belanja ≥ Rp50.000 → diskon <span>5%</span></div>
       <div class="promo-badge">Belanja ≥ Rp100.000 → diskon <span>10%</span></div>
     </div>
@@ -1088,13 +1125,27 @@ main, footer{ position:relative; z-index:1; }
 <div class="menu-wrap" id="menuWrap"></div>
 
 <footer>
-  Warung Ku Digital by Kelompok 8 — Program Studi Bisnis Digital · Universitas Indraprasta PGRI<br>
+  Warung Ku Digital by Kelompok 2 — Program Studi Bisnis Digital · Universitas Indraprasta PGRI<br>
   Harga sudah termasuk pajak. Diskon 5% untuk belanja ≥ Rp 50.000, 10% untuk ≥ Rp 100.000.
 </footer>
 
 <!-- ===== Scroll to top ===== -->
 <button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Kembali ke atas">↑</button>
 
+
+</main>
+
+<!-- ===== Overlay & modal dialogs (keranjang, checkout, struk, akun, admin) =====
+     Sengaja diletakkan DI LUAR <main>, sebagai saudara (sibling) dari topbar.
+     <main> diberi position:relative + z-index:1 (lihat CSS "main, footer")
+     supaya kontennya tampil di atas partikel dekoratif latar belakang.
+     Itu membuat <main> membentuk stacking context sendiri, sehingga apa pun
+     z-index elemen DI DALAM <main> (termasuk overlay/drawer/modal ini) tidak
+     akan pernah bisa tampil di atas .topbar (yang berada di luar <main>,
+     z-index:50) — akibatnya tombol close di drawer/modal ketutupan topbar.
+     Menaruhnya di sini (luar <main>) membuat z-index overlay/modal dibandingkan
+     langsung dengan topbar di root stacking context, sehingga benar-benar
+     tampil paling atas seperti seharusnya. -->
 <!-- ===== Cart drawer ===== -->
 <div class="overlay" id="overlay" onclick="closeAllPanels()"></div>
 <aside class="drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-label="Keranjang belanja">
@@ -1109,8 +1160,8 @@ main, footer{ position:relative; z-index:1; }
 <!-- ===== Checkout modal ===== -->
 <div class="modal-overlay" id="checkoutOverlay" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
   <div class="modal">
-    <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:18px;">
-      <h2 id="checkoutTitle" style="margin-bottom:0;">Data Pengiriman</h2>
+    <div class="modal-head-sticky">
+      <h2 id="checkoutTitle">Data Pengiriman</h2>
       <button class="drawer-close" onclick="closeCheckoutModal()" aria-label="Kembali / batalkan checkout" style="flex-shrink:0;">✕</button>
     </div>
     <div class="field">
@@ -1161,9 +1212,11 @@ main, footer{ position:relative; z-index:1; }
 <div class="modal-overlay" id="receiptOverlay" role="dialog" aria-modal="true" aria-label="Struk pesanan">
   <div class="modal" style="background:transparent; box-shadow:none; padding:0;">
     <div class="receipt" id="receiptContent"></div>
-    <div class="modal-actions" style="margin-top:18px;">
-      <button class="btn-ghost" onclick="cetakStruk()">🖨️ Cetak</button>
-      <button class="btn-ghost" onclick="closeReceiptModal()">Tutup</button>
+    <div class="receipt-actions">
+      <div class="receipt-actions-row">
+        <button class="btn-ghost" onclick="cetakStruk()">🖨️ Cetak</button>
+        <button class="btn-ghost" onclick="closeReceiptModal()">✕ Tutup</button>
+      </div>
       <button class="btn-primary" onclick="pesanLagiDariStruk()">Pesan Lagi</button>
     </div>
   </div>
@@ -1225,7 +1278,7 @@ main, footer{ position:relative; z-index:1; }
     <div class="admin-head">
       <div>
         <h2 id="adminTitle">⚙️ Admin Panel</h2>
-        <div class="admin-head-sub">Warung Ku Digital by Kelompok 8 — kasir &amp; dapur</div>
+        <div class="admin-head-sub">Warung Ku Digital by Kelompok 2 — kasir &amp; dapur</div>
       </div>
       <button class="drawer-close" onclick="closeAdmin()" aria-label="Tutup admin panel">✕</button>
     </div>
@@ -1372,8 +1425,6 @@ main, footer{ position:relative; z-index:1; }
   </div>
 </div>
 
-</main>
-
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <!-- ===== Mobile cart bar (checkout cepat) ===== -->
@@ -1482,7 +1533,7 @@ const ZONA_ONGKIR = [
 let zonaTerpilih = ZONA_ONGKIR[0].kode;
 
 /* --- Kode promo (dikelola admin, tersimpan di localStorage) --- */
-let promoCodes = { "HEMAT10": {persen:10, aktif:true}, "KELOMPOK8": {persen:90, aktif:true} }; // KELOMPOK8: promo khusus, tanpa syarat minimum belanja
+let promoCodes = { "HEMAT10": {persen:10, aktif:true}, "KELOMPOK2": {persen:90, aktif:true} }; // KELOMPOK2: promo khusus, tanpa syarat minimum belanja
 let promoAktif = null; // {kode, persen}
 
 /* --- Pajak (diatur admin, inklusif — tidak menambah total, hanya rincian) --- */
@@ -2062,7 +2113,7 @@ function showReceipt(p){
   const content = document.getElementById('receiptContent');
   content.innerHTML = `
     <div class="receipt-center">
-      <div class="biz">WARUNG KU DIGITAL BY KELOMPOK 8</div>
+      <div class="biz">WARUNG KU DIGITAL BY KELOMPOK 2</div>
       <div class="addr">Universitas Indraprasta PGRI<br>Program Studi Bisnis Digital</div>
     </div>
     <div class="receipt-dash"></div>
