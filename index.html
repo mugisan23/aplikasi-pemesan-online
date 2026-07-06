@@ -315,6 +315,10 @@ h1,h2,h3,.display{
   transform: rotate(-3deg);
 }
 .card-badge-ribbon.baru{ background: var(--hijau-daun); transform: rotate(2deg); }
+.card-badge-ribbon.flash{ background: linear-gradient(100deg, var(--merah-cabai), var(--kuning-kunyit)); }
+.card-harga-wrap{ display:flex; flex-direction:column; gap:1px; line-height:1.15; }
+.card-harga-lama{ font-family:'Space Mono',monospace; font-size:11px; color:var(--abu); text-decoration:line-through; }
+.card-harga.flash{ color: var(--merah-cabai); }
 .fav-btn{
   position:absolute; bottom:10px; right:10px; z-index:2;
   width:30px; height:30px; border-radius:50%; border:none;
@@ -1068,6 +1072,78 @@ footer{
 .admin-alert-stok{ font-family:'Space Mono',monospace; font-weight:700; font-size:11.5px; color:var(--merah-cabai); flex-shrink:0; }
 .admin-empty-mini{ font-size:12px; color:var(--abu); text-align:center; padding:8px 0; }
 
+/* ===== Admin — Kelola Menu (kartu daftar menu) ===== */
+.admin-menu-toolbar{ display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.admin-menu-toolbar input{
+  flex:1; min-width:0; border:1.5px solid var(--garis); background:var(--krem-kartu);
+  border-radius:10px; padding:9px 12px 9px 34px; font-family:'Inter',sans-serif; font-size:12.5px;
+  color:var(--hijau-tua);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236E7259' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M21 21l-4.3-4.3'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position:11px center; background-size:14px;
+}
+.admin-menu-toolbar input:focus{ outline:none; border-color:var(--hijau-tua); }
+.admin-menu-count{ font-family:'Space Mono',monospace; font-size:11px; color:var(--abu); flex-shrink:0; white-space:nowrap; }
+
+.admin-menu-list{
+  max-height:340px; overflow-y:auto; display:flex; flex-direction:column; gap:9px; padding-right:2px;
+}
+.admin-menu-list::-webkit-scrollbar{ width:6px; }
+.admin-menu-list::-webkit-scrollbar-thumb{ background:var(--garis); border-radius:999px; }
+
+.admin-menu-card{
+  display:grid;
+  grid-template-columns: 44px 1fr auto;
+  grid-template-areas: "thumb info actions" "thumb price actions";
+  align-items:center; column-gap:10px; row-gap:6px;
+  border:1px solid var(--garis); background:var(--krem-kartu);
+  border-radius:4px 14px 4px 14px; padding:10px 12px;
+  transition: border-color .15s ease, transform .15s ease, box-shadow .15s ease;
+}
+.admin-menu-card:hover{ border-color:var(--hijau-tua); transform:translateY(-1px); box-shadow:0 4px 14px rgba(43,33,23,0.08); }
+.admin-menu-card.is-menipis{ border-color:var(--kuning-kunyit); background:#FBF3E0; }
+.admin-menu-card.is-habis{ border-color:var(--merah-cabai); background:#FCEFE9; }
+
+.admin-menu-thumb{ grid-area:thumb; width:44px; height:44px; border-radius:10px; overflow:hidden; flex-shrink:0; background:var(--krem); }
+.admin-menu-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+.admin-menu-info{ grid-area:info; min-width:0; }
+.admin-menu-name{ font-size:13px; font-weight:700; color:var(--hijau-tua); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.admin-menu-meta{ display:flex; align-items:center; gap:6px; margin-top:4px; flex-wrap:wrap; }
+.admin-menu-kode{ font-size:10px; color:var(--abu); }
+.admin-menu-tag{
+  font-size:10px; font-weight:600; color:var(--hijau-daun); background:#E4E9CE;
+  border-radius:999px; padding:2px 8px; white-space:nowrap;
+}
+.admin-menu-stock{ font-family:'Space Mono',monospace; font-size:10px; font-weight:700; color:var(--hijau-daun); }
+.admin-menu-stock.low{ color:#96660F; }
+.admin-menu-stock.out{ color:var(--merah-cabai); }
+
+.admin-menu-price{ grid-area:price; display:flex; align-items:center; gap:6px; }
+.admin-menu-price-prefix{ font-family:'Space Mono',monospace; font-size:11.5px; color:var(--abu); flex-shrink:0; }
+.admin-menu-price input{
+  width:100%; max-width:112px; border:1.5px solid var(--garis); background:var(--krem);
+  border-radius:8px; padding:6px 8px; font-family:'Space Mono',monospace; font-size:12px; color:var(--hijau-tua);
+}
+.admin-menu-price input:focus{ outline:none; border-color:var(--hijau-tua); }
+
+.admin-menu-actions{ grid-area:actions; display:flex; gap:6px; flex-shrink:0; align-self:center; }
+.admin-menu-btn{
+  width:32px; height:32px; border-radius:50%; border:1.5px solid var(--garis); background:var(--krem);
+  display:flex; align-items:center; justify-content:center; font-size:13px; cursor:pointer; line-height:1;
+  transition: all .15s ease; color:var(--hijau-tua);
+}
+.admin-menu-btn:hover{ transform:translateY(-1px); }
+.admin-menu-btn.save:hover{ background:var(--hijau-daun); border-color:var(--hijau-daun); color:white; }
+.admin-menu-btn.img:hover{ background:var(--kuning-kunyit); border-color:var(--kuning-kunyit); }
+.admin-menu-btn.delete{ color:var(--merah-cabai); border-color:var(--garis); }
+.admin-menu-btn.delete:hover{ background:var(--merah-cabai); border-color:var(--merah-cabai); color:white; }
+.admin-menu-btn:focus-visible{ outline:2px solid var(--kuning-kunyit); outline-offset:2px; }
+
+@media (max-width:420px){
+  .admin-menu-card{ grid-template-columns: 40px 1fr; grid-template-areas: "thumb info" "thumb price" "actions actions"; }
+  .admin-menu-actions{ justify-content:flex-end; margin-top:2px; }
+}
+
 /* ===== Promo banner ===== */
 .promo-banner{
   max-width:1180px; margin:0 auto;
@@ -1106,6 +1182,97 @@ footer{
   0%,100%{ transform: scale(1); box-shadow: 0 0 0 rgba(178,58,29,0); }
   50%{ transform: scale(1.045); box-shadow: 0 4px 14px rgba(178,58,29,.35); }
 }
+
+/* ===== Flash Sale banner + countdown ===== */
+.flash-sale-banner{
+  max-width:1180px; margin:0 auto 8px; padding: 0 24px;
+  display:none;
+}
+.flash-sale-banner.visible{ display:block; }
+.flash-sale-inner{
+  background: linear-gradient(110deg, var(--merah-cabai) 0%, var(--merah-cabai-gelap) 100%);
+  border-radius:18px; padding:14px 20px;
+  display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap;
+  color:#fff; position:relative; overflow:hidden;
+  animation: flashSaleGlow 2.4s ease-in-out infinite;
+}
+@keyframes flashSaleGlow{
+  0%,100%{ box-shadow: 0 4px 16px rgba(178,58,29,0.35); }
+  50%{ box-shadow: 0 4px 24px rgba(201,138,26,0.55); }
+}
+.flash-sale-text{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.flash-sale-bolt{ font-size:22px; animation: flashBoltShake 1.6s ease-in-out infinite; display:inline-block; }
+@keyframes flashBoltShake{
+  0%,100%{ transform: rotate(0deg); }
+  25%{ transform: rotate(-12deg); }
+  75%{ transform: rotate(12deg); }
+}
+.flash-sale-title{ font-family:'Bricolage Grotesque',sans-serif; font-weight:800; font-size: clamp(14px, 3.6vw, 17px); }
+.flash-sale-sub{ font-size:12px; opacity:0.9; }
+.flash-sale-sub .kode-mono{ font-family:'Space Mono',monospace; background:rgba(255,255,255,0.2); padding:2px 7px; border-radius:6px; }
+.flash-sale-timer{
+  display:flex; gap:6px; align-items:center;
+  font-family:'Space Mono',monospace; font-weight:700;
+}
+.flash-sale-timer .unit{
+  background:rgba(0,0,0,0.22); border-radius:8px; padding:6px 9px; min-width:38px; text-align:center; font-size:15px;
+}
+.flash-sale-timer .sep{ opacity:0.7; }
+@media (max-width:700px){
+  .flash-sale-inner{ padding:12px 16px; }
+  .flash-sale-timer .unit{ min-width:32px; padding:5px 7px; font-size:13px; }
+}
+
+/* ===== Section Menu Flash Sale (badge ⚡ + harga coret, per-item, dikelola admin) ===== */
+.flash-menu-section{ display:none; max-width:1180px; margin:0 auto; padding: 8px 24px 0; }
+.flash-menu-section.visible{ display:block; }
+@media (max-width:700px){ .flash-menu-section{ padding: 8px 16px 0; } }
+.flash-menu-head{
+  display:flex; align-items:center; gap:10px; margin-bottom:16px;
+}
+.flash-menu-head .bolt{ font-size:22px; animation: flashBoltShake 1.6s ease-in-out infinite; display:inline-block; }
+.flash-menu-head h2{
+  font-family:'Bricolage Grotesque',sans-serif; font-weight:800;
+  font-size: clamp(1.3rem,2.4vw,1.8rem);
+  background: linear-gradient(100deg, var(--merah-cabai), var(--kuning-kunyit));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.flash-menu-head .section-rule{ height:2px; background: var(--garis); flex:1; }
+
+/* ===== Ulasan pembeli (rating asli) ===== */
+.ulasan-section{ margin-top:22px; border-top:1px solid var(--garis); padding-top:18px; }
+.ulasan-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px; flex-wrap:wrap; }
+.ulasan-head h3{ font-size:15px; }
+.ulasan-ringkas{ display:flex; align-items:center; gap:6px; font-weight:700; color:var(--hijau-tua); }
+.ulasan-ringkas .star{ color:var(--kuning-kunyit); }
+.ulasan-ringkas .jml{ font-size:12px; color:var(--abu); font-weight:500; }
+.ulasan-form{
+  background: var(--krem-kartu); border:1px solid var(--garis); border-radius:14px;
+  padding:14px; margin-bottom:14px;
+}
+.ulasan-bintang-pilih{ display:flex; gap:4px; margin-bottom:10px; }
+.ulasan-bintang-pilih button{
+  background:none; border:none; font-size:24px; cursor:pointer; line-height:1;
+  opacity:0.35; transition: opacity .15s ease, transform .15s ease; padding:2px;
+}
+.ulasan-bintang-pilih button.aktif{ opacity:1; transform: scale(1.1); }
+.ulasan-form input, .ulasan-form textarea{
+  width:100%; border:1.5px solid var(--garis); background:var(--krem); border-radius:10px;
+  padding:10px 12px; font-family:'Inter',sans-serif; font-size:13.5px; color:var(--hijau-tua);
+  margin-bottom:8px; resize:vertical;
+}
+.ulasan-form input:focus, .ulasan-form textarea:focus{ outline:none; border-color:var(--hijau-tua); }
+.ulasan-list{ display:flex; flex-direction:column; gap:10px; max-height:260px; overflow-y:auto; }
+.ulasan-item{ border:1px solid var(--garis); border-radius:12px; padding:10px 12px; background:var(--krem-2); }
+.ulasan-item .top{ display:flex; justify-content:space-between; align-items:baseline; gap:8px; margin-bottom:4px; }
+.ulasan-item .nm{ font-weight:700; font-size:12.5px; }
+.ulasan-item .tgl{ font-size:11px; color:var(--abu); white-space:nowrap; }
+.ulasan-item .bintang{ color:var(--kuning-kunyit); font-size:12.5px; margin-bottom:4px; }
+.ulasan-item .komentar{ font-size:13px; color:#4B4636; line-height:1.5; }
+.ulasan-kosong{ font-size:12.5px; color:var(--abu); text-align:center; padding:14px 0; }
+
+/* ===== Aksi ekspor struk ===== */
+.receipt-actions-row-2{ display:flex; gap:10px; margin-top:8px; }
 
 /* ===== Image loading shimmer ===== */
 .card-img img{
@@ -1487,6 +1654,34 @@ main, footer{ position:relative; z-index:1; }
   </div>
 </div>
 
+<!-- ===== Flash Sale banner (dikelola admin) ===== -->
+<div class="flash-sale-banner" id="flashSaleBanner">
+  <div class="flash-sale-inner">
+    <div class="flash-sale-text">
+      <span class="flash-sale-bolt">⚡</span>
+      <div>
+        <div class="flash-sale-title" id="flashSaleTitle">Flash Sale!</div>
+        <div class="flash-sale-sub">Pakai kode <span class="kode-mono" id="flashSaleKode">FLASH</span> — diskon <span id="flashSalePersen">0</span>% otomatis lebih besar akan dipakai</div>
+      </div>
+    </div>
+    <div class="flash-sale-timer" id="flashSaleTimer" aria-live="polite">
+      <div class="unit" id="fsJam">00</div><span class="sep">:</span>
+      <div class="unit" id="fsMenit">00</div><span class="sep">:</span>
+      <div class="unit" id="fsDetik">00</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Section Menu Flash Sale (menu tertentu pilihan admin, harga coret) ===== -->
+<section class="menu-section flash-menu-section" id="flashMenuSection">
+  <div class="flash-menu-head">
+    <span class="bolt">⚡</span>
+    <h2>Menu Flash Sale</h2>
+    <div class="section-rule"></div>
+  </div>
+  <div class="grid" id="flashMenuGrid"></div>
+</section>
+
 <!-- ===== Search bar ===== -->
 <div class="search-wrap">
   <div class="search-box">
@@ -1619,6 +1814,26 @@ main, footer{ position:relative; z-index:1; }
         <button class="btn-ghost" onclick="tutupDetailMenu()">Tutup</button>
         <button class="btn-primary" id="detailAddBtn" onclick="tambahDariDetail()">+ Tambah ke Keranjang</button>
       </div>
+
+      <div class="ulasan-section">
+        <div class="ulasan-head">
+          <h3>💬 Ulasan Pembeli</h3>
+          <div class="ulasan-ringkas" id="ulasanRingkas"></div>
+        </div>
+        <div class="ulasan-form">
+          <div class="ulasan-bintang-pilih" id="ulasanBintangPilih" role="radiogroup" aria-label="Pilih bintang">
+            <button type="button" data-n="1" onclick="pilihBintangUlasan(1)" aria-label="1 bintang">★</button>
+            <button type="button" data-n="2" onclick="pilihBintangUlasan(2)" aria-label="2 bintang">★</button>
+            <button type="button" data-n="3" onclick="pilihBintangUlasan(3)" aria-label="3 bintang">★</button>
+            <button type="button" data-n="4" onclick="pilihBintangUlasan(4)" aria-label="4 bintang">★</button>
+            <button type="button" data-n="5" onclick="pilihBintangUlasan(5)" aria-label="5 bintang">★</button>
+          </div>
+          <input type="text" id="ulasanNama" placeholder="Nama Anda (opsional)" maxlength="40">
+          <textarea id="ulasanKomentar" rows="2" placeholder="Bagaimana rasanya? Ceritakan pengalaman Anda…" maxlength="240"></textarea>
+          <button class="btn-primary" style="width:100%; padding:10px;" onclick="kirimUlasan()">Kirim Ulasan</button>
+        </div>
+        <div class="ulasan-list" id="ulasanList"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -1632,6 +1847,10 @@ main, footer{ position:relative; z-index:1; }
       <div class="receipt-actions-row">
         <button class="btn-ghost" onclick="cetakStruk()">🖨️ Cetak</button>
         <button class="btn-ghost" onclick="closeReceiptModal()">✕ Tutup</button>
+      </div>
+      <div class="receipt-actions-row-2">
+        <button class="btn-ghost" onclick="unduhStrukGambar()">🖼️ Simpan Gambar</button>
+        <button class="btn-ghost" onclick="unduhStrukPDF()">📄 Simpan PDF</button>
       </div>
       <button class="btn-primary" onclick="pesanLagiDariStruk()">Pesan Lagi</button>
     </div>
@@ -1822,11 +2041,32 @@ main, footer{ position:relative; z-index:1; }
             <input type="number" id="menuBaruHarga" placeholder="Harga (Rp)" min="0" style="flex:1; min-width:0; border:1.5px solid var(--garis); background:var(--krem-kartu); border-radius:10px; padding:10px 12px; font-family:'Space Mono',monospace; font-size:12.5px; color:var(--hijau-tua);">
             <input type="number" id="menuBaruStok" placeholder="Stok awal" min="0" style="flex:1; min-width:0; border:1.5px solid var(--garis); background:var(--krem-kartu); border-radius:10px; padding:10px 12px; font-family:'Space Mono',monospace; font-size:12.5px; color:var(--hijau-tua);">
           </div>
+          <input type="text" id="menuBaruGambar" placeholder="URL Gambar (opsional, kosongkan untuk foto default kategori)" style="width:100%; border:1.5px solid var(--garis); background:var(--krem-kartu); border-radius:10px; padding:10px 12px; font-family:'Inter',sans-serif; font-size:12.5px; color:var(--hijau-tua);">
           <button class="btn-primary" style="width:100%; padding:12px;" onclick="tambahMenuBaru()">+ Tambah Menu</button>
         </div>
         <div id="menuKelolaFeedback" style="font-size:12.5px; margin-bottom:10px; min-height:18px;"></div>
-        <label style="font-size:12.5px; font-weight:600; color:#4B4636; display:block; margin-bottom:8px;">Daftar Menu (edit harga / hapus)</label>
-        <div id="adminMenuList" style="max-height:280px; overflow-y:auto; display:flex; flex-direction:column; gap:8px;"></div>
+
+        <label style="font-size:12.5px; font-weight:600; color:#4B4636; display:block; margin-bottom:8px;">Daftar Menu <span style="color:var(--abu); font-weight:500;">(edit harga / hapus)</span></label>
+        <div class="admin-menu-toolbar">
+          <input type="text" id="adminMenuSearch" placeholder="Cari kode atau nama menu…" oninput="renderAdminMenuList()" aria-label="Cari menu">
+          <span class="admin-menu-count" id="adminMenuCount"></span>
+        </div>
+        <div id="adminMenuList" class="admin-menu-list"></div>
+      </div>
+
+      <div class="admin-section">
+        <h3>⚡ Menu Flash Sale</h3>
+        <div style="font-size:11.5px; color:var(--abu); margin-bottom:10px; line-height:1.5;">
+          Pilih menu tertentu untuk ditandai "flash sale": tampil dengan badge ⚡ dan harga coret di section khusus halaman utama, sampai Anda matikan sendiri (beda dari kode diskon keranjang di tab Keamanan).
+        </div>
+        <div style="display:flex; gap:8px; margin-bottom:8px;">
+          <select id="fsMenuKode" style="flex:1; min-width:0; border:1.5px solid var(--garis); background:var(--krem-kartu); border-radius:10px; padding:10px 12px; font-family:'Inter',sans-serif; font-size:12.5px; color:var(--hijau-tua);"></select>
+          <input type="number" id="fsMenuHarga" placeholder="Harga flash sale (Rp)" min="0" style="flex:1; min-width:0; border:1.5px solid var(--garis); background:var(--krem-kartu); border-radius:10px; padding:10px 12px; font-family:'Space Mono',monospace; font-size:12.5px; color:var(--hijau-tua);">
+        </div>
+        <button class="btn-primary" style="width:100%; padding:11px; margin-bottom:12px;" onclick="jadikanMenuFlashSale()">⚡ Jadikan Flash Sale</button>
+        <div id="fsMenuFeedback" style="font-size:12.5px; margin-bottom:10px; min-height:18px;"></div>
+        <label style="font-size:12.5px; font-weight:600; color:#4B4636; display:block; margin-bottom:8px;">Menu Flash Sale Aktif</label>
+        <div id="adminFlashMenuList" style="display:flex; flex-direction:column; gap:8px;"></div>
       </div>
     </div>
 
@@ -1834,6 +2074,25 @@ main, footer{ position:relative; z-index:1; }
     <div class="admin-tab-content" id="adminTab-keamanan" role="tabpanel">
       <div class="admin-section" style="margin-top:0; border-top:none; padding-top:0;">
         <h3>Pengaturan Toko</h3>
+
+        <label style="font-size:12.5px; font-weight:600; color:#4B4636; display:block; margin-bottom:6px;">⚡ Flash Sale (promo waktu terbatas)</label>
+        <div style="font-size:11.5px; color:var(--abu); margin-bottom:10px; line-height:1.5;">
+          Muncul sebagai banner bercountdown di halaman utama. Kodenya otomatis aktif di kolom "Kode promo" selama waktu berjalan, dan mati sendiri saat waktu habis.
+        </div>
+        <div id="fsAdminStatus" style="font-size:12px; margin-bottom:10px; line-height:1.5;"></div>
+        <div style="display:flex; gap:8px; margin-bottom:8px;">
+          <input type="text" id="fsAdminJudul" placeholder="Judul (mis. Flash Sale Jam Makan!)" style="flex:1; border:1.5px solid var(--garis); background:var(--krem-kartu); border-radius:10px; padding:10px 12px; font-family:'Inter',sans-serif; font-size:12.5px; color:var(--hijau-tua);">
+        </div>
+        <div style="display:flex; gap:8px; margin-bottom:8px;">
+          <input type="text" id="fsAdminKode" placeholder="Kode (mis. FLASH20)" style="flex:1; text-transform:uppercase; border:1.5px solid var(--garis); background:var(--krem-kartu); border-radius:10px; padding:10px 12px; font-family:'Space Mono',monospace; font-size:12.5px; color:var(--hijau-tua);">
+          <input type="number" id="fsAdminPersen" placeholder="% diskon" min="1" max="90" style="width:90px; border:1.5px solid var(--garis); background:var(--krem-kartu); border-radius:10px; padding:10px 12px; font-family:'Space Mono',monospace; font-size:12.5px; color:var(--hijau-tua);">
+          <input type="number" id="fsAdminJam" placeholder="Durasi (jam)" min="0.1" step="0.5" style="width:100px; border:1.5px solid var(--garis); background:var(--krem-kartu); border-radius:10px; padding:10px 12px; font-family:'Space Mono',monospace; font-size:12.5px; color:var(--hijau-tua);">
+        </div>
+        <div style="display:flex; gap:8px; margin-bottom:16px;">
+          <button class="btn-primary" style="flex:1; padding:11px;" onclick="aktifkanFlashSale()">⚡ Aktifkan</button>
+          <button class="btn-ghost" style="flex:1; padding:11px;" onclick="matikanFlashSale()">Matikan</button>
+        </div>
+
         <label style="font-size:12.5px; font-weight:600; color:#4B4636; display:block; margin-bottom:6px;">Kode Promo</label>
         <div style="font-size:11.5px; color:var(--abu); margin-bottom:10px; line-height:1.5;">
           Diskon dari kode promo dan diskon otomatis (5%/10% by nilai belanja) TIDAK ditumpuk — pelanggan otomatis mendapat yang lebih besar.
@@ -1906,6 +2165,8 @@ main, footer{ position:relative; z-index:1; }
   <button class="mcb-btn" onclick="openCart()">🧺 Lihat Keranjang</button>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script id="mainScript">
 /* ============================================================
    DATA MENU — 10 item per kategori (diringkas dari menu asli)
@@ -1983,6 +2244,18 @@ const FALLBACK_IMGS = {
 
 const KATEGORI = ["Sayuran","Ayam & Bebek","Ikan & Seafood","Daging & Telur","Minuman"];
 const KATEGORI_SLUG = { "Sayuran":"sayuran", "Ayam & Bebek":"ayam-bebek", "Ikan & Seafood":"ikan-seafood", "Daging & Telur":"daging-telur", "Minuman":"minuman" };
+
+/* ===== Menu Flash Sale (per-item, dikelola admin) =====
+   Beda dengan flashSale (kode diskon seluruh keranjang di atas): fitur ini
+   menandai menu TERTENTU sebagai "menu flash sale" dengan harga coret,
+   tampil di section khusus bertanda ⚡ di halaman utama. Aktif terus sampai
+   admin matikan (tidak pakai countdown). */
+function isMenuFlash(p){
+  return !!(p && p.flashMenuAktif && typeof p.hargaFlashMenu === 'number' && p.hargaFlashMenu > 0 && p.hargaFlashMenu < p.harga);
+}
+function hargaEfektif(p){
+  return isMenuFlash(p) ? p.hargaFlashMenu : p.harga;
+}
 const METODE_BAYAR = ["QRIS","Transfer Bank","Dompet Digital (GoPay/OVO)","COD (Bayar di Tempat)"];
 const STATUS_PESANAN = ["Menunggu Konfirmasi","Sedang Diproses","Sedang Dikirim","Selesai","Dibatalkan"];
 
@@ -2006,6 +2279,93 @@ let zonaTerpilih = ZONA_ONGKIR[0].kode;
 /* --- Kode promo (dikelola admin, tersimpan di localStorage) --- */
 let promoCodes = { "HEMAT10": {persen:10, aktif:true}, "KELOMPOK2": {persen:90, aktif:true} }; // KELOMPOK2: promo khusus, tanpa syarat minimum belanja
 let promoAktif = null; // {kode, persen}
+
+/* --- Flash Sale: promo waktu terbatas dengan countdown (dikelola admin) ---
+   Kode promonya otomatis didaftarkan ke `promoCodes` selagi aktif, dan
+   otomatis dinonaktifkan saat waktu habis. Default: aktif 3 jam sejak
+   pertama kali situs dibuka, supaya langsung terlihat efeknya saat demo. */
+let flashSale = {
+  aktif: true,
+  judul: "Flash Sale Jam Makan!",
+  persen: 20,
+  kode: "FLASH20",
+  berakhirPada: new Date(Date.now() + 3*60*60*1000).toISOString()
+};
+let flashSaleTimerInterval = null;
+function syncFlashSalePromoCode(){
+  // Selalu daftarkan/hapus kode flash sale di promoCodes sesuai status aktif-nya,
+  // supaya kode itu bisa langsung dipakai di kolom "Kode promo" saat checkout.
+  Object.keys(promoCodes).forEach(k => { if(promoCodes[k]._flashSale) delete promoCodes[k]; });
+  if(flashSale.aktif && flashSale.kode){
+    promoCodes[flashSale.kode] = { persen: flashSale.persen, aktif: true, _flashSale: true };
+  }
+}
+function renderFlashSaleTick(){
+  const banner = document.getElementById('flashSaleBanner');
+  if(!banner) return;
+  const sisaMs = new Date(flashSale.berakhirPada).getTime() - Date.now();
+  if(!flashSale.aktif || sisaMs <= 0){
+    if(flashSale.aktif && sisaMs <= 0){
+      // Waktu habis: nonaktifkan otomatis
+      flashSale.aktif = false;
+      syncFlashSalePromoCode();
+      saveState();
+    }
+    banner.classList.remove('visible');
+    return;
+  }
+  banner.classList.add('visible');
+  document.getElementById('flashSaleTitle').textContent = '⚡ ' + flashSale.judul;
+  document.getElementById('flashSaleKode').textContent = flashSale.kode;
+  document.getElementById('flashSalePersen').textContent = flashSale.persen;
+  const totalDetik = Math.floor(sisaMs / 1000);
+  const jam = Math.floor(totalDetik / 3600);
+  const menit = Math.floor((totalDetik % 3600) / 60);
+  const detik = totalDetik % 60;
+  const pad = n => String(n).padStart(2,'0');
+  document.getElementById('fsJam').textContent = pad(jam);
+  document.getElementById('fsMenit').textContent = pad(menit);
+  document.getElementById('fsDetik').textContent = pad(detik);
+}
+function setupFlashSaleCountdown(){
+  syncFlashSalePromoCode();
+  renderFlashSaleTick();
+  if(flashSaleTimerInterval) clearInterval(flashSaleTimerInterval);
+  flashSaleTimerInterval = setInterval(renderFlashSaleTick, 1000);
+}
+/* --- Kontrol admin untuk Flash Sale --- */
+function aktifkanFlashSale(){
+  const judul = (document.getElementById('fsAdminJudul').value || '').trim() || 'Flash Sale!';
+  const persen = Math.max(1, Math.min(90, parseInt(document.getElementById('fsAdminPersen').value, 10) || 10));
+  const kode = ((document.getElementById('fsAdminKode').value || '').trim() || 'FLASH' + persen).toUpperCase().replace(/[^A-Z0-9]/g,'');
+  const jam = Math.max(0.1, parseFloat(document.getElementById('fsAdminJam').value) || 2);
+  flashSale = {
+    aktif: true, judul, persen, kode,
+    berakhirPada: new Date(Date.now() + jam*60*60*1000).toISOString()
+  };
+  syncFlashSalePromoCode();
+  saveState();
+  renderFlashSaleTick();
+  renderAdminFlashSale();
+  showToast('⚡ Flash sale diaktifkan!');
+}
+function matikanFlashSale(){
+  flashSale.aktif = false;
+  syncFlashSalePromoCode();
+  saveState();
+  renderFlashSaleTick();
+  renderAdminFlashSale();
+  showToast('Flash sale dimatikan.');
+}
+function renderAdminFlashSale(){
+  const status = document.getElementById('fsAdminStatus');
+  if(!status) return;
+  if(flashSale.aktif && new Date(flashSale.berakhirPada).getTime() > Date.now()){
+    status.innerHTML = `<span style="color:var(--hijau-daun); font-weight:700;">● Aktif</span> — "${escapeHtml(flashSale.judul)}" diskon ${flashSale.persen}% (kode ${escapeHtml(flashSale.kode)}), berakhir ${new Date(flashSale.berakhirPada).toLocaleString('id-ID')}`;
+  } else {
+    status.innerHTML = `<span style="color:var(--abu); font-weight:700;">○ Nonaktif</span>`;
+  }
+}
 
 /* --- Pajak (diatur admin, inklusif — tidak menambah total, hanya rincian) --- */
 let PAJAK_PERSEN = 0; // default 0: banyak UMKM kuliner di bawah ambang PKP belum wajib pungut PPN
@@ -2152,15 +2512,33 @@ function renderMenu(){
     `;
   }).join('');
   if(noResult) noResult.classList.toggle('visible', totalFound === 0 && showFavOnly);
+  renderFlashMenuSection();
   setupScrollReveal();
 }
 
-
+/* Section khusus "Menu Flash Sale": menu-menu yang ditandai admin sebagai
+   flash sale, tampil dengan badge ⚡ + harga coret. Beda dari banner
+   flashSale (kode diskon keranjang) di atas. */
+function renderFlashMenuSection(){
+  const section = document.getElementById('flashMenuSection');
+  const grid = document.getElementById('flashMenuGrid');
+  if(!section || !grid) return;
+  let items = Object.entries(menuProduk).filter(([k,p]) => isMenuFlash(p));
+  if(showFavOnly) items = items.filter(([k]) => favoritSet.has(k));
+  if(items.length === 0){
+    section.classList.remove('visible');
+    grid.innerHTML = '';
+    return;
+  }
+  grid.innerHTML = items.map(([kode,p]) => renderCard(kode,p,'flashcard-')).join('');
+  section.classList.add('visible');
+}
 
 function refreshCardDisplay(kode){
   const p = menuProduk[kode];
   const el = document.getElementById('card-' + kode);
   if(el) el.outerHTML = renderCard(kode, p);
+  renderFlashMenuSection();
   // jika sedang search, render ulang filtered
   if(typeof searchQuery !== 'undefined' && searchQuery !== ''){
     renderMenuFiltered();
@@ -2171,7 +2549,8 @@ function refreshCardDisplay(kode){
 function getCartItems(){
   return Object.entries(keranjang).map(([kode,jumlah]) => {
     const p = menuProduk[kode];
-    return { kode, nama:p.nama, harga:p.harga, jumlah, subtotal: p.harga*jumlah, img:p.img, kategori:p.kategori };
+    const harga = hargaEfektif(p);
+    return { kode, nama:p.nama, harga, jumlah, subtotal: harga*jumlah, img:p.img, kategori:p.kategori };
   });
 }
 function getCartTotal(){
@@ -2655,8 +3034,10 @@ function renderStepperHTML(status){
   </div>`;
 }
 
+let strukAktifNoPesanan = '';
 function showReceipt(p){
   tembakConfetti();
+  strukAktifNoPesanan = p.noPesanan || 'pesanan';
   const content = document.getElementById('receiptContent');
   content.innerHTML = `
     <div class="receipt-center">
@@ -2727,6 +3108,51 @@ function cetakStruk(){
   printWin.document.close();
 }
 
+/* ===== Ekspor struk ke Gambar (PNG) / PDF =====
+   Memakai html2canvas untuk "memotret" elemen struk jadi kanvas, lalu:
+   - Gambar: langsung diunduh sebagai PNG.
+   - PDF: kanvas dimasukkan ke halaman PDF berukuran pas (mirip struk kasir). */
+function _receiptExportEl(){
+  return document.getElementById('receiptContent');
+}
+function unduhStrukGambar(){
+  if(typeof html2canvas === 'undefined'){
+    showToast('⚠️ Gagal memuat alat ekspor gambar. Cek koneksi internet lalu coba lagi.');
+    return;
+  }
+  const el = _receiptExportEl();
+  showToast('⏳ Menyiapkan gambar struk…');
+  html2canvas(el, { backgroundColor: '#ffffff', scale: 2 }).then(canvas => {
+    const link = document.createElement('a');
+    link.download = `struk-${strukAktifNoPesanan}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  }).catch(err => {
+    console.warn('Gagal membuat gambar struk:', err);
+    showToast('⚠️ Gagal menyimpan gambar struk.');
+  });
+}
+function unduhStrukPDF(){
+  if(typeof html2canvas === 'undefined' || typeof window.jspdf === 'undefined'){
+    showToast('⚠️ Gagal memuat alat ekspor PDF. Cek koneksi internet lalu coba lagi.');
+    return;
+  }
+  const el = _receiptExportEl();
+  showToast('⏳ Menyiapkan PDF struk…');
+  html2canvas(el, { backgroundColor: '#ffffff', scale: 2 }).then(canvas => {
+    const { jsPDF } = window.jspdf;
+    const imgData = canvas.toDataURL('image/png');
+    const lebarMM = 80; // lebar mirip struk kasir/thermal
+    const tinggiMM = canvas.height * lebarMM / canvas.width;
+    const pdf = new jsPDF({ unit: 'mm', format: [lebarMM, tinggiMM] });
+    pdf.addImage(imgData, 'PNG', 0, 0, lebarMM, tinggiMM);
+    pdf.save(`struk-${strukAktifNoPesanan}.pdf`);
+  }).catch(err => {
+    console.warn('Gagal membuat PDF struk:', err);
+    showToast('⚠️ Gagal menyimpan PDF struk.');
+  });
+}
+
 /* ===== History ===== */
 function statusClass(status){
   if(status === "Sedang Diproses") return "proses";
@@ -2771,6 +3197,84 @@ function showReceiptByIndex(idx){
 let sortMode = 'default';
 let favoritSet = new Set();
 let showFavOnly = false;
+
+/* ===== Ulasan asli dari pembeli ===== */
+let ulasanProduk = {}; // { kode: [{bintang, nama, komentar, tanggal}] }
+let bintangUlasanTerpilih = 0;
+function getRatingGabungan(kode, p){
+  const asli = ulasanProduk[kode] || [];
+  if(asli.length > 0){
+    const total = asli.reduce((s,u) => s + u.bintang, 0);
+    return { rating: (total / asli.length).toFixed(1), jumlah: asli.length, asli: true };
+  }
+  const sim = getMenuInfo(kode, p);
+  return { rating: sim.rating, jumlah: 0, asli: false };
+}
+function pilihBintangUlasan(n){
+  bintangUlasanTerpilih = n;
+  document.querySelectorAll('#ulasanBintangPilih button').forEach(b => {
+    b.classList.toggle('aktif', parseInt(b.dataset.n,10) <= n);
+  });
+}
+function renderUlasanUI(kode){
+  const p = menuProduk[kode];
+  const list = ulasanProduk[kode] || [];
+  const gab = getRatingGabungan(kode, p);
+  const ringkas = document.getElementById('ulasanRingkas');
+  if(ringkas){
+    ringkas.innerHTML = list.length > 0
+      ? `<span class="star">★ ${gab.rating}</span><span class="jml">(${list.length} ulasan)</span>`
+      : `<span class="jml">Belum ada ulasan — jadilah yang pertama!</span>`;
+  }
+  bintangUlasanTerpilih = 0;
+  pilihBintangUlasan(0);
+  const namaInput = document.getElementById('ulasanNama');
+  const komentarInput = document.getElementById('ulasanKomentar');
+  if(namaInput) namaInput.value = '';
+  if(komentarInput) komentarInput.value = '';
+  const wrap = document.getElementById('ulasanList');
+  if(!wrap) return;
+  if(list.length === 0){
+    wrap.innerHTML = `<div class="ulasan-kosong">Belum ada ulasan untuk menu ini.</div>`;
+    return;
+  }
+  wrap.innerHTML = list.slice().reverse().map(u => `
+    <div class="ulasan-item">
+      <div class="top">
+        <span class="nm">${escapeHtml(u.nama || 'Pengunjung')}</span>
+        <span class="tgl">${escapeHtml(u.tanggal)}</span>
+      </div>
+      <div class="bintang">${'★'.repeat(u.bintang)}${'☆'.repeat(5-u.bintang)}</div>
+      <div class="komentar">${escapeHtml(u.komentar)}</div>
+    </div>
+  `).join('');
+}
+function kirimUlasan(){
+  if(!kodeDetailAktif) return;
+  if(bintangUlasanTerpilih <= 0){
+    showToast('⚠️ Pilih dulu jumlah bintangnya ya');
+    return;
+  }
+  const komentarInput = document.getElementById('ulasanKomentar');
+  const namaInput = document.getElementById('ulasanNama');
+  const komentar = (komentarInput.value || '').trim();
+  if(komentar === ''){
+    showToast('⚠️ Tulis dulu komentarnya ya');
+    return;
+  }
+  const kode = kodeDetailAktif;
+  if(!ulasanProduk[kode]) ulasanProduk[kode] = [];
+  ulasanProduk[kode].push({
+    bintang: bintangUlasanTerpilih,
+    nama: (namaInput.value || '').trim() || 'Pengunjung',
+    komentar,
+    tanggal: new Date().toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' })
+  });
+  saveState();
+  renderUlasanUI(kode);
+  refreshCardDisplay(kode);
+  showToast('✅ Terima kasih atas ulasannya!');
+}
 
 function onSortChange(val){
   sortMode = val;
@@ -2862,23 +3366,27 @@ function renderMenuFiltered(){
   if(noResult){
     noResult.classList.toggle('visible', totalFound === 0);
   }
+  renderFlashMenuSection();
   setupScrollReveal();
 }
 
 /* ===== Card render dengan image fallback & qty control ===== */
-function renderCard(kode, p){
+function renderCard(kode, p, idPrefix){
+  idPrefix = idPrefix || 'card-';
   const inCart = keranjang[kode] || 0;
   const habis = p.stok <= 0;
   const fallback = FALLBACK_IMGS[p.kategori] || '';
   const info = getMenuInfo(kode, p);
+  const gabRating = getRatingGabungan(kode, p);
   const rendahStok = !habis && p.stok <= 5;
   return `
-    <div class="card" id="card-${kode}" onclick="if(!event.target.closest('button')) bukaDetailMenu('${kode}')" style="cursor:pointer;">
+    <div class="card" id="${idPrefix}${kode}" onclick="if(!event.target.closest('button')) bukaDetailMenu('${kode}')" style="cursor:pointer;">
       <div class="card-img">
         <img src="${p.img}" srcset="${p.img.replace('w=500','w=300')} 300w, ${p.img} 500w" sizes="(max-width:600px) 45vw, 260px" alt="${p.nama}" loading="lazy"
           onload="this.classList.add('img-loaded')"
           onerror="this.onerror=null;this.srcset='';this.src='${fallback}';this.classList.add('img-loaded')">
-        ${ info.populer ? `<span class="card-badge-ribbon">🏆 Best Seller</span>` :
+        ${ isMenuFlash(p) ? `<span class="card-badge-ribbon flash">⚡ Flash Sale</span>` :
+           info.populer ? `<span class="card-badge-ribbon">🏆 Best Seller</span>` :
            info.baru ? `<span class="card-badge-ribbon baru">✨ Baru</span>` : '' }
         <span class="stock-badge ${habis?'habis':rendahStok?'sedikit':''}">${habis ? 'Habis' : rendahStok ? `Sisa ${p.stok}` : 'Stok ' + p.stok}</span>
         <button class="fav-btn ${favoritSet.has(kode)?'active':''}" onclick="toggleFavorit('${kode}')" aria-label="${favoritSet.has(kode)?'Hapus dari favorit':'Tambah ke favorit'}" aria-pressed="${favoritSet.has(kode)}">${favoritSet.has(kode) ? '❤' : '🤍'}</button>
@@ -2887,14 +3395,18 @@ function renderCard(kode, p){
         <div class="card-kode mono">${kode} · ${info.porsi}</div>
         <div class="card-nama">${p.nama} ${info.pedas ? '<span class="pedas-icon" title="Pedas">🌶️</span>' : ''}</div>
         <div class="card-meta">
-          <span class="star">★ ${info.rating}</span>
+          <span class="star">★ ${gabRating.rating}</span>
+          ${gabRating.asli ? `<span style="color:var(--abu);">(${gabRating.jumlah})</span>` : ''}
           <span>·</span>
           <span>${info.terjual}+ terjual</span>
           <span>·</span>
           <span>⏱ ${info.waktu} mnt</span>
         </div>
         <div class="card-foot">
-          <span class="card-harga">${formatRupiah(p.harga)}</span>
+          ${ isMenuFlash(p) ?
+            `<span class="card-harga-wrap"><span class="card-harga-lama">${formatRupiah(p.harga)}</span><span class="card-harga flash">${formatRupiah(p.hargaFlashMenu)}</span></span>` :
+            `<span class="card-harga">${formatRupiah(p.harga)}</span>`
+          }
           ${ habis ? `<button class="add-btn" disabled aria-label="Stok habis">+</button>` :
              inCart > 0 ?
               `<div class="qty-control">
@@ -2981,7 +3493,9 @@ function bukaDetailMenu(kode){
   document.getElementById('detailKategoriBadge').textContent = p.kategori;
   document.getElementById('detailKode').textContent = kode + ' · ' + (PORSI_KATEGORI[p.kategori] || '1 porsi');
   document.getElementById('menuDetailTitle').textContent = p.nama;
-  document.getElementById('detailHarga').textContent = formatRupiah(p.harga);
+  document.getElementById('detailHarga').innerHTML = isMenuFlash(p)
+    ? `<span class="card-harga-lama" style="font-size:0.6em;">${formatRupiah(p.harga)}</span> <span style="color:var(--merah-cabai);">${formatRupiah(p.hargaFlashMenu)}</span> <span style="font-size:0.5em; vertical-align:middle;">⚡</span>`
+    : formatRupiah(p.harga);
   document.getElementById('detailDesk').textContent = bangunDeskripsi(p.nama, p.kategori);
 
   const komposisi = bangunKomposisi(p.nama, p.kategori);
@@ -2999,6 +3513,8 @@ function bukaDetailMenu(kode){
   } else {
     addBtn.disabled = false; addBtn.textContent = '+ Tambah ke Keranjang';
   }
+
+  renderUlasanUI(kode);
 
   const overlay = document.getElementById('menuDetailOverlay');
   overlay.classList.add('open');
@@ -3337,9 +3853,15 @@ function lanjutkanBukaDashboardAdmin(){
   renderAdminStats();
   renderAdminPesananSelect();
   renderAdminMenuList();
+  isiFsMenuDropdown();
+  renderAdminFlashMenuList();
   renderAdminPromoList();
   renderAdminZonaList();
   document.getElementById('pajakPersenInput').value = PAJAK_PERSEN;
+  renderAdminFlashSale();
+  document.getElementById('fsAdminJudul').value = flashSale.judul;
+  document.getElementById('fsAdminKode').value = flashSale.kode;
+  document.getElementById('fsAdminPersen').value = flashSale.persen;
   switchAdminTab('ringkasan');
   fokuskanKeDalamDialog('adminOverlay', '.drawer-close');
   updateMobileCartBarVisibility();
@@ -3679,21 +4201,82 @@ function batalkanPesananSendiri(noPesanan){
 }
 
 /* ===== Kelola Menu (CRUD produk oleh admin) ===== */
+const KATEGORI_IKON = {
+  "Sayuran": "🥦",
+  "Ayam & Bebek": "🍗",
+  "Ikan & Seafood": "🐟",
+  "Daging & Telur": "🥩",
+  "Minuman": "🥤"
+};
+
 function renderAdminMenuList(){
   const wrap = document.getElementById('adminMenuList');
+  const countEl = document.getElementById('adminMenuCount');
   if(!wrap) return;
-  const entries = Object.entries(menuProduk).sort((a,b)=> a[1].kategori.localeCompare(b[1].kategori) || a[1].nama.localeCompare(b[1].nama));
-  wrap.innerHTML = entries.map(([kode,p]) => `
-    <div style="display:flex; align-items:center; gap:8px; border:1px solid var(--garis); border-radius:10px; padding:8px 10px; background:var(--krem-kartu);">
-      <div style="flex:1; min-width:0;">
-        <div style="font-size:12.5px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${p.nama}</div>
-        <div style="font-size:10.5px; color:var(--abu);" class="mono">${kode} · ${p.kategori} · stok ${p.stok}</div>
+
+  const totalSemua = Object.keys(menuProduk).length;
+  const q = (document.getElementById('adminMenuSearch')?.value || '').trim().toLowerCase();
+
+  let entries = Object.entries(menuProduk).sort((a,b)=> a[1].kategori.localeCompare(b[1].kategori) || a[1].nama.localeCompare(b[1].nama));
+  if(q){
+    entries = entries.filter(([kode,p]) => kode.toLowerCase().includes(q) || p.nama.toLowerCase().includes(q) || p.kategori.toLowerCase().includes(q));
+  }
+
+  if(countEl) countEl.textContent = totalSemua ? `${entries.length}/${totalSemua} menu` : '';
+
+  if(entries.length === 0){
+    wrap.innerHTML = `<div class="admin-empty-mini">${totalSemua === 0 ? 'Belum ada menu. Tambahkan menu pertama lewat form di atas.' : 'Tidak ada menu yang cocok dengan kata kunci itu.'}</div>`;
+    return;
+  }
+
+  wrap.innerHTML = entries.map(([kode,p]) => {
+    const fallback = FALLBACK_IMGS[p.kategori] || '';
+    const ikonKategori = KATEGORI_IKON[p.kategori] || '🍽️';
+    const statusClass = p.stok === 0 ? 'is-habis' : (p.stok <= 5 ? 'is-menipis' : '');
+    const stockClass = p.stok === 0 ? 'out' : (p.stok <= 5 ? 'low' : '');
+    const stockLabel = p.stok === 0 ? 'Habis' : `Stok ${p.stok}`;
+    return `
+    <div class="admin-menu-card ${statusClass}">
+      <div class="admin-menu-thumb">
+        <img src="${p.img}" alt="${p.nama}" loading="lazy" onerror="this.onerror=null;this.src='${fallback}';">
       </div>
-      <input type="number" min="0" value="${p.harga}" id="hargaEdit-${kode}" style="width:88px; border:1.5px solid var(--garis); background:var(--krem); border-radius:8px; padding:7px 8px; font-family:'Space Mono',monospace; font-size:12px; color:var(--hijau-tua);">
-      <button class="btn-ghost" style="padding:7px 10px; font-size:11.5px;" onclick="simpanHargaMenu('${kode}')">Simpan</button>
-      <button class="remove-btn" onclick="hapusMenu('${kode}')">Hapus</button>
+      <div class="admin-menu-info">
+        <div class="admin-menu-name">${p.nama}</div>
+        <div class="admin-menu-meta">
+          <span class="admin-menu-kode mono">${kode}</span>
+          <span class="admin-menu-tag">${ikonKategori} ${p.kategori}</span>
+          <span class="admin-menu-stock ${stockClass}">${stockLabel}</span>
+        </div>
+      </div>
+      <div class="admin-menu-price">
+        <span class="admin-menu-price-prefix">Rp</span>
+        <input type="number" min="0" value="${p.harga}" id="hargaEdit-${kode}" aria-label="Harga ${p.nama}">
+      </div>
+      <div class="admin-menu-actions">
+        <button class="admin-menu-btn save" onclick="simpanHargaMenu('${kode}')" title="Simpan harga baru" aria-label="Simpan harga ${p.nama}">💾</button>
+        <button class="admin-menu-btn img" onclick="gantiGambarMenu('${kode}')" title="Ganti URL gambar" aria-label="Ganti gambar ${p.nama}">🖼️</button>
+        <button class="admin-menu-btn delete" onclick="hapusMenu('${kode}')" title="Hapus menu" aria-label="Hapus ${p.nama}">🗑️</button>
+      </div>
     </div>
-  `).join('');
+  `;
+  }).join('');
+}
+
+function gantiGambarMenu(kode){
+  const p = menuProduk[kode];
+  if(!p) return;
+  const urlBaru = window.prompt(`URL gambar baru untuk "${p.nama}" (kosongkan lalu OK untuk pakai foto default kategori):`, p.img || '');
+  if(urlBaru === null) return; // dibatalkan
+  const trimmed = urlBaru.trim();
+  if(trimmed && !/^https?:\/\//i.test(trimmed)){
+    showToast('⚠️ URL gambar harus diawali http:// atau https://');
+    return;
+  }
+  p.img = trimmed || FALLBACK_IMGS[p.kategori] || '';
+  renderAdminMenuList();
+  refreshCardDisplay(kode);
+  showToast(`✓ Gambar ${p.nama} diperbarui`);
+  saveState();
 }
 
 function tambahMenuBaru(){
@@ -3702,6 +4285,7 @@ function tambahMenuBaru(){
   const kategori = document.getElementById('menuBaruKategori').value;
   const harga = parseInt(document.getElementById('menuBaruHarga').value);
   const stok = parseInt(document.getElementById('menuBaruStok').value);
+  const gambarInput = document.getElementById('menuBaruGambar').value.trim();
   const fb = document.getElementById('menuKelolaFeedback');
 
   if(!kode || !nama){
@@ -3724,10 +4308,15 @@ function tambahMenuBaru(){
     fb.textContent = '⚠️ Harga harus lebih dari 0!';
     return;
   }
+  if(gambarInput && !/^https?:\/\//i.test(gambarInput)){
+    fb.style.color = 'var(--merah-cabai)';
+    fb.textContent = '⚠️ URL gambar harus diawali http:// atau https://';
+    return;
+  }
   menuProduk[kode] = {
     nama, harga, kategori,
     stok: (stok >= 0 && !isNaN(stok)) ? stok : 0,
-    img: FALLBACK_IMGS[kategori] || ''
+    img: gambarInput || FALLBACK_IMGS[kategori] || ''
   };
   fb.style.color = 'var(--hijau-daun)';
   fb.textContent = `✓ Menu "${nama}" (${kode}) berhasil ditambahkan`;
@@ -3735,8 +4324,10 @@ function tambahMenuBaru(){
   document.getElementById('menuBaruNama').value = '';
   document.getElementById('menuBaruHarga').value = '';
   document.getElementById('menuBaruStok').value = '';
+  document.getElementById('menuBaruGambar').value = '';
 
   renderAdminMenuList();
+  isiFsMenuDropdown();
   renderMenuFiltered(); // update tampilan menu di halaman utama (hormati search aktif)
   renderAdminStats(); // stok menipis bisa berubah karena menu baru
   showToast(`✓ Menu ${nama} ditambahkan`);
@@ -3753,7 +4344,11 @@ function simpanHargaMenu(kode){
     return;
   }
   p.harga = hargaBaru;
+  // Jika harga baru <= harga flash sale, status flash sale menu ini otomatis nonaktif
+  if(p.flashMenuAktif && p.hargaFlashMenu >= hargaBaru) p.flashMenuAktif = false;
   refreshCardDisplay(kode);
+  isiFsMenuDropdown();
+  renderAdminFlashMenuList();
   showToast(`✓ Harga ${p.nama} diperbarui → ${formatRupiah(hargaBaru)}`);
   saveState();
 }
@@ -3765,11 +4360,87 @@ function hapusMenu(kode){
   delete menuProduk[kode];
   delete keranjang[kode]; // jaga-jaga bila sedang ada di keranjang seseorang
   renderAdminMenuList();
+  isiFsMenuDropdown();
+  renderAdminFlashMenuList();
   renderMenuFiltered();
   updateCartUI();
   renderAdminStats();
   showToast(`✓ Menu ${kode} dihapus`);
   saveState();
+}
+
+/* --- Kontrol admin untuk Menu Flash Sale (per-item, badge ⚡ + harga coret) --- */
+function isiFsMenuDropdown(){
+  const sel = document.getElementById('fsMenuKode');
+  if(!sel) return;
+  const dipilihSebelumnya = sel.value;
+  const entries = Object.entries(menuProduk)
+    .filter(([k,p]) => !isMenuFlash(p))
+    .sort((a,b)=> a[1].kategori.localeCompare(b[1].kategori) || a[1].nama.localeCompare(b[1].nama));
+  sel.innerHTML = entries.length
+    ? entries.map(([k,p]) => `<option value="${k}">${p.nama} (${k}) — ${formatRupiah(p.harga)}</option>`).join('')
+    : `<option value="">Semua menu sudah jadi flash sale</option>`;
+  if(entries.some(([k]) => k === dipilihSebelumnya)) sel.value = dipilihSebelumnya;
+}
+
+function jadikanMenuFlashSale(){
+  const kode = document.getElementById('fsMenuKode').value;
+  const hargaBaru = parseInt(document.getElementById('fsMenuHarga').value);
+  const fb = document.getElementById('fsMenuFeedback');
+  const p = menuProduk[kode];
+  if(!p){
+    fb.style.color = 'var(--merah-cabai)';
+    fb.textContent = '⚠️ Pilih menu terlebih dahulu!';
+    return;
+  }
+  if(!hargaBaru || hargaBaru <= 0 || hargaBaru >= p.harga){
+    fb.style.color = 'var(--merah-cabai)';
+    fb.textContent = `⚠️ Harga flash sale harus lebih dari 0 dan lebih murah dari harga asli (${formatRupiah(p.harga)})!`;
+    return;
+  }
+  p.flashMenuAktif = true;
+  p.hargaFlashMenu = hargaBaru;
+  fb.style.color = 'var(--hijau-daun)';
+  fb.textContent = `✓ "${p.nama}" jadi menu flash sale — ${formatRupiah(hargaBaru)} (dari ${formatRupiah(p.harga)})`;
+  document.getElementById('fsMenuHarga').value = '';
+  isiFsMenuDropdown();
+  renderAdminFlashMenuList();
+  refreshCardDisplay(kode);
+  renderMenuFiltered();
+  showToast(`⚡ ${p.nama} sekarang flash sale!`);
+  saveState();
+}
+
+function hapusMenuFlashSale(kode){
+  const p = menuProduk[kode];
+  if(!p) return;
+  p.flashMenuAktif = false;
+  isiFsMenuDropdown();
+  renderAdminFlashMenuList();
+  refreshCardDisplay(kode);
+  renderMenuFiltered();
+  showToast(`✓ ${p.nama} keluar dari flash sale`);
+  saveState();
+}
+
+function renderAdminFlashMenuList(){
+  const wrap = document.getElementById('adminFlashMenuList');
+  if(!wrap) return;
+  const entries = Object.entries(menuProduk).filter(([k,p]) => isMenuFlash(p))
+    .sort((a,b)=> a[1].nama.localeCompare(b[1].nama));
+  wrap.innerHTML = entries.length ? entries.map(([kode,p]) => {
+    const fallback = FALLBACK_IMGS[p.kategori] || '';
+    return `
+    <div style="display:flex; align-items:center; gap:10px; border:1px solid var(--garis); border-radius:10px; padding:8px 10px; background:var(--krem-kartu);">
+      <img src="${p.img}" alt="${p.nama}" loading="lazy" style="width:44px; height:44px; border-radius:8px; object-fit:cover; flex-shrink:0;" onerror="this.onerror=null;this.src='${fallback}';">
+      <div style="flex:1; min-width:0;">
+        <div style="font-size:12.5px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">⚡ ${p.nama}</div>
+        <div style="font-size:10.5px; color:var(--abu);" class="mono">${kode} · <span style="text-decoration:line-through;">${formatRupiah(p.harga)}</span> → <span style="color:var(--merah-cabai); font-weight:700;">${formatRupiah(p.hargaFlashMenu)}</span></div>
+      </div>
+      <button class="remove-btn" onclick="hapusMenuFlashSale('${kode}')">Matikan</button>
+    </div>
+  `;
+  }).join('') : `<div style="font-size:12px; color:var(--abu);">Belum ada menu flash sale. Pilih menu di atas untuk memulai.</div>`;
 }
 
 /* ===== Restok ===== */
@@ -4198,6 +4869,8 @@ function saveState(){
       promoCodes, // kode promo yang dikelola admin
       pajakPersen: PAJAK_PERSEN,
       zonaOngkir: ZONA_ONGKIR, // zona pengantaran & estimasi ongkir yang dikelola admin
+      ulasanProduk, // ulasan asli dari pembeli per kode menu
+      flashSale, // status flash sale yang dikelola admin
       savedAt: new Date().toISOString()
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
@@ -4246,6 +4919,12 @@ function loadState(){
     if(Array.isArray(data.zonaOngkir) && data.zonaOngkir.length > 0){
       const valid = data.zonaOngkir.filter(z => z && typeof z.kode === 'string' && typeof z.label === 'string' && typeof z.biaya === 'number' && z.biaya >= 0);
       if(valid.length > 0) ZONA_ONGKIR = valid;
+    }
+    if(data.ulasanProduk && typeof data.ulasanProduk === 'object'){
+      ulasanProduk = data.ulasanProduk;
+    }
+    if(data.flashSale && typeof data.flashSale === 'object' && typeof data.flashSale.berakhirPada === 'string'){
+      flashSale = { ...flashSale, ...data.flashSale };
     }
   } catch(err){
     console.warn('Gagal memuat data tersimpan, memakai data awal:', err);
@@ -4348,6 +5027,7 @@ initAman('updateBrandGreeting', updateBrandGreeting);
 initAman('updateHistoryDot', updateHistoryDot);
 initAman('setupBgParticles', setupBgParticles);
 initAman('setupHeroCounters', setupHeroCounters);
+initAman('setupFlashSaleCountdown', setupFlashSaleCountdown);
 
 /* Sinkronisasi ringan antar-tab di browser yang sama: kalau tab lain
    mengubah data (checkout/stok/menu/status), tab ini ikut memuat ulang
@@ -4364,6 +5044,8 @@ window.addEventListener('storage', (e) => {
     renderAdminStats();
     renderAdminPesananSelect();
     renderAdminMenuList();
+    isiFsMenuDropdown();
+    renderAdminFlashMenuList();
   }
 });
 
