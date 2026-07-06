@@ -27,7 +27,12 @@
   --abu: #6E7259;
   font-size: 16px;
 }
-*{ box-sizing: border-box; margin:0; padding:0; }
+*{ box-sizing: border-box; margin:0; padding:0; -webkit-tap-highlight-color: transparent; }
+html{
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
 body{
   background:
     radial-gradient(rgba(43,33,23,0.045) 1px, transparent 1.4px) 0 0/22px 22px,
@@ -36,6 +41,23 @@ body{
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  overscroll-behavior-y: none;
+}
+
+/* ===== Kehalusan tampilan di HP: momentum scroll + hilangkan delay tap ===== */
+button, a, .cat-pill, .hero-dot, .admin-tab, input[type="button"], input[type="submit"], select{
+  touch-action: manipulation;
+}
+.drawer-body,
+.modal,
+.detail-body,
+.admin-menu-list,
+.ulasan-list,
+.profil-list,
+.cat-nav,
+.admin-tabs{
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
 h1,h2,h3,.display{
   font-family: 'Bricolage Grotesque', sans-serif;
@@ -48,6 +70,7 @@ h1,h2,h3,.display{
 /* ===== Reduced motion ===== */
 @media (prefers-reduced-motion: reduce){
   *{ animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  html{ scroll-behavior: auto; }
 }
 
 /* ===== Aksesibilitas: skip link ===== */
@@ -4952,7 +4975,15 @@ function updateActiveCatOnScroll(){
   });
 }
 
-window.addEventListener('scroll', updateActiveCatOnScroll, {passive:true});
+/* Dibungkus requestAnimationFrame supaya perhitungan layout (offsetTop dll)
+   tidak jalan berkali-kali di frame yang sama saat scroll cepat di HP —
+   hasilnya scroll terasa lebih mulus / tidak tersendat. */
+let _catScrollTicking = false;
+window.addEventListener('scroll', () => {
+  if(_catScrollTicking) return;
+  _catScrollTicking = true;
+  requestAnimationFrame(() => { updateActiveCatOnScroll(); _catScrollTicking = false; });
+}, {passive:true});
 window.addEventListener('resize', ()=> updateCatIndicator(document.querySelector('.cat-pill.active')));
 
 /* ===== Hero image slider ===== */
